@@ -1,7 +1,8 @@
 local discordia = require('discordia')
 local Dotenv = require('Dotenv')
 local client = discordia.Client({
-	logFile = ".//"
+	logFile = ".//",
+	logLevel = 0
 })
 Dotenv.load_env()
 
