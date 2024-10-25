@@ -14,7 +14,7 @@
       "luvit/dns@2.0.4",
       "luvit/secure-socket@v1.2.3",
       "SinisterRectus/discordia@v2.12.0",
-      "UrNightmaree/redotenv@v0.1.0"
+      "4keef/Dotenv@v0.0.6"
     },
     files = {
       "**.lua",

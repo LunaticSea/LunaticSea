@@ -1,6 +1,9 @@
-local env = require("redotenv").load()
 local discordia = require('discordia')
-local client = discordia.Client()
+local Dotenv = require('Dotenv')
+local client = discordia.Client({
+	logFile = ".//"
+})
+Dotenv.load_env()
 
 client:on('ready', function()
 	print('Logged in as '.. client.user.username)
@@ -12,4 +15,4 @@ client:on('messageCreate', function(message)
 	end
 end)
 
-client:run("Bot " .. env.TOKEN)
+client:run("Bot " .. Dotenv.get_value("TOKEN"))

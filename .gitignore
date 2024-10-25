@@ -45,3 +45,6 @@ deps/**
 
 # config files
 .env
+
+# Gateway
+gateway.json
