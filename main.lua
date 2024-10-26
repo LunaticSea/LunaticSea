@@ -1,3 +1,3 @@
 return require('./wrapper.lua')(function (...)
-  require("./src/init.lua")
+  require("./src/main.lua")
 end, ...)
