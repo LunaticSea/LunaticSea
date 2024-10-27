@@ -50,14 +50,8 @@ end
 
 local function get_os_pname()
   local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
-  if BinaryFormat == "dll" then
-    return base_project_name .. '.exe'
-  elseif BinaryFormat == "so" then
-    return base_project_name
-  elseif BinaryFormat == "dylib" then
-    return base_project_name
-  end
-  return nil
+  if BinaryFormat == "dll" then return base_project_name .. '.exe' end
+  return base_project_name
 end
 
 -- Main
