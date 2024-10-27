@@ -14,11 +14,13 @@
       "luvit/dns@2.0.4",
       "luvit/secure-socket@v1.2.3",
       "SinisterRectus/discordia@v2.12.0",
-      "4keef/Dotenv@v0.0.6"
+      "4keef/Dotenv@v0.0.6",
+      "TohruMKDM/inflate@v2.0.0"
     },
     files = {
       "**.lua",
-      "!test*"
+      "!test*",
+      "!build.lua"
     }
   }
   

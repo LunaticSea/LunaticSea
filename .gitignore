@@ -48,3 +48,5 @@ deps/**
 
 # Gateway
 gateway.json
+test.*********************************************
+build/**

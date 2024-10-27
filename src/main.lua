@@ -1,5 +1,6 @@
 local discordia = require('discordia')
 local Dotenv = require('Dotenv')
+local dir = require('./dir.lua')
 Dotenv.load_env()
 
 local client = discordia.Client({
@@ -7,7 +8,8 @@ local client = discordia.Client({
 	logLevel = 0
 })
 
-Dotenv.load_env()
+local TEST_MODE = Dotenv.get_value("TEST_MODE") == 'true'
+client._ptree = dir.get_all(TEST_MODE)
 
 require('./loader/main.lua')(client)
 
