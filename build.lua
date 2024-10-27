@@ -1,6 +1,6 @@
 local fs = require('fs')
 local path = require('path')
-
+local base_project_name = require('./package.lua').name
 -- Constants
 local dir = require('./src/dir.lua')
 local req_fle_tree = './src/project_tree.lua'
@@ -48,6 +48,18 @@ local function convert_data(tbl)
   return 'return { ' .. res .. ' }'
 end
 
+local function get_os_pname()
+  local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
+  if BinaryFormat == "dll" then
+    return base_project_name .. '.exe'
+  elseif BinaryFormat == "so" then
+    return base_project_name
+  elseif BinaryFormat == "dylib" then
+    return base_project_name
+  end
+  return nil
+end
+
 -- Main
 print('INFO - Checking if ' .. req_fle_tree .. ' exist')
 local is_exist = fs.existsSync(req_fle_tree)
@@ -83,7 +95,8 @@ fs.writeFile(req_fle_tree, final_data, function (err)
   print('INFO - Removing old builds...')
   fs.rmdirSync('./build')
   print('INFO - Apply new builds')
+  local p_name = get_os_pname()
   fs.mkdirSync('./build')
-  fs.renameSync('./LunaticSea.exe', './build/LunaticSea.exe')
+  fs.renameSync('./' .. p_name, './build/' .. p_name)
   print('INFO - Finished 💫')
 end)
