@@ -8,14 +8,8 @@ on:
     branches: ['master']
 
 jobs:
-  build:
+  install-dev-tools:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +20,21 @@ jobs:
       - name: Install luvit
         run: curl -L https://github.com/luvit/lit/raw/master/get-lit.sh | sh
 
+      - name: Install dependencies
+        run: lit install
+
+      - name: Build bot
+        run: luvit build.lua
+
+      - name: Push ByteBlaze build zip to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'LunaticSea'
+          path: build/
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Install dependencies
         run: lit install
 
