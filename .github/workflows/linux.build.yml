@@ -8,7 +8,7 @@ on:
     branches: ['master']
 
 jobs:
-  install-dev-tools:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,30 +19,18 @@ jobs:
 
       - name: Install luvit
         run: curl -L https://github.com/luvit/lit/raw/master/get-lit.sh | sh
+      
+      - name: Test luvit
+        run: ./luvit
 
-      - name: Install dependencies
-        run: lit install
+      # - name: Install dependencies
+      #   run: lit install
 
-      - name: Build bot
-        run: luvit build.lua
+      # - name: Build bot
+      #   run: luvit build.lua
 
-      - name: Push ByteBlaze build zip to artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'LunaticSea'
-          path: build/
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install dependencies
-        run: lit install
-
-      - name: Build bot
-        run: luvit build.lua
-
-      - name: Push ByteBlaze build zip to artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'LunaticSea'
-          path: build/
+      # - name: Push ByteBlaze build zip to artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: 'LunaticSea'
+      #     path: build/
