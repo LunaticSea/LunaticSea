@@ -1,6 +1,7 @@
 local fs = require('fs')
 local path = require('path')
 local base_project_name = require('./package.lua').name
+local binary_format = package.cpath:match("%p[\\|/]?%p(%a+)")
 -- Constants
 local bundlefs = require('./src/bundlefs.lua')
 local req_fle_tree = './src/tree.lua'
@@ -49,12 +50,12 @@ local function convert_data(tbl)
 end
 
 local function get_os_pname()
-  local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
-  if BinaryFormat == "dll" then return base_project_name .. '.exe' end
+  if binary_format == "dll" then return base_project_name .. '.exe' end
   return base_project_name
 end
 
 local function is_github()
+  if binary_format == "dll" then return false, 'lit make' end
   if process.env["GITHUB_BUILD"] then return true, './lit make' end
   return false, 'lit make'
 end
