@@ -1,6 +1,6 @@
 local discordia = require('discordia')
 local Dotenv = require('Dotenv')
-local dir = require('./dir.lua')
+local dir = require('./bundlefs.lua')
 Dotenv.load_env()
 
 local client = discordia.Client({

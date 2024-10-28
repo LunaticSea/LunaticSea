@@ -1,5 +1,5 @@
 local split = require('../utils/split.lua')
-local dir = require('../dir.lua')
+local dir = require('../bundlefs.lua')
 local Dotenv = require('Dotenv')
 Dotenv.load_env()
 

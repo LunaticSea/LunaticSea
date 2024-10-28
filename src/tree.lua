@@ -6,7 +6,7 @@
 return {
   "bundle:/main.lua",
   "bundle:/package.lua",
-  "bundle:/src/dir.lua",
+  "bundle:/src/bundlefs.lua",
   "bundle:/src/events/client/messageCreate.lua",
   "bundle:/src/events/client/ready.lua",
   "bundle:/src/events/discordia/error.lua",

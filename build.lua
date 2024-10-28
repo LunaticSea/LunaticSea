@@ -2,8 +2,8 @@ local fs = require('fs')
 local path = require('path')
 local base_project_name = require('./package.lua').name
 -- Constants
-local dir = require('./src/dir.lua')
-local req_fle_tree = './src/project_tree.lua'
+local dir = require('./src/bundlefs.lua')
+local req_fle_tree = './src/tree.lua'
 local warnings = [[
 -- THIS IS PROJECT TREE FILE
 -- Do NOT delete this file or it will crash
