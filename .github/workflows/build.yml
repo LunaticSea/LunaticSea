@@ -32,6 +32,12 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
+      - name: Push LunaticSea build to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'lunatic-sea-linux'
+          path: build/
+
       - name: Upload Release Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +61,12 @@ jobs:
 
       - name: Build bot
         run: ./luvit build.lua
+
+      - name: Push LunaticSea build to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'lunatic-sea-win'
+          path: build/
 
       - name: Upload Release Asset
         env:
