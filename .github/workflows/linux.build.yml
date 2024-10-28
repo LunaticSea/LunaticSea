@@ -30,11 +30,30 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
-      - name: Get dir
-        run: tree
-
-      - name: Push ByteBlaze build zip to artifact
+      - name: Push LunaticSea build to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'LunaticSea'
+          name: 'lunatic-sea-linux'
+          path: build/
+
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install luvit
+        shell: pwsh
+        run: PowerShell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = 'Tls12'; iex ((new-object net.webclient).DownloadString('https://github.com/luvit/lit/raw/master/get-lit.ps1'))"
+
+      - name: Install dependencies
+        run: ./lit install
+
+      - name: Build bot
+        run: ./luvit build.lua
+
+      - name: Push LunaticSea build to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'lunatic-sea-win'
           path: build/
