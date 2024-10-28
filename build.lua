@@ -54,7 +54,17 @@ local function get_os_pname()
   return base_project_name
 end
 
+local function is_github()
+  if process.env["GITHUB_BUILD"] then return true, './lit make' end
+  return false, 'lit make'
+end
+
 -- Main
+local is_github_action, curr_cmd = is_github()
+
+if (is_github_action) then print('INFO - Current mode: Github action')
+else print('INFO - Current mode: Normal') end
+
 print('INFO - Checking if ' .. req_fle_tree .. ' exist')
 local is_exist = fs.existsSync(req_fle_tree)
 if is_exist then
@@ -80,7 +90,7 @@ fs.writeFile(req_fle_tree, final_data, function (err)
   print('INFO - Writting complete!')
   print('INFO - Building project ...')
 
-  local openPop = assert(io.popen('lit make'))
+  local openPop = assert(io.popen(curr_cmd))
   local output = openPop:read('*all')
   openPop:close()
   print(output)

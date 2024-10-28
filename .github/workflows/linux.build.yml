@@ -7,6 +7,10 @@ on:
   push:
     branches: ['master']
 
+
+env:
+  GITHUB_BUILD: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
