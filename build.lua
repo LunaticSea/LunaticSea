@@ -5,7 +5,7 @@ local base_project_name = require('./package.lua').name
 local dir = require('./src/dir.lua')
 local req_fle_tree = './src/project_tree.lua'
 local warnings = [[
--- THIS IS THE METADATA BOT FILE
+-- THIS IS PROJECT TREE FILE
 -- Do NOT delete this file or it will crash
 -- Changes to this file may cause incorrect behavior
 -- You will be responsible for this when changing any content in the file.
@@ -23,13 +23,13 @@ local function table_print(tt, indent, done)
         done [value] = true
         table.insert(sb, key .. " = {\n");
         table.insert(sb, table_print(value, indent + 2, done))
-        table.insert(sb, string.rep (" ", indent)) -- indent it
+        table.insert(sb, string.rep("  ", indent)) -- indent it
         table.insert(sb, "}\n");
       elseif "number" == type(key) then
-        table.insert(sb, string.format("\"%s\", ", tostring(value)))
+        table.insert(sb, string.format("  \"%s\",\n", tostring(value)))
       else
         table.insert(sb, string.format(
-        "%s = \"%s\", ", tostring (key), tostring(value)))
+        "%s = \"%s\",\n", tostring (key), tostring(value)))
       end
     end
     return table.concat(sb)
@@ -45,7 +45,7 @@ local function convert_data(tbl)
     pre[k] = final:gsub("\\", '/'):sub(1)
   end
   local res = table_print(pre)
-  return 'return { ' .. res .. ' }'
+  return 'return {\n' .. res .. '}'
 end
 
 local function get_os_pname()

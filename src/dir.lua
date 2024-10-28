@@ -1,6 +1,6 @@
 local fsex = require('./utils/fsex.lua')
 local include = { '[^\\]+.lua' }
-local exclude = { 'deps', 'build.lua' }
+local exclude = { 'deps', 'build.lua', 'test.lua' }
 
 local dir = {}
 
