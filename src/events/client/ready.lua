@@ -1,3 +1,3 @@
 return function (client)
-	print('Logged in as '.. client.user.username)
+	client._logger:log(3, 'Bot is ready! Welcome back '.. client.user.username)
 end

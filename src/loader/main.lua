@@ -1,6 +1,4 @@
-local event_loader = require('./event.lua')
-
 return function (client)
-  local eventl = event_loader.new(client)
-  eventl.run()
+  require('./event.lua').new(client).run()
+  require('./commands.lua').new(client).run()
 end

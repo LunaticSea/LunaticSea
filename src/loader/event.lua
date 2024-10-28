@@ -1,17 +1,15 @@
 local split = require('../utils/split.lua')
-local dir = require('../bundlefs.lua')
-local Dotenv = require('Dotenv')
-Dotenv.load_env()
+local bundlefs = require('../bundlefs.lua')
 
 local event_loader = {
   all_dir = {},
-  require = {'discordia', 'client'},
+  require = {'client', 'guild'},
   client = nil
 }
 
 local function is_win()
   local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
-  if Dotenv.get_value("TEST_MODE") ~= 'true' then return false end
+  if not event_loader.client._is_test_mode then return false end
   if BinaryFormat == 'dll' then return true end
   return false
 end
@@ -32,7 +30,7 @@ function event_loader.run()
     event_loader.client:on(e_name, function (...)
       func(event_loader.client, ...)
     end)
-    print('Loaded '.. e_name)
+    event_loader.client._logger:log(3, 'Loaded event: '.. e_name)
   end)
 end
 
@@ -41,7 +39,7 @@ function event_loader.load_file_dir()
     local all_dir = function ()
       local params = { event_loader.client._ptree, 'src/events/' .. value }
       if is_win() then params[2] = 'src\\events\\' .. value end
-      return dir.filter(table.unpack(params))
+      return bundlefs.filter(table.unpack(params))
     end
     table.foreach(all_dir(), function (_, s_value)
       table.insert(event_loader.all_dir, s_value)

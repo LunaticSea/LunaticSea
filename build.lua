@@ -2,7 +2,7 @@ local fs = require('fs')
 local path = require('path')
 local base_project_name = require('./package.lua').name
 -- Constants
-local dir = require('./src/bundlefs.lua')
+local bundlefs = require('./src/bundlefs.lua')
 local req_fle_tree = './src/tree.lua'
 local warnings = [[
 -- THIS IS PROJECT TREE FILE
@@ -64,7 +64,7 @@ end
 
 
 print('INFO - Reading dir tree...')
-local dir_tree = dir.get_all(true)
+local dir_tree = bundlefs.get_all(true)
 
 print('INFO - Finished reading dir tree, total: ' .. #dir_tree)
 print('INFO - Converting tree...')

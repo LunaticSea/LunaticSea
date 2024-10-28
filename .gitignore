@@ -50,3 +50,5 @@ deps/**
 gateway.json
 test.*********************************************
 build/**
+app.json
+lunatic.sea.log

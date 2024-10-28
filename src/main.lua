@@ -1,16 +1,24 @@
 local discordia = require('discordia')
-local Dotenv = require('Dotenv')
 local dir = require('./bundlefs.lua')
-Dotenv.load_env()
+local package = require('../package.lua')
 
-local client = discordia.Client({
-	logFile = ".//",
-	logLevel = 0
-})
+return function (test_mode)
+	local client = discordia.Client({
+		logFile = "lunatic.sea.log",
+		gatewayFile = './/',
+	})
 
-local TEST_MODE = Dotenv.get_value("TEST_MODE") == 'true'
-client._ptree = dir.get_all(TEST_MODE)
+	client._logger:log(3, 'Booting up: ' .. package.name)
+	client._is_test_mode = test_mode
+	client._ptree = dir.get_all(test_mode)
+	client._commands = {}
+	client._config = require('./utils/config.lua')
 
-require('./loader/main.lua')(client)
+	require('./loader/main.lua')(client)
 
-client:run("Bot " .. Dotenv.get_value("TOKEN"))
+	if (#client._config.bot.TOKEN == 0) then
+		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
+	end
+
+	client:run("Bot " .. client._config.bot.TOKEN)
+end
