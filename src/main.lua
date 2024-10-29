@@ -12,6 +12,7 @@ return function (test_mode)
 	client._is_test_mode = test_mode
 	client._ptree = dir.get_all(test_mode)
 	client._commands = {}
+	client._c_alias = {}
 	client._config = require('./utils/config.lua')
 
 	require('./loader/main.lua')(client)
