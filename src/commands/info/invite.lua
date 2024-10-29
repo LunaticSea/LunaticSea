@@ -3,12 +3,12 @@ local discordia = require('discordia')
 
 return {
   info = {
-    name =  {'developer'},
-    description = 'Shows the developer information of the Bot (Credit)',
+    name =  {'invite'},
+    description = 'Shows the invite information of the Bot',
     category = 'Info',
     accessableby = {accessableby.member},
     usage = '',
-    aliases = {'dev'},
+    aliases = {'inv'},
   },
   config = {
     lavalink = false,
@@ -19,19 +19,19 @@ return {
     options = {},
   },
   execute = function (client, message)
+    local link = string.format(
+      "https://discord.com/api/oauth2/authorize?client_id=%s",
+      client.user.id
+    ) .. "&permissions=8&scope=bot%20applications.commands"
     local desc = string.format(
-      "Powered by Salmon :)\n - **Github:** %s\n - **Support server:** %s",
-      '[RainyXeon](https://github.com/RainyXeon)',
-      '[DeepinRain](https://discord.gg/xff4e2WvVy)'
+      "[Click here to invite!](%s)\n**Thanks for Inviting me in advance! 💫**",
+      link
     )
 
     local embed_data = {
-      title = "RainyXeon",
+      title = string.format("✉️ %s", client.user.username),
       description = desc,
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-      footer = {
-        text = "Consider joining my server or inviting my bots :) This would help me a lot!"
-      }
+      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
     }
     message.channel:send({ embed = embed_data })
   end
