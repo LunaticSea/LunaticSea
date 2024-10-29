@@ -29,6 +29,9 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
+      - name: Rename linux binaries
+        run: mv ./build/LunaticSea ./build/LunaticSea.bin
+
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
@@ -71,10 +74,10 @@ jobs:
       - uses: actions/download-artifact@v4
 
       - name: Rename linux binaries
-        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic-sea-linux-amd64.bin
+        run: mv ./lunatic-sea-linux-amd64/LunaticSea.bin ./lunatic_sea_linux_amd64.bin
 
       - name: Rename win binaries
-        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64.exe
+        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic_sea_win_amd64.exe
 
       - name: Get tree
         run: tree
@@ -83,10 +86,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:
-          gh release upload nightly ./lunatic-sea-linux-amd64/lunatic-sea-linux-amd64.bin --clobber
+          gh release upload nightly ./lunatic_sea_linux_amd64.bin --clobber
 
       - name: Upload win binaries to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:
-          gh release upload nightly ./lunatic-sea-win-amd64/lunatic-sea-win-amd64.exe --clobber
+          gh release upload nightly ./lunatic_sea_win_amd64.exe --clobber
