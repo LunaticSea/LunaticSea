@@ -70,20 +70,20 @@ jobs:
 
       - uses: actions/download-artifact@v4
 
-      - name: Zip linux binaries
-        run: zip lunatic-sea-linux-amd64.zip ./lunatic-sea-linux-amd64/LunaticSea
+      - name: Rename linux binaries
+        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic-sea-linux-amd64/lunatic-sea-linux-amd64.bin
 
-      - name: Zip win binaries
-        run: zip lunatic-sea-win-amd64.zip ./lunatic-sea-win-amd64/LunaticSea.exe
+      - name: Rename win binaries
+        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64/lunatic-sea-win-amd64.exe
 
       - name: Upload linux binaries to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:
-          gh release upload nightly ./lunatic-sea-linux-amd64.zip --clobber
+          gh release upload nightly ./lunatic-sea-linux-amd64/lunatic-sea-linux-amd64.bin --clobber
 
       - name: Upload win binaries to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:
-          gh release upload nightly ./lunatic-sea-win-amd64.zip --clobber
+          gh release upload nightly ./lunatic-sea-win-amd64/lunatic-sea-win-amd64.exe --clobber
