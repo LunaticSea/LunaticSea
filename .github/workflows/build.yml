@@ -76,20 +76,14 @@ jobs:
           files: ./lunatic-sea-win-amd64/LunaticSea.exe
           dest: lunatic-sea-win-amd64.zip
 
-      - name: Upload win binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./lunatic-sea-win-amd64.zip
-          asset_name: lunatic-sea-win-amd64
-          overwrite: true
-          release_name: nightly
+      - name: Upload linux binaries to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          gh release upload nightly ./lunatic-sea-linux-amd64.zip --clobber
 
       - name: Upload win binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./lunatic-sea-win-amd64.zip
-          asset_name: lunatic-sea-win-amd64
-          overwrite: true
-          release_name: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          gh release upload nightly ./lunatic-sea-win-amd64.zip --clobber
