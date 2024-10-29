@@ -66,15 +66,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dev tools
-        run: sudo apt-get install -y zip
+        run: sudo apt-get install -y zip tree
 
       - uses: actions/download-artifact@v4
 
       - name: Rename linux binaries
-        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic-sea-linux-amd64/lunatic-sea-linux-amd64.bin
+        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic-sea-linux-amd64.bin
 
       - name: Rename win binaries
-        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64/lunatic-sea-win-amd64.exe
+        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64.exe
+
+      - name: Get tree
+        run: tree
 
       - name: Upload linux binaries to release
         env:
