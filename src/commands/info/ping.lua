@@ -19,8 +19,12 @@ return {
     options = {},
   },
   execute = function (client, message)
+    local msg_time = math.floor(message.createdAt + 0.5)
+    local ping = tostring(msg_time - os.time())
+
     local embed_data = {
-      title = "Pong!",
+      title = "🏓 " .. client.user.username,
+      description = string.format('**Ping:** `%s ms`', ping),
       color = discordia.Color.fromHex('#2B2D31').value,
       timestamp = discordia.Date():toISO('T', 'Z')
     }

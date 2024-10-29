@@ -1,6 +1,6 @@
 local fsex = require('./utils/fsex.lua')
 local include = { '[^\\]+.lua' }
-local exclude = { 'deps', 'build.lua', 'test.lua', 'test.what.lua' }
+local exclude = { 'deps', 'build.lua', 'dev.lua', 'test.what.lua' }
 
 local bundlefs = {}
 
