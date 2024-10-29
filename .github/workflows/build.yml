@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: ./build/LunaticSea
+            asset_name: lunaticsea-linux-amd64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,14 +44,14 @@ jobs:
           name: 'lunatic-sea-linux'
           path: build/
 
-      - name: Read tree
-        run: tree
-
-      - name: Upload Release Asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gh release upload nightly ./build/LunaticSea --clobber
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          overwrite: true
+          release_name: nightly
 
   win-build:
     runs-on: windows-latest
@@ -76,3 +82,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:
           gh release upload nightly ./build/LunaticSea.exe --clobber
+
+  publish:
+    name: Publish for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: ./build/LunaticSea
+            asset_name: lunaticsea-linux-amd64
+          - os: windows-latest
+            artifact_name: ./build/LunaticSea.exe
+            asset_name: lunaticsea-windows-amd64
