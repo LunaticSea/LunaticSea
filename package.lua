@@ -13,14 +13,13 @@
       "luvit/process@2.1.3",
       "luvit/dns@2.0.4",
       "luvit/secure-socket@v1.2.3",
-      "SinisterRectus/discordia@v2.12.0",
-      "TohruMKDM/inflate@v2.0.0"
+      "SinisterRectus/discordia@v2.12.0"
     },
     files = {
       "**.lua",
       "!test*",
       "!build.lua",
-      "p.env"
+      "!dev.lua"
     }
   }
   
