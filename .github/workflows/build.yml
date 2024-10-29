@@ -38,6 +38,9 @@ jobs:
           name: 'lunatic-sea-linux'
           path: build/
 
+      - name: Read tree
+        run: tree
+
       - name: Upload Release Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
