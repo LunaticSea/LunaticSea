@@ -64,12 +64,14 @@ jobs:
     name: Upload to prerelease
     needs: [win-build, linux-build]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dev tools
-        run: sudo apt-get install -y zip tree
+        run: sudo apt-get install -y zip
 
       - uses: actions/download-artifact@v4
 
@@ -78,9 +80,6 @@ jobs:
 
       - name: Rename win binaries
         run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic_sea_win_amd64.exe
-
-      - name: Get tree
-        run: tree
 
       - name: Upload linux binaries to release
         env:
