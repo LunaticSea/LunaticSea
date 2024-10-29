@@ -7,21 +7,12 @@ on:
   push:
     branches: ['master']
 
-
 env:
   GITHUB_BUILD: true
 
 jobs:
   linux-build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            artifact_name: ./build/LunaticSea
-            asset_name: lunaticsea-linux-amd64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,22 +32,11 @@ jobs:
       - name: Push LunaticSea build to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'lunatic-sea-linux'
+          name: 'lunatic-sea-linux-amd64'
           path: build/
-
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ matrix.artifact_name }}
-          asset_name: ${{ matrix.asset_name }}
-          overwrite: true
-          release_name: nightly
 
   win-build:
     runs-on: windows-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,11 +54,17 @@ jobs:
       - name: Push LunaticSea build to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'lunatic-sea-win'
+          name: 'lunatic-sea-win-amd64'
           path: build/
 
-      - name: Upload Release Asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gh release upload nightly ./build/LunaticSea.exe --clobber
+  publish:
+    name: Upload to prerelease
+    needs: [win-build, linux-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dev tools
+        run: sudo apt-get install -y curl tree
+
+      - uses: actions/download-artifact@v4
+      - name: Display structure of downloaded files
+        run: ls -R
