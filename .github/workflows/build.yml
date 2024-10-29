@@ -81,7 +81,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./lunatic-sea-win-amd64.zip
-          asset_name: lunatic-sea-win-amd64.zip
+          asset_name: lunatic-sea-win-amd64
           overwrite: true
           release_name: nightly
 
@@ -90,6 +90,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./lunatic-sea-win-amd64.zip
-          asset_name: lunatic-sea-win-amd64.zip
+          asset_name: lunatic-sea-win-amd64
           overwrite: true
           release_name: nightly
