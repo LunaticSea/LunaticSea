@@ -29,7 +29,7 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
-      - name: Push LunaticSea build to artifact
+      - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
           name: 'lunatic-sea-linux-amd64'
@@ -51,7 +51,7 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
-      - name: Push LunaticSea build to artifact
+      - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
           name: 'lunatic-sea-win-amd64'
@@ -62,9 +62,34 @@ jobs:
     needs: [win-build, linux-build]
     runs-on: ubuntu-latest
     steps:
-      - name: Install dev tools
-        run: sudo apt-get install -y curl tree
-
       - uses: actions/download-artifact@v4
-      - name: Display structure of downloaded files
-        run: ls -R
+
+      - name: Zip linux binaries
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: ./lunatic-sea-linux-amd64/LunaticSea
+          dest: lunatic-sea-linux-amd64.zip
+
+      - name: Zip win binaries
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: ./lunatic-sea-win-amd64/LunaticSea.exe
+          dest: lunatic-sea-win-amd64.zip
+
+      - name: Upload win binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./lunatic-sea-win-amd64.zip
+          asset_name: lunatic-sea-win-amd64.zip
+          overwrite: true
+          release_name: nightly
+
+      - name: Upload win binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./lunatic-sea-win-amd64.zip
+          asset_name: lunatic-sea-win-amd64.zip
+          overwrite: true
+          release_name: nightly
