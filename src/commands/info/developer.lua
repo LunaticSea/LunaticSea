@@ -3,12 +3,12 @@ local discordia = require('discordia')
 
 return {
   info = {
-    name =  {'ping'},
-    description = 'Shows the ping of the Bot',
+    name =  {'developer'},
+    description = 'Shows the developer information of the Bot (Credit)',
     category = 'Info',
     accessableby = {accessableby.member},
     usage = '',
-    aliases = {},
+    aliases = {'dev'},
   },
   config = {
     lavalink = false,
@@ -22,11 +22,19 @@ return {
     local msg_time = math.floor(message.createdAt + 0.5)
     local ping = tostring(msg_time - os.time())
 
+    local desc = string.format(
+      "Powered by Salmon :)\n - **Github:** %s\n - **Support server:** %s",
+      '[RainyXeon](https://github.com/RainyXeon)',
+      '[DeepinRain](https://discord.gg/xff4e2WvVy)'
+    )
+
     local embed_data = {
-      title = "🏓 " .. client.user.username,
-      description = string.format('**Ping:** `%s ms`', ping),
+      title = "RainyXeon",
+      description = desc,
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-      timestamp = discordia.Date():toISO('T', 'Z')
+      footer = {
+        text = "Consider joining my server or inviting my bots :) This would help me a lot!"
+      }
     }
     message.channel:send({ embed = embed_data })
   end
