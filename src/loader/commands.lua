@@ -23,6 +23,11 @@ function cmd_loader.run()
     local cmd_data = require(value)
     local cmd_name = table.concat(cmd_data.info.name, '-')
     cmd_loader.client._commands[cmd_name] = cmd_data
+
+    table.foreach(cmd_data.info.aliases, function (_, alias)
+      cmd_loader.client._c_alias[alias] = cmd_name
+    end)
+
     cmd_loader.client._logger:log(3, 'Loaded command: '.. cmd_name)
   end)
 end
