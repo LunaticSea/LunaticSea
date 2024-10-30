@@ -29,9 +29,6 @@ jobs:
       - name: Build bot
         run: ./luvit build.lua
 
-      - name: Rename linux binaries
-        run: mv ./build/LunaticSea ./build/LunaticSea.bin
-
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
@@ -76,7 +73,7 @@ jobs:
       - uses: actions/download-artifact@v4
 
       - name: Rename linux binaries
-        run: mv ./lunatic-sea-linux-amd64/LunaticSea.bin ./lunatic_sea_linux_amd64.bin
+        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic_sea_linux_amd64.bin
 
       - name: Rename win binaries
         run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic_sea_win_amd64.exe
