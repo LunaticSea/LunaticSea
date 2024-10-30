@@ -7,7 +7,6 @@
     author = { name = "RainyXeon", email = "xeondev@xeondex.onmicrosoft.com" },
     homepage = "https://github.com/RainyXeon/LunaticSea",
     dependencies = {
-      "creationix/weblit@3.1.2",
       "creationix/coro-http@v3.2.3",
       "luvit/require@2.2.3",
       "luvit/process@2.1.3",
