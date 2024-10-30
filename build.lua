@@ -12,7 +12,16 @@ local warnings = [[
 -- You will be responsible for this when changing any content in the file.
 ]]
 local version = "v1.0.0"
-local args = {build = 1, dir = 1}
+local args = {
+  build = {
+    type = 1,
+    desc = "Build the bot and dir tree to standalone executable file"
+  },
+  dir = {
+    type = 2,
+    desc = "Build the bot dir tree only"
+  }
+}
 -- Functions
 local function table_print(tt, indent, done)
   done = done or {}
@@ -64,8 +73,14 @@ end
 -- Main
 local get_mode = process.argv[2]
 if not get_mode then get_mode = "build" end
-if not args[get_mode] then
-  print("Invalid arg, choose only build or dir mode")
+local arg_mode = args[get_mode]
+if not arg_mode then
+  print("\n\nInvalid arg, choose only some mode below:\n")
+  for name, data in pairs(args) do
+    print(" - " .. name .. ": " .. data.desc)
+  end
+  print('')
+  print('')
   os.exit()
 end
 
@@ -82,7 +97,6 @@ if is_exist then
   fs.unlinkSync(req_fle_tree)
 end
 
-
 print('INFO - Reading dir tree...')
 local dir_tree = bundlefs.get_all(true)
 
@@ -98,7 +112,7 @@ fs.writeFileSync(req_fle_tree, final_data)
 fs.writeFile(req_fle_tree, final_data, function (err)
   if (err) then error(err) end
   print('INFO - Writting complete!')
-  if get_mode == 'dir' then
+  if arg_mode.type == 2 then
     return print('INFO - Finished 💫')
   end
   print('INFO - Building project ...')
