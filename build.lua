@@ -11,7 +11,8 @@ local warnings = [[
 -- Changes to this file may cause incorrect behavior
 -- You will be responsible for this when changing any content in the file.
 ]]
-
+local version = "v1.0.0"
+local args = {build = 1, dir = 1}
 -- Functions
 local function table_print(tt, indent, done)
   done = done or {}
@@ -61,10 +62,18 @@ local function is_github()
 end
 
 -- Main
-local is_github_action, curr_cmd = is_github()
+local get_mode = process.argv[2]
+if not get_mode then get_mode = "build" end
+if not args[get_mode] then
+  print("Invalid arg, choose only build or dir mode")
+  os.exit()
+end
 
-if (is_github_action) then print('INFO - Current mode: Github action')
-else print('INFO - Current mode: Normal') end
+local is_github_action, curr_cmd = is_github()
+print('INFO - LunaticSea build script')
+print('INFO - Version: ' .. version)
+if (is_github_action) then print('INFO - Current mode: Github action ' .. get_mode)
+else print('INFO - Current mode: Internal ' .. get_mode) end
 
 print('INFO - Checking if ' .. req_fle_tree .. ' exist')
 local is_exist = fs.existsSync(req_fle_tree)
@@ -89,6 +98,9 @@ fs.writeFileSync(req_fle_tree, final_data)
 fs.writeFile(req_fle_tree, final_data, function (err)
   if (err) then error(err) end
   print('INFO - Writting complete!')
+  if get_mode == 'dir' then
+    return print('INFO - Finished 💫')
+  end
   print('INFO - Building project ...')
 
   local openPop = assert(io.popen(curr_cmd))
