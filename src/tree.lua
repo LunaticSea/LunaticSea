@@ -7,6 +7,8 @@ return {
   "bundle:/main.lua",
   "bundle:/package.lua",
   "bundle:/src/bundlefs.lua",
+  "bundle:/src/commands/info/developer.lua",
+  "bundle:/src/commands/info/invite.lua",
   "bundle:/src/commands/info/ping.lua",
   "bundle:/src/constants/accessableby.lua",
   "bundle:/src/constants/default.lua",
