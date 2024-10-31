@@ -49,7 +49,10 @@ function make.run()
 end
 
 function make.install()
-  local lit_install = assert(io.popen("lit install"))
+  local cmd_install = "lit install"
+  local is_github = make.is_github()
+  if is_github then cmd_install = "./lit install" end
+  local lit_install = assert(io.popen(cmd_install))
   local lit_output = lit_install:read('*all')
   lit_install:close()
   print(lit_output)
