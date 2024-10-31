@@ -5,7 +5,7 @@ return {
   info = {
     name =  {'invite'},
     description = 'Shows the invite information of the Bot',
-    category = 'Info',
+    category = 'info',
     accessableby = {accessableby.member},
     usage = '',
     aliases = {'inv'},

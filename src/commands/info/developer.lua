@@ -5,7 +5,7 @@ return {
   info = {
     name =  {'developer'},
     description = 'Shows the developer information of the Bot (Credit)',
-    category = 'Info',
+    category = 'info',
     accessableby = {accessableby.member},
     usage = '',
     aliases = {'dev'},

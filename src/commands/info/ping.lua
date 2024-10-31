@@ -5,7 +5,7 @@ return {
   info = {
     name =  {'ping'},
     description = 'Shows the ping of the Bot',
-    category = 'Info',
+    category = 'info',
     accessableby = {accessableby.member},
     usage = '',
     aliases = {},
