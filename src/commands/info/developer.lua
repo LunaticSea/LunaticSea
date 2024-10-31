@@ -19,18 +19,20 @@ return {
     options = {},
   },
   execute = function (client, message)
-    local desc = string.format(
-      "Powered by Salmon :)\n - **Github:** %s\n - **Support server:** %s",
-      '[RainyXeon](https://github.com/RainyXeon)',
-      '[DeepinRain](https://discord.gg/xff4e2WvVy)'
-    )
-
     local embed_data = {
       title = "RainyXeon",
-      description = desc,
+      description = client._i18n.get(
+        'en_US',
+        'command.info',
+        'dev_footer',
+        {
+          '[RainyXeon](https://github.com/RainyXeon)',
+          '[DeepinRain](https://discord.gg/xff4e2WvVy)'
+        }
+      ),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       footer = {
-        text = "Consider joining my server or inviting my bots :) This would help me a lot!"
+        text = client._i18n.get('en_US', 'command.info', 'dev_footer')
       }
     }
     message.channel:send({ embed = embed_data })

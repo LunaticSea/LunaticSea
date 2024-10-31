@@ -24,7 +24,7 @@ return {
 
     local embed_data = {
       title = "🏓 " .. client.user.username,
-      description = string.format('**Ping:** `%s ms`', ping),
+      description = client._i18n.get('en_US', 'command.info', 'ping_desc', { ping }),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       timestamp = discordia.Date():toISO('T', 'Z')
     }

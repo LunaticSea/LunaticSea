@@ -12,7 +12,8 @@
       "luvit/process@2.1.3",
       "luvit/dns@2.0.4",
       "luvit/secure-socket@v1.2.3",
-      "SinisterRectus/discordia@v2.12.0"
+      "SinisterRectus/discordia@v2.12.0",
+      "luvit/json@v2.5.2"
     },
     files = {
       "**.lua",
