@@ -20,6 +20,8 @@ return {
   "bundle:/src/main.lua",
   "bundle:/src/utils/config.lua",
   "bundle:/src/utils/fsex.lua",
+  "bundle:/src/utils/i18n.lua",
   "bundle:/src/utils/split.lua",
+  "bundle:/translation/en_US/command.info.lua",
   "bundle:/wrapper.lua",
 }

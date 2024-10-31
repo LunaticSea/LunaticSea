@@ -14,6 +14,7 @@ return function (test_mode)
 	client._commands = {}
 	client._c_alias = {}
 	client._config = require('./utils/config.lua')
+	client._i18n = require('./utils/i18n.lua').new(client)
 
 	require('./loader/main.lua')(client)
 

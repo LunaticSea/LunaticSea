@@ -5,7 +5,7 @@ name: Build release
 
 on:
   push:
-    branches: ['master']
+    branches: ["master"]
 
 env:
   GITHUB_BUILD: true
@@ -24,15 +24,15 @@ jobs:
         run: curl -L https://github.com/luvit/lit/raw/master/get-lit.sh | sh
 
       - name: Install dependencies
-        run: ./lit install
+        run: ./luvit make install
 
       - name: Build bot
-        run: ./luvit build.lua
+        run: ./luvit make
 
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'lunatic-sea-linux-amd64'
+          name: "lunatic-sea-linux-amd64"
           path: build/
 
   win-build:
@@ -46,15 +46,15 @@ jobs:
         run: PowerShell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = 'Tls12'; iex ((new-object net.webclient).DownloadString('https://github.com/luvit/lit/raw/master/get-lit.ps1'))"
 
       - name: Install dependencies
-        run: ./lit install
+        run: ./luvit make install
 
       - name: Build bot
-        run: ./luvit build.lua
+        run: ./luvit make
 
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'lunatic-sea-win-amd64'
+          name: "lunatic-sea-win-amd64"
           path: build/
 
   publish:
@@ -81,11 +81,9 @@ jobs:
       - name: Upload linux binaries to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gh release upload nightly ./lunatic_sea_linux_amd64.bin --clobber
+        run: gh release upload nightly ./lunatic_sea_linux_amd64.bin --clobber
 
       - name: Upload win binaries to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gh release upload nightly ./lunatic_sea_win_amd64.exe --clobber
+        run: gh release upload nightly ./lunatic_sea_win_amd64.exe --clobber
