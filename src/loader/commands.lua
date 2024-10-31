@@ -28,7 +28,7 @@ function cmd_loader.run()
       cmd_loader.client._c_alias[alias] = cmd_name
     end)
 
-    cmd_loader.client._logger:log(3, 'Loaded command: '.. cmd_name)
+    cmd_loader.client._logger:log(3, 'Loaded command: ' .. cmd_data.info.category .. '/' .. cmd_name)
   end)
 end
 
