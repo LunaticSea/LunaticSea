@@ -1,4 +1,5 @@
 local discordia = require('discordia')
+require("discordia-interactions")
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
 
@@ -8,7 +9,8 @@ return function (test_mode)
 		gatewayFile = './/',
 	})
 
-	client._logger:log(3, 'Booting up: ' .. package.name)
+	client._logd = require('./utils/logger.lua'):new(client)
+	client._logd:info('Client', 'Booting up: ' .. package.name)
 	client._is_test_mode = test_mode
 	client._ptree = dir.get_all(test_mode)
 	client._commands = {}

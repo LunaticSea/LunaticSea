@@ -30,7 +30,7 @@ function event_loader.run()
     event_loader.client:on(e_name, function (...)
       func(event_loader.client, ...)
     end)
-    event_loader.client._logger:log(3, 'Loaded event: '.. e_name)
+    event_loader.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
   end)
 end
 
