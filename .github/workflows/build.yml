@@ -97,17 +97,17 @@ jobs:
         run: gh release create $NIGHTLY_TAG -R ${{ env.NIGHTLY_REPO }} --latest=true --notes "$RELEASE_NOTE"
         env:
           RELEASE_NOTE: This commit is from ${{ github.sha }} in ${{ env.REPO }}
-          GITHUB_TOKEN: ${{ secrets.PERSONAL }}
+          GH_TOKEN: ${{ secrets.PERSONAL }}
           NIGHTLY_TAG: ${{ env.sha_short }}
 
       - name: Upload linux binaries to release
         run: gh release upload $NIGHTLY_TAG ./${{ env.linux_file_name }} --clobber -R ${{ env.NIGHTLY_REPO }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL }}
+          GH_TOKEN: ${{ secrets.PERSONAL }}
           NIGHTLY_TAG: ${{ env.sha_short }}
 
       - name: Upload win binaries to release
         run: gh release upload $NIGHTLY_TAG ./${{ env.win_file_name }} --clobber -R ${{ env.NIGHTLY_REPO }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL }}
+          GH_TOKEN: ${{ secrets.PERSONAL }}
           NIGHTLY_TAG: ${{ env.sha_short }}
