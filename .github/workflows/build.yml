@@ -9,6 +9,9 @@ on:
 
 env:
   GITHUB_BUILD: true
+  NIGHTLY_REPO: https://github.com/LunaticSea/nightly
+  REPO: https://github.com/LunaticSea/LunaticSea
+  NIGHTLY_TAG: ${{ steps.vars.outputs.sha_short }}
 
 jobs:
   linux-build:
@@ -73,17 +76,25 @@ jobs:
       - uses: actions/download-artifact@v4
 
       - name: Rename linux binaries
-        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic_sea_linux_amd64.bin
+        run: mv ./lunatic-sea-linux-amd64/LunaticSea ./lunatic-sea-linux-amd64-${{ steps.vars.outputs.sha_short }}.bin
 
       - name: Rename win binaries
-        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic_sea_win_amd64.exe
+        run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64-${{ steps.vars.outputs.sha_short }}.exe
+
+      - name: Create release
+        run: gh release create -R "${{ env.NIGHTLY_REPO }}" "${{ env.NIGHTLY_TAG }} --latest --notes "$RELEASE_NOTE"
+        env:
+          RELEASE_NOTE: This commit is from ${{ github.sha }} in ${{ env.REPO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload linux binaries to release
+        run: gh release upload ${{ env.NIGHTLY_TAG }} ./$LINUX_FILE_NAME --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload nightly ./lunatic_sea_linux_amd64.bin --clobber
+          LINUX_FILE_NAME: lunatic-sea-linux-amd64-${{ steps.vars.outputs.sha_short }}.bin
 
       - name: Upload win binaries to release
+        run: gh release upload ${{ env.NIGHTLY_TAG }} ./lunatic_sea_win_amd64.exe --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload nightly ./lunatic_sea_win_amd64.exe --clobber
+          LINUX_FILE_NAME: lunatic-sea-linux-amd64-${{ steps.vars.outputs.sha_short }}.bin
