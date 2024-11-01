@@ -63,8 +63,7 @@ jobs:
     name: Upload to prerelease
     needs: [win-build, linux-build]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
     steps:
       - name: Checkout
         uses: actions/checkout@v4
