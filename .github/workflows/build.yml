@@ -92,7 +92,7 @@ jobs:
         run: gh release create $NIGHTLY_TAG -R ${{ env.NIGHTLY_REPO }} --latest=true --notes "$RELEASE_NOTE"
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL }}
-          RELEASE_NOTE: This commit is from ${{ github.sha }} in ${{ env.REPO }}
+          RELEASE_NOTE: This commit is from [${{ env.sha_short }}](https://github.com/LunaticSea/LunaticSea/tree/${{ github.sha }}) in [LunaticSea/LunaticSea](${{ env.REPO }}).\n\nChange logs: [${{ env.sha_short }}](https://github.com/LunaticSea/LunaticSea/commit/${{ github.sha }})
           NIGHTLY_TAG: ${{ env.sha_short }}
 
       - name: Upload linux binaries to release
