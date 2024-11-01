@@ -1,3 +1,6 @@
 [submodule "translation"]
 	path = translation
 	url = https://github.com/LunaticSea/translation.git
+[submodule "lunatic_link"]
+	path = lunatic_link
+	url = https://github.com/LunaticSea/LunaticLink
