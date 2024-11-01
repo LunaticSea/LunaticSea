@@ -81,7 +81,7 @@ jobs:
         run: mv ./lunatic-sea-win-amd64/LunaticSea.exe ./lunatic-sea-win-amd64-${{ steps.vars.outputs.sha_short }}.exe
 
       - name: Create release
-        run: gh release create $NIGHTLY_TAG -R "${{ env.NIGHTLY_REPO }}" --latest --notes "$RELEASE_NOTE"
+        run: gh release create -R "${{ env.NIGHTLY_REPO }}" $NIGHTLY_TAG --latest --notes "$RELEASE_NOTE"
         env:
           RELEASE_NOTE: This commit is from ${{ github.sha }} in ${{ env.REPO }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
