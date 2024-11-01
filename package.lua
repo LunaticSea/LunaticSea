@@ -1,7 +1,7 @@
 return {
   name = "LunaticSea",
-  version = "0.0.1-unreleased",
-  description = "ByteBlaze in lua version. Include sstaandalone packages",
+  version = "1.0.0-dev",
+  description = "ByteBlaze in lua version. Include staandalone packages",
   tags = { "lavalink", "discordbot", "discord" },
   license = "AGPL-3.0",
   author = { name = "RainyXeon", email = "xeondev@xeondex.onmicrosoft.com" },
@@ -12,7 +12,7 @@ return {
     "luvit/process@2.1.3",
     "luvit/dns@2.0.4",
     "luvit/secure-socket@v1.2.3",
-    "SinisterRectus/discordia@v2.12.0",
+    "creationix/coro-websocket@v3.1.1",
     "luvit/json@v2.5.2"
   },
   files = {

@@ -1,5 +1,4 @@
 local discordia = require('discordia')
-require("discordia-interactions")
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
 
@@ -24,5 +23,5 @@ return function (test_mode)
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
 
-	client:run("Bot " .. client._config.bot.TOKEN)
+	client:run(client._config.bot.TOKEN)
 end

@@ -57,18 +57,17 @@ function make.install()
   lit_install:close()
   print(lit_output)
 
-  local cmd1 = "git clone https://github.com/Bilal2453/discordia-components.git ./deps/discordia-components"
-  local cmd2 = "&& git clone https://github.com/Bilal2453/discordia-interactions ./deps/discordia-interactions"
+  local cmd_modded_dia = "git clone https://github.com/LunaticSea/Discordia.git ./deps/discordia"
 
   local check_git = os.execute("git --version")
   if check_git ~= true and check_git ~= 0 then
     return make.l('ERROR', 'git is not avaliable, please install git')
   end
 
-  local dia_ex_install = assert(io.popen(cmd1 .. cmd2))
-  local dia_ex_output = dia_ex_install:read('*all')
-  dia_ex_install:close()
-  print(dia_ex_output)
+  local dia_install = assert(io.popen(cmd_modded_dia))
+  local dia_output = dia_install:read('*all')
+  dia_install:close()
+  print(dia_output)
 
   return make.l('INFO', 'Finished 💫')
 end
