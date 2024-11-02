@@ -24,11 +24,21 @@ return {
       client.user.id
     ) .. "&permissions=8&scope=bot%20applications.commands"
 
+    local linkActionRow = discordia.Components {
+      {
+        type = 'button',
+        label = "Invite Me",
+        style = "link",
+        url = link
+      }
+    }
+
     local embed_data = {
       title = string.format("✉️ %s", client.user.username),
-      description = client._i18n.get('en_US', 'command.info', 'invite_desc', { link }),
+      description = client._i18n.get('en_US', 'command.info', 'invite_desc'),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
     }
-    message.channel:send({ embed = embed_data })
+
+    message:replyComponents({ embed = embed_data, components = linkActionRow })
   end
 }

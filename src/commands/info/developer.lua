@@ -19,22 +19,29 @@ return {
     options = {},
   },
   execute = function (client, message)
+    local linkActionRow = discordia.Components {
+      {
+        type = 2,
+        label = "Github (RainyXeon)",
+        style = 5,
+        url = 'https://github.com/RainyXeon'
+      },
+      {
+        type = 2,
+        label = "Support Server (DeepinRain)",
+        style = 5,
+        url = 'https://discord.gg/xff4e2WvVy'
+      }
+    }
+
     local embed_data = {
       title = "RainyXeon",
-      description = client._i18n.get(
-        'en_US',
-        'command.info',
-        'dev_footer',
-        {
-          '[RainyXeon](https://github.com/RainyXeon)',
-          '[DeepinRain](https://discord.gg/xff4e2WvVy)'
-        }
-      ),
+      description = client._i18n.get('en_US', 'command.info', 'dev_footer'),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       footer = {
         text = client._i18n.get('en_US', 'command.info', 'dev_footer')
       }
     }
-    message.channel:send({ embed = embed_data })
+    message:replyComponents({ embed = embed_data, components = linkActionRow })
   end
 }

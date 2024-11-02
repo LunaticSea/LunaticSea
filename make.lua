@@ -21,10 +21,6 @@ local make = {
     dir = {
       type = 2,
       desc = "Build the bot dir tree only"
-    },
-    install = {
-      type = 3,
-      desc = "Install required dependencies"
     }
   }
 }
@@ -46,30 +42,6 @@ function make.run()
   end
 
   make.tree_file(cli_data, curr_cmd)
-end
-
-function make.install()
-  local cmd_install = "lit install"
-  local is_github = make.is_github()
-  if is_github then cmd_install = "./lit install" end
-  local lit_install = assert(io.popen(cmd_install))
-  local lit_output = lit_install:read('*all')
-  lit_install:close()
-  print(lit_output)
-
-  local cmd_modded_dia = "git clone https://github.com/LunaticSea/Discordia.git ./deps/discordia"
-
-  local check_git = os.execute("git --version")
-  if check_git ~= true and check_git ~= 0 then
-    return make.l('ERROR', 'git is not avaliable, please install git')
-  end
-
-  local dia_install = assert(io.popen(cmd_modded_dia))
-  local dia_output = dia_install:read('*all')
-  dia_install:close()
-  print(dia_output)
-
-  return make.l('INFO', 'Finished 💫')
 end
 
 function make.tree_file(cli_data, curr_cmd)
