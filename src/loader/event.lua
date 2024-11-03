@@ -7,42 +7,42 @@ local event_loader = {
   client = nil
 }
 
-local function is_win()
+function event_loader:is_win()
   local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
-  if not event_loader.client._is_test_mode then return false end
+  if not self.client._is_test_mode then return false end
   if BinaryFormat == 'dll' then return true end
   return false
 end
 
-function event_loader.new(client)
-  event_loader.client = client
-  return event_loader
+function event_loader:new(client)
+  self.client = client
+  return self
 end
 
-function event_loader.run()
-  event_loader.load_file_dir()
-  table.foreach(event_loader.all_dir, function (_, value)
+function event_loader:run()
+  self:load_file_dir()
+  table.foreach(self.all_dir, function (_, value)
     local func = require(value)
     local splited_dir_params = { value, '[^/]+.lua' }
-    if is_win() then splited_dir_params[2] = '[^\\]+.lua' end
+    if event_loader:is_win() then splited_dir_params[2] = '[^\\]+.lua' end
     local splited_dir = split(table.unpack(splited_dir_params))
     local e_name = split(splited_dir[1], '[^.]+')[1]
-    event_loader.client:on(e_name, function (...)
-      func(event_loader.client, ...)
+    self.client:on(e_name, function (...)
+      func(self.client, ...)
     end)
-    event_loader.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
+    self.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
   end)
 end
 
-function event_loader.load_file_dir()
-  for _, value in pairs(event_loader.require) do
+function event_loader:load_file_dir()
+  for _, value in pairs(self.require) do
     local all_dir = function ()
-      local params = { event_loader.client._ptree, 'src/events/' .. value }
-      if is_win() then params[2] = 'src\\events\\' .. value end
-      return bundlefs.filter(table.unpack(params))
+      local params = { self.client._ptree, 'src/events/' .. value }
+      if event_loader:is_win() then params[2] = 'src\\events\\' .. value end
+      return bundlefs:new():filter(table.unpack(params))
     end
     table.foreach(all_dir(), function (_, s_value)
-      table.insert(event_loader.all_dir, s_value)
+      table.insert(self.all_dir, s_value)
     end)
   end
 end

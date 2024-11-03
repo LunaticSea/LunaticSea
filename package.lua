@@ -12,7 +12,7 @@ return {
     "luvit/process@2.1.3",
     "luvit/dns@2.0.4",
     "luvit/secure-socket@v1.2.3",
-    "RainyXeon/discordia@v3.0.5",
+    "RainyXeon/discordia@v3.0.6",
     "luvit/json@v2.5.2"
   },
   files = {

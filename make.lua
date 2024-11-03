@@ -31,7 +31,7 @@ function make.run()
   make.l('INFO', 'LunaticSea make')
   make.l('INFO', 'Version: ' .. make.version)
 
-  if (is_github_action) then
+  if is_github_action then
     make.l('INFO', 'Current mode: Github action ' .. cli_arg)
   else
     make.l('INFO', 'Current mode: Internal ' .. cli_arg)
@@ -54,7 +54,7 @@ function make.tree_file(cli_data, curr_cmd)
 
   make.l('INFO', 'Reading dir tree...')
 
-  local dir_tree = bundlefs.get_all(true)
+  local dir_tree = bundlefs:new():get_all(true)
 
   make.l('INFO', 'Finished reading dir tree, total: ' .. #dir_tree)
   make.l('INFO', 'Converting tree...')
@@ -68,7 +68,7 @@ function make.tree_file(cli_data, curr_cmd)
 end
 
 function make.build_project(err, cli_data, curr_cmd)
-  if (err) then error(err) end
+  if err then error(err) end
   make.l('INFO', 'Writting complete!')
 
   if cli_data.type == 2 then

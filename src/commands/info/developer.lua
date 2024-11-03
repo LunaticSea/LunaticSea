@@ -36,12 +36,12 @@ return {
 
     local embed_data = {
       title = "RainyXeon",
-      description = client._i18n.get('en_US', 'command.info', 'dev_footer'),
+      description = client._i18n:get('en_US', 'command.info', 'dev_footer'),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       footer = {
-        text = client._i18n.get('en_US', 'command.info', 'dev_footer')
+        text = client._i18n:get('en_US', 'command.info', 'dev_footer')
       }
     }
-    message:replyComponents({ embed = embed_data, components = linkActionRow })
+    message:reply({ embed = embed_data, components = linkActionRow })
   end
 }

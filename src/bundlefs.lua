@@ -4,7 +4,11 @@ local exclude = { 'deps', 'make.lua', 'dev.lua', 'test.what.lua', 'README.md', '
 
 local bundlefs = {}
 
-function bundlefs.pattern_series_check(value, patterns, higher_mode)
+function bundlefs:new()
+  return self
+end
+
+function bundlefs:pattern_series_check(value, patterns, higher_mode)
   local length = 0
   local passed = 0
 
@@ -14,32 +18,32 @@ function bundlefs.pattern_series_check(value, patterns, higher_mode)
     length = length + 1
   end
 
-  if (higher_mode and passed > 0) then return true
+  if higher_mode and passed > 0 then return true
   else return length == passed end
 end
 
-function bundlefs.traditional_read()
+function bundlefs:traditional_read()
   local res = {}
-  local all_dir = fsex.readdir_recursive({ module.dir, '..' })
+  local all_dir = fsex:readdir_recursive({ module.dir, '..' })
 
   table.foreach(all_dir, function (_, value)
-    local check_if_pass_include = bundlefs.pattern_series_check(value, include)
-    local check_if_pass_exclude = bundlefs.pattern_series_check(value, exclude, true)
+    local check_if_pass_include = bundlefs:pattern_series_check(value, include)
+    local check_if_pass_exclude = bundlefs:pattern_series_check(value, exclude, true)
     local is_pass = (check_if_pass_include == true) and (check_if_pass_exclude == false)
-    if (is_pass) then table.insert(res, value) end
+    if is_pass then table.insert(res, value) end
   end)
 
   return res
 end
 
-function bundlefs.get_all(if_build)
+function bundlefs:get_all(if_build)
   local is_call_pcall = pcall(function () require('./tree.lua') end)
-  if (if_build) then return bundlefs.traditional_read() end
-  if (not is_call_pcall) then error('tree.lua not found! Please contact owner to rebuild the bot') end
+  if if_build then return bundlefs:traditional_read() end
+  if not is_call_pcall then error('tree.lua not found! Please contact owner to rebuild the bot') end
   return require('./tree.lua')
 end
 
-function bundlefs.filter(req_data, pattern)
+function bundlefs:filter(req_data, pattern)
   local res = {}
   for _, value in pairs(req_data) do
     local is_match = string.match(value, pattern)
