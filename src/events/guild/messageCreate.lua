@@ -31,6 +31,6 @@ return function (client, message)
 		prefix = prefix or 'd!',
 	})
 
-	if command then return command.execute(client, message) end
-	if command_via_alias then return command_via_alias.execute(client, message) end
+	if command then return command.execute(client, handler) end
+	if command_via_alias then return command_via_alias.execute(client, handler) end
 end

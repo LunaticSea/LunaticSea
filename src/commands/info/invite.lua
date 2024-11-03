@@ -18,7 +18,9 @@ return {
     permissions = {},
     options = {},
   },
-  execute = function (client, message)
+  execute = function (client, handler)
+    handler:defer_reply()
+
     local link = string.format(
       "https://discord.com/api/oauth2/authorize?client_id=%s",
       client.user.id
@@ -39,6 +41,9 @@ return {
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
     }
 
-    message:replyComponents({ embed = embed_data, components = linkActionRow })
+    handler:edit_reply({
+      embeds = {embed_data},
+      components = linkActionRow
+    })
   end
 }

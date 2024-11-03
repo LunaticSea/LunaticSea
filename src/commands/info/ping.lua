@@ -18,8 +18,10 @@ return {
     permissions = {},
     options = {},
   },
-  execute = function (client, message)
-    local msg_time = math.floor(message.createdAt + 0.5)
+  execute = function (client, handler)
+    handler:defer_reply()
+
+    local msg_time = math.floor(handler.createdAt + 0.5)
     local ping = tostring(msg_time - os.time())
 
     local embed_data = {
@@ -28,6 +30,6 @@ return {
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       timestamp = discordia.Date():toISO('T', 'Z')
     }
-    message.channel:send({ embed = embed_data })
+    handler:edit_reply({ embeds = {embed_data} })
   end
 }

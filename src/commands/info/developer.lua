@@ -18,7 +18,8 @@ return {
     permissions = {},
     options = {},
   },
-  execute = function (client, message)
+  execute = function (client, handler)
+    handler:defer_reply()
     local linkActionRow = discordia.Components {
       {
         type = 2,
@@ -42,6 +43,10 @@ return {
         text = client._i18n:get('en_US', 'command.info', 'dev_footer')
       }
     }
-    message:reply({ embed = embed_data, components = linkActionRow })
+
+    handler:edit_reply({
+      embeds = {embed_data},
+      components = linkActionRow
+    })
   end
 }

@@ -103,10 +103,8 @@ function command_handler:edit_reply(data)
     self.client._logd:error('Commandcommand_handler', 'You have not declared deferReply()')
     return nil
   end
-
-  if self.interaction then return self.msg:edit(data) end
   if not data.content then data.content = '' end
-  return self.msg:edit(data)
+  return self.msg:update(data)
 end
 
 function command_handler:parse_mentions(data)

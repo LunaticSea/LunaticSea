@@ -1,6 +1,5 @@
 local logger = {
   preLog = nil,
-  typePad = 28
 }
 
 function logger:new(client)
@@ -10,13 +9,8 @@ function logger:new(client)
 end
 
 function logger:log(level, class, msg)
-  local class_padded = logger:pad_end(class, self.typePad)
-  local final_result = string.format('%s| %s', class_padded, msg)
+  local final_result = string.format('[ %s ] %s', class, msg)
   self.preLog:log(level, final_result)
-end
-
-function logger:pad_end(str, length)
-  return str .. string.rep(' ', length - #str)
 end
 
 function logger:error(class, msg)
