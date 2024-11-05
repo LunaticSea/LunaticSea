@@ -28,7 +28,13 @@ function cmd_loader:run()
       self.client._c_alias[alias] = cmd_name
     end)
 
+    if not self.client._command_categories[cmd_data.info.category] then
+      self.client._command_categories[cmd_data.info.category] = #self.client._command_categories
+    end
+
     self.client._logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.info.category .. '/' .. cmd_name)
+
+    self.client._total_commands = self.client._total_commands + 1
   end)
 end
 

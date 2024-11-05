@@ -14,6 +14,8 @@ return function (test_mode)
 	client._is_test_mode = test_mode
 	client._ptree = dir:new():get_all(test_mode)
 	client._commands = {}
+	client._total_commands = 0
+	client._command_categories = {}
 	client._c_alias = {}
 	client._config = require('./utils/config.lua')
 	client._i18n = require('./utils/i18n.lua'):new(client)
