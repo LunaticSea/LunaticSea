@@ -1,6 +1,8 @@
 local split = require('../../utils/split')
 
 return function (client, message)
+	if message.author.bot then return end
+
 	local prefix = client._config.utilities.PREFIX
 	local is_match_prefix = string.match(message.content, prefix ..'[^.]+')
 	if not is_match_prefix then return end

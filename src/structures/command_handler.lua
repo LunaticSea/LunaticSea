@@ -91,7 +91,8 @@ end
 
 function command_handler:defer_reply()
   if self.interaction then
-    self.msg = self.interaction:replyDeferred()
+    self.deferred = self.interaction:replyDeferred()
+    self.msg = self.deferred
     return self.msg
   end
   self.msg = self.message:reply(string.format('**%s** is thinking...', self.client.user.username))
@@ -100,10 +101,16 @@ end
 
 function command_handler:edit_reply(data)
   if not self.msg then
-    self.client._logd:error('Commandcommand_handler', 'You have not declared deferReply()')
+    self.client._logd:error('CommandHandler', 'You have not declared deferReply()')
     return nil
   end
   if not data.content then data.content = '' end
+  if type(self.msg) == "boolean" and self.interaction then
+    return self.interaction:reply(data)
+  elseif type(self.msg) == "boolean" and self.message then
+    self.client._logd:error('CommandHandler', 'self.msg have weird type, please contact owner to resolve this issues')
+    return nil
+  end
   return self.msg:update(data)
 end
 
