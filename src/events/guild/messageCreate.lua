@@ -7,10 +7,11 @@ return function (client, message)
 	local is_match_prefix = string.match(message.content, prefix ..'[^.]+')
 	if not is_match_prefix then return end
 
-	local args = split(message.content, "%S+")
+	local content_without_prefix = string.sub(message.content, #prefix + 1)
+	local args = split(content_without_prefix, "%S+")
+	local command_req = args[1]
 	table.remove(args, 1)
 
-	local command_req = string.sub(message.content, #prefix + 1)
 	local command_req_alias = client._c_alias[command_req]
 	local command_name = command_req_alias or command_req
 
@@ -33,6 +34,6 @@ return function (client, message)
 		prefix = prefix or 'd!',
 	})
 
-	if command then return command.execute(client, handler) end
-	if command_via_alias then return command_via_alias.execute(client, handler) end
+	if command then return command:run(client, handler) end
+	if command_via_alias then return command_via_alias:run(client, handler) end
 end

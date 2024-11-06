@@ -1,49 +1,51 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 
-return {
-  info = {
-    name =  {'invite'},
-    description = 'Shows the invite information of the Bot',
-    category = 'info',
-    accessableby = {accessableby.member},
-    usage = '',
-    aliases = {'inv'},
-  },
-  config = {
-    lavalink = false,
-    playerCheck = false,
-    usingInteraction = true,
-    sameVoiceCheck = false,
-    permissions = {},
-    options = {},
-  },
-  execute = function (client, handler)
-    handler:defer_reply()
+local command = {}
 
-    local link = string.format(
-      "https://discord.com/api/oauth2/authorize?client_id=%s",
-      client.user.id
-    ) .. "&permissions=8&scope=bot%20applications.commands"
+function command:new()
+  self.name = {'invite'}
+  self.description = 'Shows the invite information of the Bot'
+  self.category = 'info'
+  self.accessableby = {accessableby.member}
+  self.usage = ''
+  self.aliases = {'inv'}
+  self.lavalink = false
+  self.playerCheck = false
+  self.usingInteraction = true
+  self.sameVoiceCheck = false
+  self.permissions = {}
+  self.options = {}
+  return self
+end
 
-    local linkActionRow = discordia.Components {
-      {
-        type = 'button',
-        label = "Invite Me",
-        style = "link",
-        url = link
-      }
+function command:run(client, handler)
+  handler:defer_reply()
+
+  local link = string.format(
+    "https://discord.com/api/oauth2/authorize?client_id=%s",
+    client.user.id
+  ) .. "&permissions=8&scope=bot%20applications.commands"
+
+  local linkActionRow = discordia.Components {
+    {
+      type = 'button',
+      label = "Invite Me",
+      style = "link",
+      url = link
     }
+  }
 
-    local embed_data = {
-      title = string.format("✉️ %s", client.user.username),
-      description = client._i18n:get(handler.language, 'command.info', 'invite_desc'),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
-    }
+  local embed_data = {
+    title = string.format("✉️ %s", client.user.username),
+    description = client._i18n:get(handler.language, 'command.info', 'invite_desc'),
+    color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
+  }
 
-    handler:edit_reply({
-      embeds = {embed_data},
-      components = linkActionRow
-    })
-  end
-}
+  handler:edit_reply({
+    embeds = {embed_data},
+    components = linkActionRow
+  })
+end
+
+return command

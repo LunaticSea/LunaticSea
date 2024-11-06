@@ -68,5 +68,5 @@ return function (client, interaction)
 		prefix = '/',
 	})
 
-  if command then return command.execute(client, handler) end
+  if command then return command:run(client, handler) end
 end
