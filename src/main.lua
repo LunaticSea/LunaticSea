@@ -6,7 +6,8 @@ return function (test_mode)
 	local client = discordia.Client({
 		logFile = "lunatic.sea.log",
 		gatewayFile = './/',
-		gatewayIntents = 53608447
+		gatewayIntents = 53608447,
+		logEntryPad = 27
 	})
 
 	client._logd = require('./utils/logger.lua'):new(client)

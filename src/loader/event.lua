@@ -1,22 +1,21 @@
 local split = require('../utils/split.lua')
 local bundlefs = require('../bundlefs.lua')
 
-local event_loader = {
-  all_dir = {},
-  require = {'client', 'guild'},
-  client = nil
-}
+local event_loader = {}
+
+function event_loader:new(client)
+  self.client = client
+  self.all_dir = {}
+  self.require = {'client', 'guild'}
+  self.event_count = 0
+  return self
+end
 
 function event_loader:is_win()
   local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
   if not self.client._is_test_mode then return false end
   if BinaryFormat == 'dll' then return true end
   return false
-end
-
-function event_loader:new(client)
-  self.client = client
-  return self
 end
 
 function event_loader:run()
@@ -30,8 +29,10 @@ function event_loader:run()
     self.client:on(e_name, function (...)
       func(self.client, ...)
     end)
-    self.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
+    -- self.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
+    self.event_count = self.event_count + 1
   end)
+  self.client._logd:info('EventLoader', self.event_count  .. ' client event loaded')
 end
 
 function event_loader:load_file_dir()

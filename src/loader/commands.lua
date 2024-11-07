@@ -1,5 +1,13 @@
 local bundlefs = require('../bundlefs.lua')
 
+table.filter = function (t, filterIter)
+  local out = {}
+  for k, v in pairs(t) do
+    if filterIter(v, k, t) then table.insert(out,v) end
+  end
+  return out
+end
+
 local cmd_loader = {
   all_dir = {},
   client = nil
@@ -19,6 +27,16 @@ end
 
 function cmd_loader:run()
   cmd_loader:load_file_dir()
+  cmd_loader:register()
+
+  if self.client._total_commands > 0 then
+    self.client._logd:info('CommandLoader', string.format('%s command Loaded!', self.client._total_commands))
+  else
+    self.client._logd:warn('CommandLoader', 'No command loaded, is everything ok?')
+  end
+end
+
+function cmd_loader:register()
   table.foreach(self.all_dir, function (_, value)
     local cmd_data = require(value):new()
     local cmd_name = table.concat(cmd_data.name, '-')
@@ -33,7 +51,7 @@ function cmd_loader:run()
       self.client._command_categories[cmd_data.category] = #self.client._command_categories
     end
 
-    self.client._logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
+    -- self.client._logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
 
     self.client._total_commands = self.client._total_commands + 1
   end)
