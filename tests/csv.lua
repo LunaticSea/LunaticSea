@@ -1,12 +1,3 @@
-local db_core_csv = require('../src/database/drivers/csv.lua')
-local db1 = db_core_csv:new({ db_name = "Show" })
-local db2 = db_core_csv:new({ db_name = "Hide" })
-
-db1:load()
-db2:load()
-
-db1:set('hello', 'This is data is kjf')
-db2:set('project', 'current: 78')
 -- local prefix = 'CSV | '
 
 

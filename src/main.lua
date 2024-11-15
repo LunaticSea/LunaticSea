@@ -1,6 +1,7 @@
 local discordia = require('discordia')
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
+local lunaticdb = require('lunaticdb')
 
 return function (test_mode)
 	local client = discordia.Client({
@@ -20,6 +21,12 @@ return function (test_mode)
 	client._c_alias = {}
 	client._config = require('./utils/config.lua')
 	client._i18n = require('./utils/i18n.lua'):new(client)
+	client._testdb = lunaticdb.lunaticdb:new({})
+
+	client._testdb:load()
+
+	client._testdb:set('hello_world', 'himom')
+	p(client._testdb:get('hello_world'))
 
 	require('./loader/main.lua')(client)
 
