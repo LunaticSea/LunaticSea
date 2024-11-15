@@ -4,3 +4,6 @@
 [submodule "lunatic_link"]
 	path = libs/lunalink
 	url = https://github.com/LunaticSea/lunalink
+[submodule "libs/lunaticdb"]
+	path = libs/lunaticdb
+	url = https://github.com/LunaticSea/lunaticdb
