@@ -13,7 +13,9 @@ return {
     "luvit/dns@2.0.4",
     "luvit/secure-socket@v1.2.3",
     "RainyXeon/discordia@v3.0.7",
-    "luvit/json@v2.5.2"
+    "luvit/json@v2.5.2",
+    "luvit/tap@v0.1.1",
+    "luvit/core@v2.0.4"
   },
   files = {
     "**.lua",
