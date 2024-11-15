@@ -7,3 +7,6 @@
 [submodule "libs/lunaticdb"]
 	path = libs/lunaticdb
 	url = https://github.com/LunaticSea/lunaticdb
+[submodule "libs/discordia"]
+	path = libs/discordia
+	url = https://github.com/LunaticSea/Discordia

@@ -18,6 +18,12 @@ git commit
 git push
 cd ..
 
+cd Discordia
+git add .
+git commit
+git push
+cd ..
+
 cd ..
 git add .
 git commit
