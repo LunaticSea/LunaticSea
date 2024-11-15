@@ -52,3 +52,4 @@ test.*********************************************
 build/**
 app.json
 lunatic.sea.log
+lunatic.db.csv

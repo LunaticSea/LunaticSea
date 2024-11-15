@@ -27,7 +27,6 @@ return {
   "bundle:/src/utils/i18n.lua",
   "bundle:/src/utils/logger.lua",
   "bundle:/src/utils/split.lua",
-  "bundle:/test.lua",
   "bundle:/translation/en_US/command.info.lua",
   "bundle:/translation/en_US/global.lua",
   "bundle:/wrapper.lua",
