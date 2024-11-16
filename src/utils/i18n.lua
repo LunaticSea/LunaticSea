@@ -1,12 +1,11 @@
 local bunfs = require('../bundlefs.lua')
-local i18n = {}
+local i18n = require('class'):create()
 
-function i18n:new(client)
+function i18n:init(client)
   self.client = client
   self.avaliable_dir = {}
   self.default_locate = 'en_US'
   self:read_dir()
-  return i18n
 end
 
 function i18n:read_dir()

@@ -21,14 +21,13 @@ return function (test_mode)
 	client._c_alias = {}
 	client._config = require('./utils/config.lua')
 	client._i18n = require('./utils/i18n.lua'):new(client)
-	client._testdb = lunaticdb.lunaticdb:new({})
+	client._db = {}
 
-	client._testdb:load()
+	require('./loader')(client)
+	require('./utils/database'):new(client):load()
 
-	client._testdb:set('hello_world', 'himom')
-	p(client._testdb:get('hello_world'))
-
-	require('./loader/main.lua')(client)
+	-- client._db.hello_world:set('world', 'mom')
+	-- p(client._db.hello_world:get('world'))
 
 	if #client._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')

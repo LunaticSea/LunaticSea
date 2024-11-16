@@ -1,9 +1,8 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
+local command = require('class'):create()
 
-local command = {}
-
-function command:new()
+function command:init()
   self.name = {'invite'}
   self.description = 'Shows the invite information of the Bot'
   self.category = 'info'
@@ -16,7 +15,6 @@ function command:new()
   self.sameVoiceCheck = false
   self.permissions = {}
   self.options = {}
-  return self
 end
 
 function command:run(client, handler)

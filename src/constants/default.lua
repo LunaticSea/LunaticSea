@@ -8,6 +8,10 @@ return {
     ADMIN = {},
   },
   utilities = {
-    PREFIX = 'd!'
+    PREFIX = 'd!',
+    DATABASE = {
+      driver = 'csv',
+      config = { file_name = 'lunatic.db.csv' }
+    },
   }
 }

@@ -1,5 +1,5 @@
-local command_handler = {}
 local dia = require('discordia')
+local command_handler = require('class'):create()
 
 local mention_enums = {
   ERROR = 0,
@@ -9,7 +9,7 @@ local mention_enums = {
   CHANNEL = 4,
 }
 
-function command_handler:new(options)
+function command_handler:init(options)
   self.msg = nil
   self.attactments = {}
   self.client = options.client

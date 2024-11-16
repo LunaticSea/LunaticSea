@@ -1,9 +1,7 @@
-local logger = {}
+local logger = require('class'):create()
 
-function logger:new(client)
-  self = logger
+function logger:init(client)
   self.preLog = client._logger
-  return self
 end
 
 function logger:pad_end(str, length)

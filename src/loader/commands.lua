@@ -8,10 +8,12 @@ table.filter = function (t, filterIter)
   return out
 end
 
-local cmd_loader = {
-  all_dir = {},
-  client = nil
-}
+local cmd_loader = require('class'):create()
+
+function cmd_loader:init(client)
+  self.client = client
+  self.all_dir = {}
+end
 
 function cmd_loader:is_win()
   local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
@@ -20,14 +22,9 @@ function cmd_loader:is_win()
   return false
 end
 
-function cmd_loader:new(client)
-  self.client = client
-  return self
-end
-
 function cmd_loader:run()
-  cmd_loader:load_file_dir()
-  cmd_loader:register()
+  self:load_file_dir()
+  self:register()
 
   if self.client._total_commands > 0 then
     self.client._logd:info('CommandLoader', string.format('%s command Loaded!', self.client._total_commands))

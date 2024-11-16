@@ -11,11 +11,9 @@ local exclude = {
   'libs'
 }
 
-local bundlefs = {}
+local bundlefs = require('class'):create()
 
-function bundlefs:new()
-  return self
-end
+function bundlefs:init() end
 
 function bundlefs:pattern_series_check(value, patterns, higher_mode)
   local length = 0

@@ -1,14 +1,12 @@
 local split = require('../utils/split.lua')
 local bundlefs = require('../bundlefs.lua')
+local event_loader = require('class'):create()
 
-local event_loader = {}
-
-function event_loader:new(client)
+function event_loader:init(client)
   self.client = client
   self.all_dir = {}
   self.require = {'client', 'guild'}
   self.event_count = 0
-  return self
 end
 
 function event_loader:is_win()
@@ -23,7 +21,7 @@ function event_loader:run()
   table.foreach(self.all_dir, function (_, value)
     local func = require(value)
     local splited_dir_params = { value, '[^/]+.lua' }
-    if event_loader:is_win() then splited_dir_params[2] = '[^\\]+.lua' end
+    if self:is_win() then splited_dir_params[2] = '[^\\]+.lua' end
     local splited_dir = split(table.unpack(splited_dir_params))
     local e_name = split(splited_dir[1], '[^.]+')[1]
     self.client:on(e_name, function (...)
@@ -39,7 +37,7 @@ function event_loader:load_file_dir()
   for _, value in pairs(self.require) do
     local all_dir = function ()
       local params = { self.client._ptree, 'src/events/' .. value }
-      if event_loader:is_win() then params[2] = 'src\\events\\' .. value end
+      if self:is_win() then params[2] = 'src\\events\\' .. value end
       return bundlefs:new():filter(table.unpack(params))
     end
     table.foreach(all_dir(), function (_, s_value)
