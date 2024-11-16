@@ -4,9 +4,10 @@
 -- You will be responsible for this when changing any content in the file.
 
 return {
-  "bundle:/init.lua",
+  "bundle:/main.lua",
   "bundle:/package.lua",
   "bundle:/src/bundlefs.lua",
+  "bundle:/src/commands/admin/shutdown.lua",
   "bundle:/src/commands/info/developer.lua",
   "bundle:/src/commands/info/help.lua",
   "bundle:/src/commands/info/invite.lua",
@@ -29,8 +30,10 @@ return {
   "bundle:/src/utils/i18n.lua",
   "bundle:/src/utils/logger.lua",
   "bundle:/src/utils/split.lua",
+  "bundle:/translation/en_US/command.admin.lua",
   "bundle:/translation/en_US/command.info.lua",
   "bundle:/translation/en_US/command.utils.lua",
+  "bundle:/translation/en_US/error.lua",
   "bundle:/translation/en_US/global.lua",
   "bundle:/wrapper.lua",
 }

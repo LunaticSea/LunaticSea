@@ -14,7 +14,14 @@ function command:init()
   self.usingInteraction = true
   self.sameVoiceCheck = false
   self.permissions = {}
-  self.options = {}
+  self.options = {
+    {
+      name = 'command',
+      description = 'The command name',
+      type = discordia.enums.applicationCommandOptionType.string,
+      required = false,
+    }
+  }
 end
 
 function command:run(client, handler)

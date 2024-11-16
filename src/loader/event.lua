@@ -1,4 +1,3 @@
-local split = require('../utils/split.lua')
 local bundlefs = require('../bundlefs.lua')
 local event_loader = require('class'):create()
 
@@ -22,8 +21,8 @@ function event_loader:run()
     local func = require(value)
     local splited_dir_params = { value, '[^/]+.lua' }
     if self:is_win() then splited_dir_params[2] = '[^\\]+.lua' end
-    local splited_dir = split(table.unpack(splited_dir_params))
-    local e_name = split(splited_dir[1], '[^.]+')[1]
+    local splited_dir = string.split(table.unpack(splited_dir_params))
+    local e_name = string.split(splited_dir[1], '[^.]+')[1]
     self.client:on(e_name, function (...)
       func(self.client, ...)
     end)

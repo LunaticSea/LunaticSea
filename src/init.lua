@@ -2,6 +2,24 @@ local discordia = require('discordia')
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
 
+-- Patch global library
+table.filter = function (t, filterIter)
+  local out = {}
+  for k, v in pairs(t) do
+    if filterIter(v, k, t) then table.insert(out,v) end
+  end
+  return out
+end
+
+string.split = function (string, pattern)
+  local t = {}
+  for i in string.gmatch(string, pattern) do
+    t[#t + 1] = i
+  end
+  return t
+end
+
+-- Bot start
 return function (test_mode)
 	local client = discordia.Client({
 		logFile = "lunatic.sea.log",

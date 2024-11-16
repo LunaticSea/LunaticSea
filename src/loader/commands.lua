@@ -1,13 +1,4 @@
 local bundlefs = require('../bundlefs.lua')
-
-table.filter = function (t, filterIter)
-  local out = {}
-  for k, v in pairs(t) do
-    if filterIter(v, k, t) then table.insert(out,v) end
-  end
-  return out
-end
-
 local cmd_loader = require('class'):create()
 
 function cmd_loader:init(client)
