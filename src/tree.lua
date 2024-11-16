@@ -11,6 +11,7 @@ return {
   "bundle:/src/commands/info/help.lua",
   "bundle:/src/commands/info/invite.lua",
   "bundle:/src/commands/info/ping.lua",
+  "bundle:/src/commands/utils/prefix.lua",
   "bundle:/src/constants/accessableby.lua",
   "bundle:/src/constants/default.lua",
   "bundle:/src/events/client/ready.lua",
@@ -29,6 +30,7 @@ return {
   "bundle:/src/utils/logger.lua",
   "bundle:/src/utils/split.lua",
   "bundle:/translation/en_US/command.info.lua",
+  "bundle:/translation/en_US/command.utils.lua",
   "bundle:/translation/en_US/global.lua",
   "bundle:/wrapper.lua",
 }

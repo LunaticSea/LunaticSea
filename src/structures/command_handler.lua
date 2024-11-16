@@ -19,7 +19,7 @@ function command_handler:init(options)
   self.guild = self:get_guild_data()
   self.user = self:get_user_data()
   self.member = self:get_member_data()
-  self.args = options.args
+  self.args = options.args or {}
   self.createdAt = self:get_created_timestamp()
   self.prefix = options.prefix
   self.channel = self:get_channel_data()
@@ -35,16 +35,16 @@ end
 
 function command_handler:get_guild_data()
   if self.interaction then
-    return self.interaction.user
+    return self.interaction.guild
   end
-  return self.message.author
+  return self.message.guild
 end
 
 function command_handler:get_user_data()
   if self.interaction then
-    return self.interaction.guild
+    return self.interaction.user
   end
-  return self.message.guild
+  return self.message.author
 end
 
 function command_handler:get_member_data()

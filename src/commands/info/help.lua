@@ -107,7 +107,7 @@ function command:send_all_commands()
     end
 
     local obj = {
-      name =  '❯  ' .. string.upper(category) .. '[' .. #same_category_command .. ']',
+      name =  '❯  ' .. string.upper(category) .. ' [' .. #same_category_command .. ']',
       value = '`' .. table.concat(all_command_name, ', ') .. '`',
       inline = false
     }

@@ -17,7 +17,6 @@ function database:init(client)
     "maxlength",
     "hello_world"
   }
-  self:load()
 end
 
 function database:load()
@@ -29,9 +28,7 @@ end
 
 function database:small_db_load(driver)
   for _, value in pairs(self.req_db) do
-    self.client._db[value] = lunaticdb.core:new({
-      db_name = value
-    }):load({
+    self.client._db[value] = lunaticdb.core:new({ db_name = value }):load({
       driver = driver
     })
   end

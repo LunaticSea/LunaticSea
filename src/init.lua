@@ -1,7 +1,6 @@
 local discordia = require('discordia')
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
-local lunaticdb = require('lunaticdb')
 
 return function (test_mode)
 	local client = discordia.Client({
@@ -23,11 +22,8 @@ return function (test_mode)
 	client._i18n = require('./utils/i18n.lua'):new(client)
 	client._db = {}
 
-	require('./loader')(client)
 	require('./utils/database'):new(client):load()
-
-	-- client._db.hello_world:set('world', 'mom')
-	-- p(client._db.hello_world:get('world'))
+	require('./loader')(client)
 
 	if #client._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
