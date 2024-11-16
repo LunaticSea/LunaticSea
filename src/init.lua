@@ -14,12 +14,13 @@ return function (test_mode)
 	client._logd:info('Client', 'Booting up: ' .. package.name)
 	client._is_test_mode = test_mode
 	client._ptree = dir:new():get_all(test_mode)
+	client._config = require('./utils/config.lua')
+	client._i18n = require('./utils/i18n.lua'):new(client)
+	client._bot_owner = client._config.bot.OWNER_ID
 	client._commands = {}
 	client._total_commands = 0
 	client._command_categories = {}
 	client._c_alias = {}
-	client._config = require('./utils/config.lua')
-	client._i18n = require('./utils/i18n.lua'):new(client)
 	client._db = {}
 
 	require('./utils/database'):new(client):load()

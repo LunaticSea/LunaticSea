@@ -1,4 +1,14 @@
+local discordia = require('discordia')
+local command_handler = require('../../structures/command_handler')
 local split = require('../../utils/split')
+local accessableby = require('../../constants/accessableby.lua')
+
+table.includes = function (t, e)
+	for _, value in pairs(t) do
+		if value == e then return e end
+	end
+	return nil
+end
 
 return function (client, message)
 	if message.author.bot then return end
@@ -18,7 +28,28 @@ return function (client, message)
 	local command_name = command_req_alias or command_req
 
 	local command = client._commands[command_name]
-	local command_via_alias = client._commands[command_name]
+	if not command then return end
+	local is_owner = message.author.id == client._bot_owner
+
+	local user_perm = {
+		owner = is_owner
+	}
+
+	if table.includes(command.accessableby, accessableby.owner) and not user_perm.owner then
+		message:reply({ embeds = { {
+			description = client._i18n:get(client._i18n.default_locate, 'error', 'owner_only'),
+			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		} } })
+		return
+	end
+
+	local handler = command_handler:new({
+		message = message,
+		language = client._i18n.default_locate,
+		client = client,
+		args = args,
+		prefix = prefix or 'd!',
+	})
 
 	client._logd:info('CommandManager | Message', string.format(
 		"%s used by %s from %s (%s)",
@@ -28,14 +59,5 @@ return function (client, message)
 		message.guild.id or nil
 	))
 
-	local handler = require('../../structures/command_handler'):new({
-		message = message,
-		language = client._i18n.default_locate,
-		client = client,
-		args = args,
-		prefix = prefix or 'd!',
-	})
-
-	if command then return command:run(client, handler) end
-	if command_via_alias then return command_via_alias:run(client, handler) end
+	command:run(client, handler)
 end
