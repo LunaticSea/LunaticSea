@@ -4,7 +4,7 @@
 -- You will be responsible for this when changing any content in the file.
 
 return {
-  "bundle:/main.lua",
+  "bundle:/init.lua",
   "bundle:/package.lua",
   "bundle:/src/bundlefs.lua",
   "bundle:/src/commands/info/developer.lua",
@@ -16,13 +16,14 @@ return {
   "bundle:/src/events/client/ready.lua",
   "bundle:/src/events/guild/interactionCreate.lua",
   "bundle:/src/events/guild/messageCreate.lua",
+  "bundle:/src/init.lua",
   "bundle:/src/loader/commands.lua",
   "bundle:/src/loader/event.lua",
-  "bundle:/src/loader/main.lua",
-  "bundle:/src/main.lua",
+  "bundle:/src/loader/init.lua",
   "bundle:/src/structures/command_handler.lua",
   "bundle:/src/utils/config.lua",
   "bundle:/src/utils/convert_option.lua",
+  "bundle:/src/utils/database.lua",
   "bundle:/src/utils/fsex.lua",
   "bundle:/src/utils/i18n.lua",
   "bundle:/src/utils/logger.lua",
