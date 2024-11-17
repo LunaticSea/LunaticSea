@@ -19,12 +19,15 @@ function deploy_service:register()
 		return self.client._logd:info('DeployService', 'No interactions found. Exiting auto deploy...')
 	end
 
-	self.client._logd:info('DeployService', 'Reading interaction commands completed, converting...')
+	self.client._logd:info(
+		'DeployService',
+		'Finding interaction commands completed, converting ' .. #store .. ' commands...'
+	)
 	local commands = self:parseEngine(store)
 
 	self.client._logd:info(
 		'DeployService',
-		'Convert to body completed, now register all commands to discord'
+		'Convert commands to body completed, now register all commands to discord'
 	)
 	self.client._api:registerApplicationCommands(self.client.user.id, commands)
 
