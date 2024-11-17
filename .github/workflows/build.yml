@@ -2,7 +2,7 @@ name: Nightly build
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
 
 env:
   GITHUB_BUILD: true
@@ -34,7 +34,7 @@ jobs:
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "lunatic-sea-linux-amd64"
+          name: 'lunatic-sea-linux-amd64'
           path: build/
 
   win-build:
@@ -59,7 +59,7 @@ jobs:
       - name: Push LunaticSea binaries to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "lunatic-sea-win-amd64"
+          name: 'lunatic-sea-win-amd64'
           path: build/
 
   publish:

@@ -30,22 +30,22 @@ Caveats: This function returns true for classes.
     assert(instanceof(Emitter, Object))
 ]]
 function class.instanceof(obj, target_class)
-  if type(obj) ~= 'table' or obj.meta == nil or not target_class then
-    return false
-  end
-  if obj.meta.__index == target_class then
-    return true
-  end
-  local meta = obj.meta
-  while meta do
-    if meta.super == target_class then
-      return true
-    elseif meta.super == nil then
-      return false
-    end
-    meta = meta.super.meta
-  end
-  return false
+	if type(obj) ~= 'table' or obj.meta == nil or not target_class then
+		return false
+	end
+	if obj.meta.__index == target_class then
+		return true
+	end
+	local meta = obj.meta
+	while meta do
+		if meta.super == target_class then
+			return true
+		elseif meta.super == nil then
+			return false
+		end
+		meta = meta.super.meta
+	end
+	return false
 end
 
 --------------------------------------------------------------------------------
@@ -54,13 +54,15 @@ end
 This is the most basic object in Luvit. It provides simple prototypal
 inheritance and inheritable constructors. All other objects inherit from this.
 ]]
-class.meta = {__index = class}
+class.meta = { __index = class }
 
 -- Create a new instance of this object
 function class:_create()
-  local meta = rawget(self, "meta")
-  if not meta then error("Cannot inherit from instance object") end
-  return setmetatable({}, meta)
+	local meta = rawget(self, 'meta')
+	if not meta then
+		error('Cannot inherit from instance object')
+	end
+	return setmetatable({}, meta)
 end
 
 --[[
@@ -78,11 +80,11 @@ Creates a new instance and calls `obj:init(...)` if it exists.
     p(rect:getArea())
 ]]
 function class:new(...)
-  local obj = self:_create()
-  if type(obj.init) == "function" then
-    obj:init(...)
-  end
-  return obj
+	local obj = self:_create()
+	if type(obj.init) == 'function' then
+		obj:init(...)
+	end
+	return obj
 end
 
 --[[
@@ -95,17 +97,17 @@ Creates a new sub-class.
 ]]
 
 function class:create()
-  local obj = self:_create()
-  local meta = {}
-  -- move the meta methods defined in our ancestors meta into our own
-  --to preserve expected behavior in children (like __tostring, __add, etc)
-  for k, v in pairs(self.meta) do
-    meta[k] = v
-  end
-  meta.__index = obj
-  meta.super = self
-  obj.meta = meta
-  return obj
+	local obj = self:_create()
+	local meta = {}
+	-- move the meta methods defined in our ancestors meta into our own
+	--to preserve expected behavior in children (like __tostring, __add, etc)
+	for k, v in pairs(self.meta) do
+		meta[k] = v
+	end
+	meta.__index = obj
+	meta.super = self
+	obj.meta = meta
+	return obj
 end
 
 return class

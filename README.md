@@ -1,10 +1,13 @@
 # WARNING
+
 This bot still under development so it not finished! If you want to use, please wait till beta release!
 
 # LunaticSea
+
 A versatile and powerful music bot for Discord that brings rhythm and melody to your server! Now in lua
 
 # Features
+
 - [x] Lua Language To have a better performance
 - [x] Advanced Music System With Buttons
 - [x] Song Request Channel
@@ -24,4 +27,5 @@ A versatile and powerful music bot for Discord that brings rhythm and melody to 
 - [x] Support lavalink v4, v3 and nodelink v2
 
 # License
+
 All submodule repo include source will under AGPL-v3.0 LICENSE

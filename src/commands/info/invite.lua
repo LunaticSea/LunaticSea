@@ -3,47 +3,46 @@ local discordia = require('discordia')
 local command = require('class'):create()
 
 function command:init()
-  self.name = {'invite'}
-  self.description = 'Shows the invite information of the Bot'
-  self.category = 'info'
-  self.accessableby = {accessableby.member}
-  self.usage = ''
-  self.aliases = {'inv'}
-  self.lavalink = false
-  self.playerCheck = false
-  self.usingInteraction = true
-  self.sameVoiceCheck = false
-  self.permissions = {}
-  self.options = {}
+	self.name = { 'invite' }
+	self.description = 'Shows the invite information of the Bot'
+	self.category = 'info'
+	self.accessableby = { accessableby.member }
+	self.usage = ''
+	self.aliases = { 'inv' }
+	self.lavalink = false
+	self.playerCheck = false
+	self.usingInteraction = true
+	self.sameVoiceCheck = false
+	self.permissions = {}
+	self.options = {}
 end
 
 function command:run(client, handler)
-  handler:defer_reply()
+	handler:defer_reply()
 
-  local link = string.format(
-    "https://discord.com/api/oauth2/authorize?client_id=%s",
-    client.user.id
-  ) .. "&permissions=8&scope=bot%20applications.commands"
+	local link =
+		string.format(
+			'https://discord.com/api/oauth2/authorize?client_id=%s',
+			client.user.id
+		) .. '&permissions=8&scope=bot%20applications.commands'
 
-  local linkActionRow = discordia.Components {
-    {
-      type = 'button',
-      label = "Invite Me",
-      style = "link",
-      url = link
-    }
-  }
+	local linkActionRow = discordia.Components{ {
+		type = 'button',
+		label = 'Invite Me',
+		style = 'link',
+		url = link,
+	} }
 
-  local embed_data = {
-    title = string.format("✉️ %s", client.user.username),
-    description = client._i18n:get(handler.language, 'command.info', 'invite_desc'),
-    color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value
-  }
+	local embed_data = {
+		title = string.format('✉️ %s', client.user.username),
+		description = client._i18n:get(handler.language, 'command.info', 'invite_desc'),
+		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+	}
 
-  handler:edit_reply({
-    embeds = {embed_data},
-    components = linkActionRow
-  })
+	handler:edit_reply({
+		embeds = { embed_data },
+		components = linkActionRow,
+	})
 end
 
 return command
