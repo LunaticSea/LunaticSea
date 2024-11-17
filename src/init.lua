@@ -33,7 +33,7 @@ return function(test_mode)
 	end
 
 	client:run(client._config.bot.TOKEN)
-	client:on('ready', function ()
+	client:on('ready', function()
 		require('./services/deploy_service'):new(client):register()
 	end)
 end

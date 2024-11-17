@@ -18,7 +18,7 @@ table.includes = function(t, e)
 	return nil
 end
 
-table.reduce = function (tbl, func, initial)
+table.reduce = function(tbl, func, initial)
 	local accumulator = initial
 	for _, value in ipairs(tbl) do
 		accumulator = func(accumulator, value)
