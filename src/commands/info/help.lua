@@ -117,7 +117,7 @@ function command:send_all_commands()
 		local all_command_name = {}
 		for _, command_data in pairs(same_category_command) do
 			local command_name = table.concat(command_data.name, '-')
-			if self.handler.interaction and command_data.config.usingInteraction then
+			if self.handler.interaction and command_data.usingInteraction then
 				table.insert(all_command_name, command_name)
 			elseif not self.handler.interaction then
 				table.insert(all_command_name, command_name)

@@ -1,34 +1,7 @@
+require('./utils/luaex.lua')
 local discordia = require('discordia')
 local dir = require('./bundlefs.lua')
 local package = require('../package.lua')
-
--- Patch global library
-table.filter = function(t, filterIter)
-	local out = {}
-	for k, v in pairs(t) do
-		if filterIter(v, k, t) then
-			table.insert(out, v)
-		end
-	end
-	return out
-end
-
-table.includes = function(t, e)
-	for _, value in pairs(t) do
-		if value == e then
-			return e
-		end
-	end
-	return nil
-end
-
-string.split = function(string, pattern)
-	local t = {}
-	for i in string.gmatch(string, pattern) do
-		t[#t + 1] = i
-	end
-	return t
-end
 
 -- Bot start
 return function(test_mode)
@@ -60,4 +33,7 @@ return function(test_mode)
 	end
 
 	client:run(client._config.bot.TOKEN)
+	client:on('ready', function ()
+		require('./services/deploy_service'):new(client):register()
+	end)
 end
