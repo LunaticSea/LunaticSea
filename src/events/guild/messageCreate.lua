@@ -1,17 +1,7 @@
 local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
-local command_handler = require('../../structures/command_handler')
-local split = require('../../utils/split')
+local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
-
-table.includes = function(t, e)
-	for _, value in pairs(t) do
-		if value == e then
-			return e
-		end
-	end
-	return nil
-end
 
 return function(client, message)
 	-- Check valid message class
@@ -25,7 +15,7 @@ return function(client, message)
 	if not is_match_prefix then return end
 
 	local content_without_prefix = string.sub(message.content, #prefix + 1)
-	local args = split(content_without_prefix, '%S+')
+	local args = string.split(content_without_prefix, '%S+')
 	local command_req = args[1]
 	table.remove(args, 1)
 

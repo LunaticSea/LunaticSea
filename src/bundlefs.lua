@@ -1,7 +1,17 @@
 local fsex = require('./utils/fsex.lua')
 local include = { '[^\\]+.lua' }
 local exclude =
-	{ 'deps', 'make.lua', 'dev.lua', 'test.what.lua', 'README.md', 'LICENSE', 'tests', 'libs' }
+	{
+		'deps',
+		'make.lua',
+		'dev.lua',
+		'test.what.lua',
+		'README.md',
+		'LICENSE',
+		'tests',
+		'libs',
+		'node_modules',
+	}
 
 local bundlefs = require('class'):create()
 

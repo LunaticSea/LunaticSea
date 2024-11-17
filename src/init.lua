@@ -13,6 +13,15 @@ table.filter = function(t, filterIter)
 	return out
 end
 
+table.includes = function(t, e)
+	for _, value in pairs(t) do
+		if value == e then
+			return e
+		end
+	end
+	return nil
+end
+
 string.split = function(string, pattern)
 	local t = {}
 	for i in string.gmatch(string, pattern) do
