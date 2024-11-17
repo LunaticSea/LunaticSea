@@ -120,7 +120,7 @@ function deploy_service:tribleCommandMaker(current)
 		name = current.name[1],
 		description = current.name[1] .. ' commands.',
 		defaultPermission = current.defaultPermission or nil,
-		options = { deploy_service:doubleSubCommandMaker(current) },
+		options = { self:doubleSubCommandMaker(current) },
 	}
 end
 
