@@ -95,7 +95,13 @@ function command_handler:defer_reply()
 		self.msg = self.deferred
 		return self.msg
 	end
-	self.msg = self.message:reply(string.format('**%s** is thinking...', self.client.user.username))
+	self.msg = self.message:reply({
+		content = string.format('**%s** is thinking...', self.client.user.username),
+		reference = {
+			message = self.message,
+			mention = false,
+		},
+	})
 	return self.msg
 end
 
@@ -120,6 +126,7 @@ function command_handler:edit_reply(data)
 end
 
 function command_handler:parse_mentions(data)
+	data = data or ''
 	-- Check user
 	local user_match = string.match(data, self.USERS_PATTERN)
 	if user_match then

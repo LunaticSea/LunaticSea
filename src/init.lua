@@ -40,7 +40,7 @@ return function(test_mode)
 	})
 
 	client._logd = require('./utils/logger.lua'):new(client)
-	client._logd:info('Client', 'Booting up: ' .. package.name)
+	client._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
 	client._is_test_mode = test_mode
 	client._ptree = dir:new():get_all(test_mode)
 	client._config = require('./utils/config.lua')

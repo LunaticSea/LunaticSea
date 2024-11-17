@@ -20,8 +20,7 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local msg_time = math.floor(handler.createdAt + 0.5)
-	local ping = tostring(msg_time - os.time())
+	local ping = tostring(discordia.Date():toMilliseconds() - handler.createdAt * 1000)
 
 	local embed_data = {
 		title = '🏓 ' .. client.user.username,
