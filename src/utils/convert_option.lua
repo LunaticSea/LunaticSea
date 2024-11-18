@@ -7,7 +7,6 @@ return function(data)
 	end
 	if data.type == 7 then
 		return string.format('<#%s>', data.value)
-	else
-		return 'error'
 	end
+	return data.value
 end

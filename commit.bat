@@ -1,3 +1,5 @@
+luvit make dir
+
 cd translation
 git add .
 git commit

@@ -36,22 +36,20 @@ return function(client, interaction)
 	if not command then return end
 
 	local args = {}
-	local function arg_convert(data)
-		if not data.options or #data.options == 0 then return end
+	local function arg_convert(data, bypass)
+		if not bypass and (not data.options or #data.options == 0) then return end
 
 		if data.type == 1 or data.type == 2 then
 			for _, sub_data in pairs(data.options) do
-				arg_convert(sub_data)
+				arg_convert(sub_data, true)
 			end
 		end
 
-		local check = convert_option({
+		local converted = convert_option({
 			type = data.type,
 			value = data.value,
 		})
-		if check ~= 'error' then
-			table.insert(args, check)
-		end
+		table.insert(args, converted)
 	end
 	arg_convert(interaction.data)
 
