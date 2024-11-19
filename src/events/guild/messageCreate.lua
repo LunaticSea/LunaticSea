@@ -25,16 +25,24 @@ return function(client, message)
 	local command = client._commands[command_name]
 	if not command then return end
 
+	-- Get languages
+	local language = client._db.language:get(message.guild.id)
+	if not language then language = client._i18n.default_locate end
+
 	-- Permission Checker
 	if (table.includes(
 		command.accessableby,
 		accessableby.manager
-	) and not message.member.hasPermission(permission_flags_bits.manageGuild)) then
+	) and not message.member:hasPermission(permission_flags_bits.manageGuild)) then
 		message:reply({
 			embeds = { {
-				description = client._i18n:get(client._i18n.default_locate, 'error', 'owner_only'),
+				description = client._i18n:get(language, 'error', 'owner_only'),
 				color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
 			} },
+			reference = {
+				message = message,
+				mention = false,
+			},
 		})
 		return
 	end
@@ -46,9 +54,13 @@ return function(client, message)
 	if table.includes(command.accessableby, accessableby.owner) and not user_perm.owner then
 		message:reply({
 			embeds = { {
-				description = client._i18n:get(client._i18n.default_locate, 'error', 'owner_only'),
+				description = client._i18n:get(language, 'error', 'owner_only'),
 				color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
 			} },
+			reference = {
+				message = message,
+				mention = false,
+			},
 		})
 		return
 	end
@@ -56,12 +68,15 @@ return function(client, message)
 	-- Command runner
 	local handler = command_handler:new({
 		message = message,
-		language = client._i18n.default_locate,
+		language = language,
 		client = client,
 		args = args,
 		prefix = prefix or 'd!',
 	})
 
+	command:run(client, handler)
+
+	-- Log
 	client._logd:info(
 		'CommandManager | Message',
 		string.format(
@@ -72,6 +87,4 @@ return function(client, message)
 			message.guild.id or nil
 		)
 	)
-
-	command:run(client, handler)
 end

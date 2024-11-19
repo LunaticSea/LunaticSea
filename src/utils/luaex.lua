@@ -26,6 +26,20 @@ table.reduce = function(tbl, func, initial)
 	return accumulator
 end
 
+table.length = function (T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+table.map = function (tbl, func)
+    local result = {}
+    for i, v in ipairs(tbl) do
+        result[i] = func(v, i, tbl)  -- Apply the function to each element
+    end
+    return result
+end
+
 -- Patch string library
 string.split = function(string, pattern)
 	local t = {}

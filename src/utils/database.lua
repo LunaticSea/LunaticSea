@@ -15,8 +15,7 @@ function database:init(client)
 			'songNoti',
 			'preGuild',
 			'blacklist',
-			'maxlength',
-			'hello_world',
+			'maxlength'
 		}
 end
 
