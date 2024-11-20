@@ -58,7 +58,7 @@ function deploy_service:commandReducer(all, current)
 		if not baseItem or #baseItem == 0 then
 			table.insert(all, self:doubleCommandMaker(current))
 		else
-			table.insert(baseItem.options, self:singleItemMaker(current, 2))
+			table.insert(baseItem[1].options, self:singleItemMaker(current, 2))
 		end
 	end
 

@@ -35,6 +35,5 @@ return function(test_mode)
 	client:run(client._config.bot.TOKEN)
 	client:on('ready', function()
 		require('./services/deploy_service'):new(client):register()
-		p(client._db.code:get('vvZn7lunAarPGNgGWoXaVAhoeb6ps35z'))
 	end)
 end

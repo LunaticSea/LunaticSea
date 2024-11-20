@@ -63,6 +63,7 @@ function bundlefs:get_all(if_build)
 	if not is_call_pcall then
 		error('tree.lua not found! Please contact owner to rebuild the bot')
 	end
+
 	return require('./tree.lua')
 end
 

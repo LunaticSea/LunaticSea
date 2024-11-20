@@ -15,6 +15,7 @@ return {
   "bundle:/src/commands/owner/blacklist.lua",
   "bundle:/src/commands/owner/shutdown.lua",
   "bundle:/src/commands/premium/generate.lua",
+  "bundle:/src/commands/premium/redeem.lua",
   "bundle:/src/commands/utils/language.lua",
   "bundle:/src/commands/utils/prefix.lua",
   "bundle:/src/commands/utils/songnoti.lua",

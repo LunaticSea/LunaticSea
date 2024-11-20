@@ -1,6 +1,5 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local sha1 = require('sha1')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
 local command = require('class'):create()
 
@@ -119,7 +118,7 @@ function command:run(client, handler)
     timestamp = discordia.Date():toISO('T', 'Z'),
     footer = {
       text = client._i18n:get(handler.language, 'command.premium', 'gen_footer', { '/' }),
-      iconURL = handler.user:getAvatarURL()
+      iconURL = client.user:getAvatarURL()
     }
 	}
 	handler:edit_reply({
