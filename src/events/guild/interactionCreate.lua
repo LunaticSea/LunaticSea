@@ -61,16 +61,61 @@ return function(client, interaction)
 
 	-- Accessable Checker
 	local is_owner = interaction.user.id == client._bot_owner
-	local user_perm = { owner = is_owner }
+	local is_admin = table.includes(client._config.bot.ADMIN, interaction.user.id)
+	local is_premium = client._db.premium:get(interaction.user.id)
+	local is_guild_premium = client._db.premium:get(interaction.guild.id)
+	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
+	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
+	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
+
+	local user_perm = {
+		owner = is_owner,
+		admin = is_admin or is_owner,
+		premium = is_premium or is_admin or is_owner,
+		guild_pre = is_guild_premium or is_premium or is_admin or is_owner
+	}
 
 	if table.includes(command.accessableby, accessableby.owner) and not user_perm.owner then
-		interaction:reply({
-			embeds = { {
-				description = client._i18n:get(language, 'error', 'owner_only'),
-				color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-			} }
-		})
-		return
+		local embed = {
+			description = client._i18n:get(language, 'error', 'owner_only'),
+			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		}
+		return interaction:reply({ embeds = { embed } })
+	end
+
+	if table.includes(command.accessableby, accessableby.admin) and not user_perm.admin then
+		local embed = {
+			description = client._i18n:get(language, 'error', 'user_no_perms', { 'dreamvast@admin' }),
+			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		}
+		return interaction:reply({ embeds = { embed } })
+	end
+
+	function no_pre_embed(is_guild)
+		local no_pre_string = client._i18n:get(language, 'error', 'no_premium_desc')
+		if is_guild then
+			no_pre_string = client._i18n:get(language, 'error', 'no_guild_premium_desc')
+		end
+
+		local res = {
+		  author = {
+				name = client._i18n:get(language, 'error', 'no_premium_author'),
+				iconURL = interaction.usetr:getAvatarURL()
+			},
+			description = no_pre_string,
+			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			timestamp = discordia.Date():toISO('T', 'Z'),
+		}
+
+		return res
+	end
+
+	if not is_both_user_and_guild and is_user_premium_access and not user_perm.premium then
+		return interaction:reply({ embeds = { no_pre_embed() } })
+	end
+
+	if not is_both_user_and_guild and is_guild_premium_access and not user_perm.guild_pre then
+		return interaction:reply({ embeds = { no_pre_embed(true) } })
 	end
 
 	-- Convert args

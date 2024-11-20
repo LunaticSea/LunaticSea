@@ -71,7 +71,7 @@ function deploy_service:commandReducer(all, current)
 		end)
 
 		if SubItem and #SubItem > 0 then
-			GroupItem = table.filter(SubItem.options, function(i)
+			GroupItem = table.filter(SubItem[1].options, function(i)
 				return i.name == current.name[1] and i.type == applicationCommandOptionType.subcommandGroup
 			end)
 		end
@@ -79,9 +79,9 @@ function deploy_service:commandReducer(all, current)
 		if not SubItem or #SubItem == 0 then
 			table.insert(all, self:tribleCommandMaker(current))
 		elseif (SubItem and #SubItem > 0) and not GroupItem then
-			table.insert(SubItem.options, self:doubleSubCommandMaker(current))
+			table.insert(SubItem[1].options, self:doubleSubCommandMaker(current))
 		elseif (SubItem and #SubItem > 0) and (GroupItem and #GroupItem > 0) then
-			table.insert(GroupItem.options, self:singleItemMaker(current, 3))
+			table.insert(GroupItem[1].options, self:singleItemMaker(current, 3))
 		end
 	end
 
