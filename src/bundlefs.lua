@@ -1,7 +1,8 @@
 local fsex = require('./utils/fsex.lua')
-local include = { '[^\\]+.lua' }
+local include = { 'commands', 'events' }
 local exclude =
 	{
+	  'loader',
 		'deps',
 		'make.lua',
 		'dev.lua',
@@ -42,7 +43,7 @@ function bundlefs:traditional_read()
 	local all_dir = fsex:readdir_recursive({ module.dir, '..' })
 
 	table.foreach(all_dir, function(_, value)
-		local check_if_pass_include = bundlefs:pattern_series_check(value, include)
+		local check_if_pass_include = bundlefs:pattern_series_check(value, include, true)
 		local check_if_pass_exclude = bundlefs:pattern_series_check(value, exclude, true)
 		local is_pass = (check_if_pass_include == true) and (check_if_pass_exclude == false)
 		if is_pass then
