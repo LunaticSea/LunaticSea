@@ -30,7 +30,6 @@ function command_handler:init(options)
 	self.EVERYONE_PATTERN = '@everyone'
 	self.HERE_PATTERN = '@here'
 	self.mention_enums = mention_enums
-	return self
 end
 
 function command_handler:get_guild_data()

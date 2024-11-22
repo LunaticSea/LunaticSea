@@ -72,7 +72,7 @@ function deploy_service:commandReducer(all, current)
 
 		if SubItem and #SubItem > 0 then
 			GroupItem = table.filter(SubItem[1].options, function(i)
-				return i.name == current.name[1] and i.type == applicationCommandOptionType.subcommandGroup
+				return i.name == current.name[2] and i.type == applicationCommandOptionType.subcommandGroup
 			end)
 		end
 

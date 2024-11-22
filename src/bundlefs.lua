@@ -1,5 +1,5 @@
 local fsex = require('./utils/fsex.lua')
-local include = { 'commands', 'events' }
+local include = { 'commands', 'events', 'translation' }
 local exclude =
 	{
 	  'loader',
@@ -12,6 +12,7 @@ local exclude =
 		'tests',
 		'libs',
 		'node_modules',
+		'.git'
 	}
 
 local bundlefs = require('class'):create()

@@ -112,7 +112,7 @@ return function(client, message)
 	end
 
 	-- Command runner
-	local handler = command_handler:new({
+	local handler = require('../../structures/command_handler.lua'):new({
 		message = message,
 		language = language,
 		client = client,

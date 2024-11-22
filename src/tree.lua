@@ -21,4 +21,10 @@ return {
   "bundle:/src/events/client/ready.lua",
   "bundle:/src/events/guild/interactionCreate.lua",
   "bundle:/src/events/guild/messageCreate.lua",
+  "bundle:/translation/arisu_en_US/command.admin.lua",
+  "bundle:/translation/arisu_en_US/command.info.lua",
+  "bundle:/translation/arisu_en_US/command.premium.lua",
+  "bundle:/translation/arisu_en_US/command.utils.lua",
+  "bundle:/translation/arisu_en_US/error.lua",
+  "bundle:/translation/arisu_en_US/global.lua",
 }
