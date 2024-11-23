@@ -24,8 +24,9 @@ function command:run(client, handler)
 		description = client._i18n:get(handler.language, 'command.admin', 'restart_msg'),
 		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
 	}
-	handler:edit_reply({
+	local msg = handler:edit_reply({
 		embeds = { embed },
+		components = testActionRow,
 	})
 
 	os.exit()

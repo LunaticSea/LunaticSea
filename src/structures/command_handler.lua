@@ -113,7 +113,8 @@ function command_handler:edit_reply(data)
 		data.content = ''
 	end
 	if type(self.msg) == 'boolean' and self.interaction then
-		return self.interaction:reply(data)
+	  self.interaction:reply(data)
+		return self.interaction
 	elseif type(self.msg) == 'boolean' and self.message then
 		self.client._logd:error(
 			'CommandHandler',
@@ -121,7 +122,8 @@ function command_handler:edit_reply(data)
 		)
 		return nil
 	end
-	return self.msg:update(data)
+	self.msg:update(data)
+	return self.msg
 end
 
 function command_handler:parse_mentions(data)

@@ -14,4 +14,19 @@ return {
 			config = { file_name = 'lunatic.db.csv' },
 		},
 	},
+	icons = {
+	  PLAYER = {
+	    play = '▶️',
+      pause = '⏸️',
+      loop = '🔁',
+      shuffle = '🔀',
+      stop = '⏹️',
+      skip = '⏩',
+      previous = '⏪',
+      voldown = '🔉',
+      volup = '🔊',
+      queue = '📋',
+      delete = '🗑',
+	  }
+	}
 }
