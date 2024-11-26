@@ -27,6 +27,10 @@ return {
       volup = '🔊',
       queue = '📋',
       delete = '🗑',
-	  }
+	  },
+	  GLOBAL = {
+      arrow_next = '➡',
+      arrow_previous = '⬅',
+    }
 	}
 }

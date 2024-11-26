@@ -11,6 +11,7 @@ return {
   "bundle:/src/commands/info/ping.lua",
   "bundle:/src/commands/owner/blacklist.lua",
   "bundle:/src/commands/owner/shutdown.lua",
+  "bundle:/src/commands/owner/test.lua",
   "bundle:/src/commands/premium/generate.lua",
   "bundle:/src/commands/premium/guild_profile.lua",
   "bundle:/src/commands/premium/guild_remove.lua",

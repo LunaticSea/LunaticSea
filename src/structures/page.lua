@@ -1,4 +1,5 @@
 local page = require('class'):create()
+local discordia = require('discordia')
 
 local default = {
   client = nil,
@@ -16,6 +17,42 @@ function page:init(options)
 end
 
 function page:slash(interaction)
+  if not interaction or not interaction.channel then error('Channel is inaccessible.') end
+  if not this.pages then error('Pages are not given.') end
+  if #this.page == 0 then return end
+
+  local back_button = discordia.Button({
+    id = "back",
+    emoji = self.client._icons.GLOBAL.arrow_previous,
+    style = "secondary"
+  })
+
+  local next_button = discordia.Button({
+    id = "next",
+    emoji = self.client._icons.GLOBAL.arrow_next,
+    style = "secondary"
+  })
+
+	local row = discordia.Components({ back_button, next_button })
+
+	local page = 1
+	local init_page = this.pages[page]
+	init_page.footer = {
+	  text = string.format('%s/%s', page, #this.pages)
+	}
+
+	interaction:editReply({
+	  embeds = { init_page },
+	  components = { row }
+	})
+
+	local collector = interaction:createCollector('button')
+
+	collector:on('collect', function (interaction)
+	  
+	end)
+	
+  
   
 end
 

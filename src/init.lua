@@ -24,6 +24,7 @@ return function(test_mode)
 	client._command_categories = {}
 	client._c_alias = {}
 	client._db = {}
+	client._icons = client._config.icons
 
 	require('./utils/database'):new(client):load()
 	require('./loader')(client)
