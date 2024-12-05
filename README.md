@@ -6,6 +6,12 @@ This bot still under development so it not finished! If you want to use, please 
 
 A versatile and powerful music bot for Discord that brings rhythm and melody to your server! Now in lua
 
+# How to clone
+
+```
+git clone --recurse-submodules https://github.com/LunaticSea/LunaticSea
+```
+
 # Features
 
 - [x] Lua Language To have a better performance
