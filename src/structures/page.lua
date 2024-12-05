@@ -13,48 +13,51 @@ local default = {
 function page:init(options)
   options = options or default
   self.client = assert(options.client, 'Client not found')
-  self.pages = assert(type(options.pages) == 'table', 'Pages not found')
-  self.language = assert(options.language, 'Language not found')
+  self.handler = assert(options.handler, 'Command handler not found')
+  self.pages = assert(options.pages, 'Pages not found')
+  self.language = self.handler.language
   self.timeout = options.timeout
-  self.interaction = options.interaction
-  self.message = options.message
 end
 
 function page:run()
-  if not self.interaction and not self.message then
-    error("Missing both message and interaction, please check again!")
-  elseif self.interaction then
-    self:slash(self.interaction)
-  elseif self.message then
-    self:message(self.message)
-  end
-end
+  if not self.handler or not self.handler.channel then error('Channel is inaccessible.') end
+  if not self.pages then error('Pages are not given.') end
+  if #self.pages == 0 then return end
 
-function page:slash(interaction)
-  if not interaction or not interaction.channel then error('Channel is inaccessible.') end
-  if not this.pages then error('Pages are not given.') end
-  if #this.page == 0 then return end
-
-	local row = page:generate_button_array()
+	local row = self:generate_button_array()
 
 	local page = 1
-	local init_page = this.pages[page]
+	local init_page = self.pages[page]
 	init_page.footer = {
-	  text = string.format('%s/%s', page, #this.pages)
+	  text = string.format('%s/%s', page, #self.pages)
 	}
 
-	interaction:editReply({
+	local curPage = self.handler:edit_reply({
 	  embeds = { init_page },
 	  components = { row }
 	})
 
-	local collector = interaction:createCollector('button')
+	local collector = curPage:createCollector('button')
 
-	collector:on('collect', function (interaction) end)
-end
+	collector:on('collect', function (interaction)
+	  if not interaction._deferred then interaction:updateDeferred() end
 
-function page:message(message)
-  
+	  if interaction.data.custom_id == 'back' then
+	    if page > 1 then page = page - 1 else  page = #self.pages end
+	  elseif interaction.data.custom_id == 'next' then
+      if page < #self.pages then page = page + 1 else page = 1 end
+	  end
+
+	  local selected_page = self.pages[page]
+    selected_page.footer = {
+      text = string.format('%s/%s', page, #self.pages)
+    }
+
+	  local data, err = interaction.message:update({
+	    embeds = { selected_page },
+	    components = { row }
+	  })
+	end)
 end
 
 function page:generate_button_array()

@@ -1,6 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local command = require('class'):create()
+local page_framework_class = require('../../structures/page')
 
 function command:init()
 	self.name = { 'test' }
@@ -20,41 +21,25 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local embed = {
-		description = 'Hi :D',
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+	local embeds = {
+	  {
+      description = 'Hey :O',
+      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+    },
+    {
+      description = 'Hi :D',
+      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+    },
 	}
 
-	local row1 = discordia.Components({
-    {
-      id = "hi",
-      type = "button",
-      label = "Halo"
-    }
+	local page_framework = page_framework_class:new({
+    client = client,
+    pages = embeds,
+    timeout = 120000,
+    handler = handler
   })
 
-  local row2 = discordia.Components({
-    {
-      id = "halo",
-      type = "button",
-      label = "Halo"
-    }
-  })
-
-	local msg = handler:edit_reply({
-		embeds = { embed },
-		components = { row1, row2 },
-	})
-
-	local collector = msg:createCollector("button")
-
-	collector:on('collect', function (interaction)
-	  interaction:reply('Halo :D ' .. interaction.data.custom_id)
-	end)
-
-	collector:on('end', function ()
-	  p('See ya :D')
-	end)
+  page_framework:run()
 end
 
 return command

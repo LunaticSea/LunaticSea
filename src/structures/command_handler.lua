@@ -112,15 +112,9 @@ function command_handler:edit_reply(data)
 	if not data.content then
 		data.content = ''
 	end
-	if type(self.msg) == 'boolean' and self.interaction then
+	if self.interaction then
 	  self.interaction:reply(data)
 		return self.interaction
-	elseif type(self.msg) == 'boolean' and self.message then
-		self.client._logd:error(
-			'CommandHandler',
-			'self.msg have weird type, please contact owner to resolve this issues'
-		)
-		return nil
 	end
 	self.msg:update(data)
 	return self.msg
