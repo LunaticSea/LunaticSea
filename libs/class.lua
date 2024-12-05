@@ -1,11 +1,3 @@
---[[lit-meta
-  name = "LunaticSea/class"
-  version = "2.0.4"
-  license = "AGPL-v3.0"
-  homepage = "https://github.com/LunaticSea/LunaticSea/blob/master/libs/class.lua"
-  description = "Core object model for luvit using simple prototypes and inheritance."
-  tags = {"luvit", "objects", "inheritance"}
-]]
 local class = {}
 
 --[[
