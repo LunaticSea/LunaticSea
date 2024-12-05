@@ -1,0 +1,50 @@
+# LunaticSea config file system
+# Version: 0.0.2
+# Based in: toml
+# Note:
+# You can detele all config to load the default except 3 line:
+# [bot]
+# TOKEN       = 'Bot Token 1'
+# OWNER_ID    = 'Your User ID'
+
+[bot]
+TOKEN       = 'Bot Token 1'
+OWNER_ID    = 'Your User ID'
+EMBED_COLOR = '#2B2D31'
+LANGUAGE    = 'en'
+DEBUG_MODE  = false
+ADMIN       = ['<your_trusted_admin_discord_id_here>']
+
+[utilities]
+PREFIX = 'd!'
+
+# Currently avaliable database driver: csv
+# The config of database driver key must be match as driver name
+# Example:
+# [utilities.database]
+# driver = 'csv'
+# [utilities.database.csv]
+# file_name = 'lunatic.db.csv'
+
+[utilities.DATABASE]
+driver = 'csv'
+
+[utilities.DATABASE.csv]
+file_name = 'lunatic.db.csv'
+
+[icons.PLAYER]
+play     = '▶️'
+pause    = '⏸️'
+loop     = '🔁'
+shuffle  = '🔀'
+stop     = '⏹️'
+skip     = '⏩'
+previous = '⏪'
+voldown  = '🔉'
+volup    = '🔊'
+queue    = '📋'
+delete   = '🗑'
+
+[icons.GLOBAL]
+arrow_next     = '➡'
+arrow_previous = '⬅'

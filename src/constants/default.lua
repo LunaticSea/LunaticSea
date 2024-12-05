@@ -11,7 +11,7 @@ return {
 		PREFIX = 'd!',
 		DATABASE = {
 			driver = 'csv',
-			config = { file_name = 'lunatic.db.csv' },
+			csv = { file_name = 'lunatic.db.csv' },
 		},
 	},
 	icons = {

@@ -12,7 +12,9 @@ local exclude =
 		'tests',
 		'libs',
 		'node_modules',
-		'.git'
+		'.git',
+		'config.toml',
+		'example.config.toml',
 	}
 
 local bundlefs = require('class'):create()

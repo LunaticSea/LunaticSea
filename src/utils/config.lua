@@ -1,11 +1,11 @@
 local fs = require('fs')
-local json = require('json')
-local file = fs.readFileSync('./app.json', 'utf8')
+local toml = require("toml")
+local file = fs.readFileSync('./config.toml', 'utf8')
 local default = require('../constants/default.lua')
 if not file then
 	file = '{}'
 end
-local decoded = json.decode(file)
+local decoded = toml.parse(file)
 
 local function merge_default(def, given)
 	if type(given) == 'nil' then

@@ -50,7 +50,7 @@ deps/**
 gateway.json
 test.
 build/**
-app.json
+config.toml
 lunatic.sea.log
 lunatic.db.csv
 node_modules
