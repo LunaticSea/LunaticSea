@@ -32,6 +32,18 @@ git clone --recurse-submodules https://github.com/LunaticSea/LunaticSea
 - [x] Auto Fix Lavalink From lavalink.darrennathanael.com
 - [x] Support lavalink v4, v3 and nodelink v2
 
+# Configuration
+
+See example in `example` folder
+
+Please leave the config file in the root
+
+Example:
+```
+LunaticSea.exe
+app.yml
+```
+
 # License
 
 All submodule repo include source will under AGPL-v3.0 LICENSE

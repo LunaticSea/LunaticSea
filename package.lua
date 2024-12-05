@@ -18,8 +18,7 @@ return {
 		'luvit/secure-socket@v1.2.3',
 		'luvit/json@v2.5.2',
 		'luvit/tap@v0.1.1',
-		'luvit/core@v2.0.4',
-		'creationix/toml@v0.40.0'
+		'luvit/core@v2.0.4'
 	},
 	files = { '**.lua', '!test*', '!make.lua', '!dev.lua' },
 }

@@ -1,11 +1,10 @@
 local fs = require('fs')
-local toml = require("toml")
-local file = fs.readFileSync('./config.toml', 'utf8')
+local yaml = require('yaml')
+local file = fs.readFileSync('./app.yml', 'utf8')
 local default = require('../constants/default.lua')
-if not file then
-	file = '{}'
-end
-local decoded = toml.parse(file)
+
+if not file then file = '' end
+local decoded, err = yaml.parse(file)
 
 local function merge_default(def, given)
 	if type(given) == 'nil' then

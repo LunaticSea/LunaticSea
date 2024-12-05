@@ -1,8 +1,0 @@
-{
-  "plugins": ["@prettier/plugin-lua"],
-  "tabWidth": 2,
-  "semi": false,
-  "singleQuote": true,
-  "experimentalTernaries": true,
-  "printWidth": 100
-}
