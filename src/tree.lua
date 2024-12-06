@@ -18,6 +18,7 @@ return {
   "bundle:/src/commands/premium/profile.lua",
   "bundle:/src/commands/premium/redeem.lua",
   "bundle:/src/commands/premium/remove.lua",
+  "bundle:/src/commands/premium/user_list.lua",
   "bundle:/src/commands/utils/language.lua",
   "bundle:/src/commands/utils/prefix.lua",
   "bundle:/src/commands/utils/songnoti.lua",

@@ -1,6 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local command = require('class'):create()
+local stopwatch = discordia.Stopwatch()
 
 function command:init()
 	self.name = { 'ping' }
@@ -18,9 +19,12 @@ function command:init()
 end
 
 function command:run(client, handler)
+	stopwatch:reset()
+	stopwatch:start()
 	handler:defer_reply()
+	stopwatch:stop()
 
-	local ping = tostring(discordia.Date():toMilliseconds() - handler.createdAt * 1000)
+	local ping = math.floor(stopwatch:getTime():toMilliseconds()+0.5)
 
 	local embed_data = {
 		title = '🏓 ' .. client.user.username,
