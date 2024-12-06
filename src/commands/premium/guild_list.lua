@@ -49,7 +49,6 @@ function command:run(client, handler)
 	if page_num == 0 then page_num = 1 end
 
 	local guild_strings = {}
-	p(guilds)
 	for i = 1, #guilds, 1 do
 	  local guild = guilds[i]
 	  local string_ele = string.format('`%s. %s/%s - %s`', i, guild.redeemedBy.name, guild.plan)
