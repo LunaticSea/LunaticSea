@@ -1,22 +1,12 @@
 local page = require('class'):create()
 local discordia = require('discordia')
 
-local default = {
-  client = nil,
-  pages = nil,
-  timeout = 120000,
-  language = nil,
-  interaction = nil,
-  message  = nil
-}
-
-function page:init(options)
-  options = options or default
-  self.client = assert(options.client, 'Client not found')
-  self.handler = assert(options.handler, 'Command handler not found')
-  self.pages = assert(options.pages, 'Pages not found')
+function page:init(client, pages, timeout, handler)
+  self.client = assert(client, 'Client not found')
+  self.handler = assert(handler, 'Command handler not found')
+  self.pages = assert(pages, 'Pages not found')
   self.language = self.handler.language
-  self.timeout = options.timeout
+  self.timeout = timeout
 end
 
 function page:run()
