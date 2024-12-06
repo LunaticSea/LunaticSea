@@ -3,6 +3,20 @@ local permission_flags_bits = discordia.enums.permission
 local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
 
+local function special_prefix(prefix)
+  local special = { '()', ')', '.', '%', '+', '-', '*', '?', '[', '^', '$' }
+  local res = {}
+
+  res.pattern = prefix
+  res.original = prefix
+
+  if table.includes(special, prefix) then 
+    res.pattern = '%' .. prefix
+  end
+
+  return res
+end
+
 return function(client, message)
 	-- Check valid message class
 	if message.author.bot then return end
@@ -10,11 +24,14 @@ return function(client, message)
 	-- Get Command Data From Cache
 	local guild_prefix = client._db.prefix:get(message.guild.id)
 	local prefix = guild_prefix or client._config.utilities.PREFIX
+	local special_prefix = special_prefix(prefix)
+	prefix = special_prefix.original
 
-	local is_match_prefix = string.match(message.content, prefix .. '[^.]+')
+	local is_match_prefix = string.match(message.content, special_prefix.pattern .. '[^.]+')
 	if not is_match_prefix then return end
 
 	local content_without_prefix = string.sub(message.content, #prefix + 1)
+
 	local args = string.split(content_without_prefix, '%S+')
 	local command_req = args[1]
 	table.remove(args, 1)

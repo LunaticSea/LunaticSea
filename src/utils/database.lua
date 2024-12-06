@@ -21,19 +21,16 @@ end
 
 function database:load()
 	local db_driver_name = self.client._config.utilities.DATABASE.driver
-	if db_driver_name == 'csv' then
-	  local config = self.client._config.utilities.DATABASE[db_driver_name]
-		return self:small_db_load(lunaticdb.driver.csv)
-	end
+	local db_driver = lunaticdb.driver[db_driver_name]
+	local db_driver_config = self.client._config.utilities.DATABASE[db_driver_name]
+	return self:small_db_load(db_driver, db_driver_config)
 end
 
 function database:small_db_load(driver, config)
 	for _, value in pairs(self.req_db) do
-		self.client._db[value] = lunaticdb.core:new({ 
-		  db_name = value,
-		  driver = driver,
-		  driver_options = config
-		}):load()
+		self.client._db[value] = lunaticdb.core
+      :new({ db_name = value })
+      :load(driver, config)
 	end
 end
 
