@@ -40,6 +40,14 @@ table.map = function (tbl, func)
     return result
 end
 
+table.slice = function(t, first, last)
+  local sliced = {}
+  for i = first, last do
+    sliced[#sliced+1] = t[i]
+  end
+  return sliced
+end
+
 -- Patch string library
 string.split = function(string, pattern)
 	local t = {}

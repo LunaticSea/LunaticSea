@@ -21,7 +21,7 @@ function command:init()
       name = 'page',
       description = 'Page number to show.',
       type = applicationCommandOptionType.number,
-      required = true,
+      required = false,
     },
 	}
 end
@@ -31,7 +31,7 @@ function command:run(client, handler)
 
 	local value = tonumber(handler.args[0])
 
-	if type(value) ~= 'number' then
+	if value and type(value) ~= 'number' then
 	  local embed = {
       description = client._i18n:get(handler.language, 'error', 'number_invalid'),
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
@@ -49,6 +49,7 @@ function command:run(client, handler)
 	if page_num == 0 then page_num = 1 end
 
 	local guild_strings = {}
+	p(guilds)
 	for i = 1, #guilds, 1 do
 	  local guild = guilds[i]
 	  local string_ele = string.format('`%s. %s/%s - %s`', i, guild.redeemedBy.name, guild.plan)
@@ -58,7 +59,7 @@ function command:run(client, handler)
 	local pages = {}
 
   for i = 1, page_num do
-    local str = table.concat(table.subarray(guild_strings, i * 10, i * 10 + 9), "\n")
+    local str = table.concat(table.slice(guild_strings, i * 10, i * 10 + 10), "\n")
 
     local embed = {
       author = {
@@ -67,7 +68,7 @@ function command:run(client, handler)
       color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
       description = str == "" and "  Nothing" or "\n" + str,
       footer = {
-        text = i .. "/" .. pagesNum
+        text = i .. "/" .. page_num
       }
     }
 
@@ -75,13 +76,13 @@ function command:run(client, handler)
   end
 
   if not value then
-    if #pages > 0 then page_framework:new(client, pages, 120000, handler):run()
-    else handler:edit_reply({ embeds = { pages[1] } }) end
-  else self:send_specific_page(client, handler, pages, pageNum, value) end
+    if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
+    else page_framework:new(client, pages, 120000, handler):run() end
+  else self:send_specific_page(client, handler, pages, page_num, value) end
 end
 
 
-function command:send_specific_page(client, handler, pages, pageNum, value)
+function command:send_specific_page(client, handler, pages, page_num, value)
   if value > page_num then
     local embed = {
       description = client._i18n:get(handler.language, 'command.premium', 'guild_list_page_notfound', page_num),
@@ -93,7 +94,7 @@ function command:send_specific_page(client, handler, pages, pageNum, value)
   end
 
   local pageNum = value == 0 and 1 or tonumber(value)
-  return handler.editReply({ embeds = { pages[pageNum] } })
+  return handler.editReply({ embeds = { pages[page_num] } })
 end
 
 return command
