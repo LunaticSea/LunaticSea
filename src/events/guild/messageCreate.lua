@@ -5,14 +5,18 @@ local accessableby = require('../../constants/accessableby.lua')
 
 local function special_prefix(prefix)
   local special = { '()', ')', '.', '%', '+', '-', '*', '?', '[', '^', '$' }
+  local res_pattern = ''
   local res = {}
 
-  res.pattern = prefix
-  res.original = prefix
-
-  if table.includes(special, prefix) then 
-    res.pattern = '%' .. prefix
+  for pre_character in string.gmatch(prefix, '.') do
+    if table.includes(special, pre_character) then 
+      res_pattern = res_pattern .. '%' .. pre_character
+    end
+    res_pattern = res_pattern .. pre_character
   end
+
+  res.pattern = res_pattern
+  res.original = prefix
 
   return res
 end
