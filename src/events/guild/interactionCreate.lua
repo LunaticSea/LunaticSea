@@ -138,7 +138,7 @@ return function(client, interaction)
 	arg_convert(interaction.data)
 
 	-- Command runner
-	local handler = command_handler:new({
+	local handler = command_handler({
 		interaction = interaction,
 		language = client._i18n.default_locate,
 		client = client,

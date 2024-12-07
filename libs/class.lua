@@ -1,105 +1,165 @@
-local class = {}
+local format = string.format
 
---[[
-Returns whether obj is instance of class or not.
+local meta = {}
+local names = {}
+local classes = {}
+local objects = setmetatable({}, {__mode = 'k'})
 
-    local object = Object:new()
-    local emitter = Emitter:new()
+function meta:__call(...)
+	local obj = setmetatable({}, self)
+	objects[obj] = true
+	obj:init(...)
+	return obj
+end
 
-    assert(instanceof(object, Object))
-    assert(not instanceof(object, Emitter))
+function meta:__tostring()
+	return 'class ' .. self.__name
+end
 
-    assert(instanceof(emitter, Object))
-    assert(instanceof(emitter, Emitter))
+local default = {}
 
-    assert(not instanceof(2, Object))
-    assert(not instanceof('a', Object))
-    assert(not instanceof({}, Object))
-    assert(not instanceof(function() end, Object))
+function default:__tostring()
+	return self.__name
+end
 
-Caveats: This function returns true for classes.
-    assert(instanceof(Object, Object))
-    assert(instanceof(Emitter, Object))
-]]
-function class.instanceof(obj, target_class)
-	if type(obj) ~= 'table' or obj.meta == nil or not target_class then
-		return false
-	end
-	if obj.meta.__index == target_class then
-		return true
-	end
-	local meta = obj.meta
-	while meta do
-		if meta.super == target_class then
+function default:__hash()
+	return self
+end
+
+local function isClass(cls)
+	return not not classes[cls]
+end
+
+local function isObject(obj)
+	return not not objects[obj]
+end
+
+local function isSubclass(sub, cls)
+	if isClass(sub) and isClass(cls) then
+		if sub == cls then
 			return true
-		elseif meta.super == nil then
-			return false
+		else
+			for _, base in ipairs(sub.__bases) do
+				if isSubclass(base, cls) then
+					return true
+				end
+			end
 		end
-		meta = meta.super.meta
 	end
 	return false
 end
 
---------------------------------------------------------------------------------
-
---[[
-This is the most basic object in Luvit. It provides simple prototypal
-inheritance and inheritable constructors. All other objects inherit from this.
-]]
-class.meta = { __index = class }
-
--- Create a new instance of this object
-function class:_create()
-	local meta = rawget(self, 'meta')
-	if not meta then
-		error('Cannot inherit from instance object')
-	end
-	return setmetatable({}, meta)
+local function isInstance(obj, cls)
+	return isObject(obj) and isSubclass(obj.__class, cls)
 end
 
---[[
-Creates a new instance and calls `obj:init(...)` if it exists.
-
-    local Rectangle = Object:extend()
-    function Rectangle:init(w, h)
-      self.w = w
-      self.h = h
-    end
-    function Rectangle:getArea()
-      return self.w * self.h
-    end
-    local rect = Rectangle:new(3, 4)
-    p(rect:getArea())
-]]
-function class:new(...)
-	local obj = self:_create()
-	if type(obj.init) == 'function' then
-		obj:init(...)
+local function profile()
+	local ret = setmetatable({}, {__index = function() return 0 end})
+	for obj in pairs(objects) do
+		local name = obj.__name
+		ret[name] = ret[name] + 1
 	end
-	return obj
+	return ret
 end
 
---[[
-Creates a new sub-class.
-    local Square = Rectangle:extend()
-    function Square:init(w)
-      self.w = w
-      self.h = h
-    end
-]]
+local types = {['string'] = true, ['number'] = true, ['boolean'] = true}
 
-function class:create()
-	local obj = self:_create()
-	local meta = {}
-	-- move the meta methods defined in our ancestors meta into our own
-	--to preserve expected behavior in children (like __tostring, __add, etc)
-	for k, v in pairs(self.meta) do
-		meta[k] = v
-	end
-	meta.__index = obj
-	meta.super = self
-	obj.meta = meta
-	return obj
+local function _getPrimitive(v)
+	return types[type(v)] and v or v ~= nil and tostring(v) or nil
 end
 
-return class
+local function serialize(obj)
+	if isObject(obj) then
+		local ret = {}
+		for k, v in pairs(obj.__getters) do
+			ret[k] = _getPrimitive(v(obj))
+		end
+		return ret
+	else
+		return _getPrimitive(obj)
+	end
+end
+
+local rawtype = type
+local function type(obj)
+	return isObject(obj) and obj.__name or rawtype(obj)
+end
+
+return setmetatable({
+
+	classes = names,
+	isClass = isClass,
+	isObject = isObject,
+	isSubclass = isSubclass,
+	isInstance = isInstance,
+	type = type,
+	profile = profile,
+	serialize = serialize,
+
+}, {__call = function(_, name, ...)
+
+	if names[name] then return error(format('Class %q already defined', name)) end
+
+	local class = setmetatable({}, meta)
+	classes[class] = true
+
+	for k, v in pairs(default) do
+		class[k] = v
+	end
+
+	local bases = {...}
+	local getters = {}
+	local setters = {}
+
+	for _, base in ipairs(bases) do
+		for k1, v1 in pairs(base) do
+			class[k1] = v1
+			for k2, v2 in pairs(base.__getters) do
+				getters[k2] = v2
+			end
+			for k2, v2 in pairs(base.__setters) do
+				setters[k2] = v2
+			end
+		end
+	end
+
+	class.__name = name
+	class.__class = class
+	class.__bases = bases
+	class.__getters = getters
+	class.__setters = setters
+
+	local pool = {}
+	local n = #pool
+
+	function class:__index(k)
+		if getters[k] then
+			return getters[k](self)
+		elseif pool[k] then
+			return rawget(self, pool[k])
+		else
+			return class[k]
+		end
+	end
+
+	function class:__newindex(k, v)
+		if setters[k] then
+			return setters[k](self, v)
+		elseif class[k] or getters[k] then
+			return error(format('Cannot overwrite protected property: %s.%s', name, k))
+		-- elseif k:find('_', 1, true) ~= 1 then
+		-- 	return error(format('Cannot write property to object without leading underscore: %s.%s', name, k))
+		else
+			if not pool[k] then
+				n = n + 1
+				pool[k] = n
+			end
+			return rawset(self, pool[k], v)
+		end
+	end
+
+	names[name] = class
+
+	return class, getters, setters
+
+end})

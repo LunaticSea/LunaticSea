@@ -17,7 +17,7 @@ local exclude =
 		'example.config.toml',
 	}
 
-local bundlefs = require('class'):create()
+local bundlefs = require('class')('bundlefs')
 
 function bundlefs:init()
 end
@@ -43,7 +43,7 @@ end
 
 function bundlefs:traditional_read()
 	local res = {}
-	local all_dir = fsex:readdir_recursive({ module.dir, '..' })
+	local all_dir = fsex():readdir_recursive({ module.dir, '..' })
 
 	table.foreach(all_dir, function(_, value)
 		local check_if_pass_include = bundlefs:pattern_series_check(value, include, true)

@@ -1,5 +1,5 @@
 local bundlefs = require('../bundlefs.lua')
-local cmd_loader = require('class'):create()
+local cmd_loader = require('class')('cmd_loader')
 
 function cmd_loader:init(client)
 	self.client = client
@@ -33,7 +33,7 @@ end
 
 function cmd_loader:register()
 	table.foreach(self.all_dir, function(_, value)
-		local cmd_data = require(value):new()
+		local cmd_data = require(value)()
 		local cmd_name = table.concat(cmd_data.name, '-')
 
 		self.client._commands[cmd_name] = cmd_data
@@ -58,7 +58,7 @@ function cmd_loader:load_file_dir()
 		if self:is_win() then
 			params[2] = 'src\\commands\\'
 		end
-		return bundlefs:new():filter(table.unpack(params))
+		return bundlefs():filter(table.unpack(params))
 	end
 	table.foreach(all_dir(), function(_, s_value)
 		table.insert(self.all_dir, s_value)

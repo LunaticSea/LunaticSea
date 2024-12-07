@@ -23,6 +23,7 @@ local make = {
 			desc = 'Build the bot dir tree only',
 		},
 	},
+	bundlefs = bundlefs()
 }
 
 function make.run()
@@ -54,7 +55,7 @@ function make.tree_file(cli_data, curr_cmd)
 
 	make.l('INFO', 'Reading dir tree...')
 
-	local dir_tree = bundlefs:new():get_all(true)
+	local dir_tree = make.bundlefs:get_all(true)
 
 	make.l('INFO', 'Finished reading dir tree, total: ' .. #dir_tree)
 	make.l('INFO', 'Converting tree...')

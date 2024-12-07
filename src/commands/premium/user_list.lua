@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class'):create()
+local command = require('class')('cm_premium_user_list')
 local page_framework = require('../../structures/page')
 
 function command:init()
@@ -76,7 +76,7 @@ function command:run(client, handler)
 
   if not value then
     if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
-    else page_framework:new(client, pages, 120000, handler):run() end
+    else page_framework(client, pages, 120000, handler):run() end
   else self:send_specific_page(client, handler, pages, page_num, value) end
 end
 
