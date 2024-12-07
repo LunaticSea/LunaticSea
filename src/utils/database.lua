@@ -1,5 +1,5 @@
 local lunaticdb = require('lunaticdb')
-local database = require('class'):create()
+local database = require('class')('database')
 
 function database:init(client)
 	self.client = client
@@ -28,9 +28,7 @@ end
 
 function database:small_db_load(driver, config)
 	for _, value in pairs(self.req_db) do
-		self.client._db[value] = lunaticdb.core
-      :new({ db_name = value })
-      :load(driver, config)
+		self.client._db[value] = lunaticdb.core({ db_name = value }):load(driver, config)
 	end
 end
 

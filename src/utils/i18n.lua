@@ -1,5 +1,5 @@
 local bunfs = require('../bundlefs.lua')
-local i18n = require('class'):create()
+local i18n = require('class')('i18n')
 
 function i18n:init(client)
 	self.client = client
@@ -12,7 +12,7 @@ end
 
 function i18n:read_dir()
 	local all_dir = function()
-		return bunfs:new():filter(self.client._ptree, 'translation')
+		return bunfs():filter(self.client._ptree, 'translation')
 	end
 	table.foreach(all_dir(), function(_, s_value)
 		local pattern = 'arisu_(.+)/'
@@ -47,7 +47,7 @@ function i18n:get_string(locate, dir, key, value)
 		pf_dir = table.concat({ locate, dir }, '\\')
 	end
 
-	local exact_dir = bunfs:new():filter(self.avaliable_dir, pf_dir)[1]
+	local exact_dir = bunfs():filter(self.avaliable_dir, pf_dir)[1]
 	local translation_data = require(exact_dir)
 	local res = translation_data[key]
 

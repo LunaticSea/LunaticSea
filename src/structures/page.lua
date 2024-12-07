@@ -1,4 +1,4 @@
-local page = require('class'):create()
+local page = require('class')('page')
 local discordia = require('discordia')
 
 function page:init(client, pages, timeout, handler)

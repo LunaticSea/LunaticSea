@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command = require('class'):create()
+local command = require('class')('cm_info_invite')
 
 function command:init()
 	self.name = { 'invite' }

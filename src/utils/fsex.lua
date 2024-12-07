@@ -1,6 +1,6 @@
 local fs = require('fs')
 local path = require('path')
-local fsex = require('class'):create()
+local fsex = require('class')('fsex')
 
 function fsex:init()
 end

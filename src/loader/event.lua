@@ -1,5 +1,5 @@
 local bundlefs = require('../bundlefs.lua')
-local event_loader = require('class'):create()
+local event_loader = require('class')('event_loader')
 
 function event_loader:init(client)
 	self.client = client
@@ -45,7 +45,7 @@ function event_loader:load_file_dir()
 			if self:is_win() then
 				params[2] = 'src\\events\\' .. value
 			end
-			return bundlefs:new():filter(table.unpack(params))
+			return bundlefs():filter(table.unpack(params))
 		end
 		table.foreach(all_dir(), function(_, s_value)
 			table.insert(self.all_dir, s_value)
