@@ -38,12 +38,12 @@ return function(client, interaction)
 
 	-- Get command data from cache
 	local command_name = table.concat(get_command_name(interaction.data), '-')
-	local command = client._commands[command_name]
+	local command = client.commands[command_name]
 	if not command then return end
 
 	-- Get languages
-	local language = client._db.language:get(interaction.guild.id)
-	if not language then language = client._i18n.default_locate end
+	local language = client.db.language:get(interaction.guild.id)
+	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
 	if (table.includes(
@@ -52,18 +52,18 @@ return function(client, interaction)
 	) and not interaction.member:hasPermission(permission_flags_bits.manageGuild)) then
 		interaction:reply({
 			embeds = { {
-				description = client._i18n:get(language, 'error', 'owner_only'),
-				color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+				description = client.i18n:get(language, 'error', 'owner_only'),
+				color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			} },
 		})
 		return
 	end
 
 	-- Accessable Checker
-	local is_owner = interaction.user.id == client._bot_owner
-	local is_admin = table.includes(client._config.bot.ADMIN, interaction.user.id)
-	local is_premium = client._db.premium:get(interaction.user.id)
-	local is_guild_premium = client._db.premium:get(interaction.guild.id)
+	local is_owner = interaction.user.id == client.bot_owner
+	local is_admin = table.includes(client.config.bot.ADMIN, interaction.user.id)
+	local is_premium = client.db.premium:get(interaction.user.id)
+	local is_guild_premium = client.db.premium:get(interaction.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
@@ -77,33 +77,33 @@ return function(client, interaction)
 
 	if table.includes(command.accessableby, accessableby.owner) and not user_perm.owner then
 		local embed = {
-			description = client._i18n:get(language, 'error', 'owner_only'),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(language, 'error', 'owner_only'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return interaction:reply({ embeds = { embed } })
 	end
 
 	if table.includes(command.accessableby, accessableby.admin) and not user_perm.admin then
 		local embed = {
-			description = client._i18n:get(language, 'error', 'user_no_perms', { 'dreamvast@admin' }),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(language, 'error', 'user_no_perms', { 'dreamvast@admin' }),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return interaction:reply({ embeds = { embed } })
 	end
 
-	function no_pre_embed(is_guild)
-		local no_pre_string = client._i18n:get(language, 'error', 'no_premium_desc')
+	local function no_pre_embed(is_guild)
+		local no_pre_string = client.i18n:get(language, 'error', 'no_premium_desc')
 		if is_guild then
-			no_pre_string = client._i18n:get(language, 'error', 'no_guild_premium_desc')
+			no_pre_string = client.i18n:get(language, 'error', 'no_guild_premium_desc')
 		end
 
 		local res = {
 		  author = {
-				name = client._i18n:get(language, 'error', 'no_premium_author'),
+				name = client.i18n:get(language, 'error', 'no_premium_author'),
 				iconURL = interaction.usetr:getAvatarURL()
 			},
 			description = no_pre_string,
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			timestamp = discordia.Date():toISO('T', 'Z'),
 		}
 
@@ -140,7 +140,7 @@ return function(client, interaction)
 	-- Command runner
 	local handler = command_handler({
 		interaction = interaction,
-		language = client._i18n.default_locate,
+		language = client.i18n.default_locate,
 		client = client,
 		args = args,
 		prefix = '/',
@@ -149,7 +149,7 @@ return function(client, interaction)
 	command:run(client, handler)
 
 	-- Log
-	client._logd:info(
+	client.logd:info(
 		'CommandManager | Interaction',
 		string.format(
 			'%s used by %s from %s (%s)',

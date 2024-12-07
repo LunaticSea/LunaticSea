@@ -1,40 +1,44 @@
-require('./utils/luaex.lua')
 local discordia = require('discordia')
-local dir = require('./bundlefs.lua')
-local package = require('../package.lua')
+local database = require('../utils/database')
+local bot_loader = require('../loader')
+local dir = require('../bundlefs.lua')
+local package = require('../../package.lua')
+local class = require('class')
 
--- Bot start
-return function(test_mode)
-	local client = discordia.Client({
+local lunatic = class('LunaticSea', discordia.Client)
+
+function lunatic:init(test_mode)
+	discordia.Client.__init(self, {
 		logFile = 'lunatic.sea.log',
 		gatewayFile = './/',
 		gatewayIntents = 53608447,
 		logEntryPad = 28,
 	})
 
-	client._logd = require('./utils/logger.lua')(client)
-	client._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
-	client._is_test_mode = test_mode
-	client._ptree = dir():get_all(test_mode)
-	client._config = require('./utils/config.lua')
-	client._i18n = require('./utils/i18n.lua')(client)
-	client._bot_owner = client._config.bot.OWNER_ID
-	client._commands = {}
-	client._total_commands = 0
-	client._command_categories = {}
-	client._c_alias = {}
-	client._db = {}
-	client._icons = client._config.icons
+	self.logd = require('../utils/logger.lua')(self)
+	self.logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
+	self.is_test_mode = test_mode
+	self.project_tree = dir():get_all(test_mode)
+	self.config = require('../utils/config.lua')
+	self.i18n = require('../utils/i18n.lua')(self)
+	self.bot_owner = self.config.bot.OWNER_ID
+	self.commands = {}
+	self.total_commands = 0
+	self.command_categories = {}
+	self.alias = {}
+	self.db = {}
+	self.icons = self.config.icons
 
-	require('./utils/database')(client):load()
-	require('./loader')(client)
+	database(self):load()
+	bot_loader(self)
 
-	if #client._config.bot.TOKEN == 0 then
+	if #self.config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
-
-	client:run(client._config.bot.TOKEN)
-	client:on('ready', function()
-		require('./services/deploy_service')(client):register()
-	end)
 end
+
+function lunatic:login()
+	self:run(self.config.bot.TOKEN)
+end
+
+return lunatic

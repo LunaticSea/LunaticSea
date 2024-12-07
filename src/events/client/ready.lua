@@ -1,3 +1,4 @@
 return function(client)
-	client._logd:info('ClientReady', 'Bot is ready! Welcome back ' .. client.user.username)
+	client.logd:info('ClientReady', 'Bot is ready! Welcome back ' .. client.user.username)
+	require('../../services/deploy_service')(client):register()
 end

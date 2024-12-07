@@ -61,10 +61,10 @@ function command:run(client, handler)
 
   if not plan or not table.includes(plans, plan) then
     local embed = {
-      description = client._i18n:get(handler.language, 'error', 'arg_error', {
+      description = client.i18n:get(handler.language, 'error', 'arg_error', {
         '**daily**, **weekly**, **monthly**, **yearly**, **lifetime**!'
       }),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },
@@ -73,8 +73,8 @@ function command:run(client, handler)
 
   if not amount then
     local embed = {
-      description = client._i18n:get(handler.language, 'error', 'arg_error', { '**Number**!' }),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'error', 'arg_error', { '**Number**!' }),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },
@@ -93,9 +93,9 @@ function command:run(client, handler)
 
   for i = 1, amount, 1 do
     local code_premium = self:code_gen(32, i + time)
-    local find = client._db.code:get(code_premium)
+    local find = client.db.code:get(code_premium)
     if not find then
-      client._db.code:set(code_premium, {
+      client.db.code:set(code_premium, {
         code = code_premium,
         plan = plan,
         expiresAt = time
@@ -109,15 +109,15 @@ function command:run(client, handler)
 
 	local embed = {
     author = {
-      name = client._i18n:get(handler.language, 'command.premium', 'gen_author')
+      name = client.i18n:get(handler.language, 'command.premium', 'gen_author')
     },
-		description = client._i18n:get(handler.language, 'command.premium', 'gen_desc', {
+		description = client.i18n:get(handler.language, 'command.premium', 'gen_desc', {
       #codes, table.concat(codes, '\n'), plan, formated_time
     }),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     timestamp = discordia.Date():toISO('T', 'Z'),
     footer = {
-      text = client._i18n:get(handler.language, 'command.premium', 'gen_footer', { '/' }),
+      text = client.i18n:get(handler.language, 'command.premium', 'gen_footer', { '/' }),
       iconURL = client.user:getAvatarURL()
     }
 	}

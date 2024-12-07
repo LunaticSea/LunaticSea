@@ -31,11 +31,11 @@ function command:run(client, handler)
 	local user = handler.user
 	local data = handler.args[0]
 	local getData = handler:parseMentions(data)
-	if data and get and getData.type == 1 then
+	if data and getData.type == 1 then
 	  user = getData.data
 	end
 
-	if user.id == client._bot_owner then
+	if user.id == client.bot_owner then
     local embed_args = { user.username, 'dreamvast@owner', 'lifetime' }
     local embed = self:embed_gen(client, handler, embed_args)
     return handler:edit_reply({ embeds = { embed } })
@@ -47,7 +47,7 @@ function command:run(client, handler)
     return handler:edit_reply({ embeds = { embed } })
 	end
 
-	local premium_plan = client._db.premium:get(user.id)
+	local premium_plan = client.db.premium:get(user.id)
 
 	if not premium_plan then
 	  local embed_args = { user.username }
@@ -72,11 +72,11 @@ function command:embed_gen(client, handler, desc_args, is_err)
 
   return {
     author = {
-      name = client._i18n:get(handler.language, 'command.premium', 'profile_author'),
+      name = client.i18n:get(handler.language, 'command.premium', 'profile_author'),
       iconURL = client.user:getAvatarURL()
     },
-		description = client._i18n:get(table.unpack(default_str)),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(table.unpack(default_str)),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		timestamp = discordia.Date():toISO('T', 'Z'),
 	}
 end

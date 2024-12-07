@@ -20,7 +20,7 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local premium_plan = client._db.preGuild:get(handler.guild.id)
+	local premium_plan = client.db.preGuild:get(handler.guild.id)
 
 	if not premium_plan then
     local embed = self:embed_gen(client, handler, {}, true)
@@ -47,11 +47,11 @@ function command:embed_gen(client, handler, desc_args, is_err)
 
   return {
     author = {
-      name = client._i18n:get(table.unpack(default_desc_str)),
+      name = client.i18n:get(table.unpack(default_desc_str)),
       iconURL = client.user:getAvatarURL()
     },
-		description = client._i18n:get(table.unpack(default_desc_str)),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(table.unpack(default_desc_str)),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		timestamp = discordia.Date():toISO('T', 'Z'),
 	}
 end

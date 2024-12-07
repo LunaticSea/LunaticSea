@@ -10,7 +10,7 @@ end
 
 function event_loader:is_win()
 	local BinaryFormat = package.cpath:match('%p[\\|/]?%p(%a+)')
-	if not self.client._is_test_mode then
+	if not self.client.is_test_mode then
 		return false
 	end
 	if BinaryFormat == 'dll' then
@@ -32,16 +32,16 @@ function event_loader:run()
 		self.client:on(e_name, function(...)
 			func(self.client, ...)
 		end)
-		-- self.client._logd:info('EventLoader', 'Loaded event: '.. e_name)
+		-- self.client.logd:info('EventLoader', 'Loaded event: '.. e_name)
 		self.event_count = self.event_count + 1
 	end)
-	self.client._logd:info('EventLoader', self.event_count .. ' client event loaded')
+	self.client.logd:info('EventLoader', self.event_count .. ' client event loaded')
 end
 
 function event_loader:load_file_dir()
 	for _, value in pairs(self.require) do
 		local all_dir = function()
-			local params = { self.client._ptree, 'src/events/' .. value }
+			local params = { self.client.project_tree, 'src/events/' .. value }
 			if self:is_win() then
 				params[2] = 'src\\events\\' .. value
 			end

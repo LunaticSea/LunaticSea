@@ -8,7 +8,7 @@ end
 
 function cmd_loader:is_win()
 	local BinaryFormat = package.cpath:match('%p[\\|/]?%p(%a+)')
-	if not self.client._is_test_mode then
+	if not self.client.is_test_mode then
 		return false
 	end
 	if BinaryFormat == 'dll' then
@@ -21,13 +21,13 @@ function cmd_loader:run()
 	self:load_file_dir()
 	self:register()
 
-	if self.client._total_commands > 0 then
-		self.client._logd:info(
+	if self.client.total_commands > 0 then
+		self.client.logd:info(
 			'CommandLoader',
-			string.format('%s command Loaded!', self.client._total_commands)
+			string.format('%s command Loaded!', self.client.total_commands)
 		)
 	else
-		self.client._logd:warn('CommandLoader', 'No command loaded, is everything ok?')
+		self.client.logd:warn('CommandLoader', 'No command loaded, is everything ok?')
 	end
 end
 
@@ -36,25 +36,25 @@ function cmd_loader:register()
 		local cmd_data = require(value)()
 		local cmd_name = table.concat(cmd_data.name, '-')
 
-		self.client._commands[cmd_name] = cmd_data
+		self.client.commands[cmd_name] = cmd_data
 
 		table.foreach(cmd_data.aliases, function(_, alias)
-			self.client._c_alias[alias] = cmd_name
+			self.client.alias[alias] = cmd_name
 		end)
 
-		if not self.client._command_categories[cmd_data.category] then
-			self.client._command_categories[cmd_data.category] = #self.client._command_categories
+		if not self.client.command_categories[cmd_data.category] then
+			self.client.command_categories[cmd_data.category] = #self.client.command_categories
 		end
 
-		-- self.client._logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
+		-- self.client.logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
 
-		self.client._total_commands = self.client._total_commands + 1
+		self.client.total_commands = self.client.total_commands + 1
 	end)
 end
 
 function cmd_loader:load_file_dir()
 	local all_dir = function()
-		local params = { self.client._ptree, 'src/commands/' }
+		local params = { self.client.project_tree, 'src/commands/' }
 		if self:is_win() then
 			params[2] = 'src\\commands\\'
 		end

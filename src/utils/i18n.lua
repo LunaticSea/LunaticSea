@@ -12,11 +12,11 @@ end
 
 function i18n:read_dir()
 	local all_dir = function()
-		return bunfs():filter(self.client._ptree, 'translation')
+		return bunfs():filter(self.client.project_tree, 'translation')
 	end
 	table.foreach(all_dir(), function(_, s_value)
 		local pattern = 'arisu_(.+)/'
-		if self.binf == 'dll' and self.client._is_test_mode then
+		if self.binf == 'dll' and self.client.is_test_mode then
 			pattern = 'arisu_(.+)\\'
 		end
 		local locate_name = string.match(s_value, pattern)
@@ -43,7 +43,7 @@ end
 
 function i18n:get_string(locate, dir, key, value)
 	local pf_dir = table.concat({ locate, dir }, '/')
-	if self.binf == 'dll' and self.client._is_test_mode then
+	if self.binf == 'dll' and self.client.is_test_mode then
 		pf_dir = table.concat({ locate, dir }, '\\')
 	end
 

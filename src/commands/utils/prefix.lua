@@ -23,8 +23,8 @@ function command:run(client, handler)
 
 	if not input_prefix then
 		local embed = {
-			description = client._i18n:get(handler.language, 'command.utils', 'prefix_arg'),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(handler.language, 'command.utils', 'prefix_arg'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
@@ -33,34 +33,34 @@ function command:run(client, handler)
 
 	if string.len(input_prefix) > 10 then
 		local embed = {
-			description = client._i18n:get(handler.language, 'command.utils', 'prefix_length'),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(handler.language, 'command.utils', 'prefix_length'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
 		})
 	end
 
-	local new_prefix = client._db.prefix:get(handler.guild.id)
+	local new_prefix = client.db.prefix:get(handler.guild.id)
 
 	if not new_prefix then
-		client._db.prefix:set(handler.guild.id, input_prefix)
+		client.db.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
-			description = client._i18n:get(handler.language, 'command.utils', 'prefix_set', {
+			description = client.i18n:get(handler.language, 'command.utils', 'prefix_set', {
 				input_prefix,
 			}),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
 		})
 	else
-		client._db.prefix:set(handler.guild.id, input_prefix)
+		client.db.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
-			description = client._i18n:get(handler.language, 'command.utils', 'prefix_change', {
+			description = client.i18n:get(handler.language, 'command.utils', 'prefix_change', {
 				input_prefix,
 			}),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },

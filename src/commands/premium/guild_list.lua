@@ -33,15 +33,15 @@ function command:run(client, handler)
 
 	if value and type(value) ~= 'number' then
 	  local embed = {
-      description = client._i18n:get(handler.language, 'error', 'number_invalid'),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'error', 'number_invalid'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },
     })
 	end
 
-	local guilds = table.map(client._db.preGuild:all(), function (element)
+	local guilds = table.map(client.db.preGuild:all(), function (element)
 	  return element.data
 	end)
 
@@ -62,9 +62,9 @@ function command:run(client, handler)
 
     local embed = {
       author = {
-        name = client._i18n:get(handler.language, "command.premium", "guild_list_title")
+        name = client.i18n:get(handler.language, "command.premium", "guild_list_title")
       },
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
       description = str == "" and "  Nothing" or "\n" + str,
       footer = {
         text = i .. "/" .. page_num
@@ -84,8 +84,8 @@ end
 function command:send_specific_page(client, handler, pages, page_num, value)
   if value > page_num then
     local embed = {
-      description = client._i18n:get(handler.language, 'command.premium', 'guild_list_page_notfound', page_num),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'command.premium', 'guild_list_page_notfound', page_num),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },

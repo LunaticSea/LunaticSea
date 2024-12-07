@@ -34,9 +34,9 @@ function command:run(client, handler)
 
 	local embed_data = {
 		title = 'RainyXeon',
-		description = client._i18n:get(handler.language, 'command.info', 'dev_footer'),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-		footer = { text = client._i18n:get(handler.language, 'command.info', 'dev_footer') },
+		description = client.i18n:get(handler.language, 'command.info', 'dev_footer'),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+		footer = { text = client.i18n:get(handler.language, 'command.info', 'dev_footer') },
 	}
 
 	handler:edit_reply({

@@ -32,13 +32,13 @@ function command:run(client, handler)
 		return self:send_all_commands()
 	end
 	local arg = handler.args[1]
-	local res_command = client._commands[client._c_alias[arg] or arg]
+	local res_command = client.commands[client.alias[arg] or arg]
 
 	if not res_command then
 		local embed = {
-			title = client._i18n:get(handler.language, 'command.info', 'ce_finder_invalid'),
-			description = client._i18n:get(handler.language, 'command.info', 'ce_finder_example'),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			title = client.i18n:get(handler.language, 'command.info', 'ce_finder_invalid'),
+			description = client.i18n:get(handler.language, 'command.info', 'ce_finder_example'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		handler:edit_reply({
 			embeds = { embed },
@@ -52,7 +52,7 @@ function command:run(client, handler)
 	local embed = {
 		thumbnail = { url = self.client.user:getAvatarURL() or self.client.user:defaultAvatarURL() },
 		description = desc,
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	}
 
 	handler:edit_reply({
@@ -109,8 +109,8 @@ end
 
 function command:send_all_commands()
 	local field_embed = {}
-	for category, _ in pairs(self.client._command_categories) do
-		local same_category_command = command:table_filter(self.client._commands, function(data)
+	for category, _ in pairs(self.client.command_categories) do
+		local same_category_command = command:table_filter(self.client.commands, function(data)
 			return data.category == category
 		end)
 
@@ -134,13 +134,13 @@ function command:send_all_commands()
 	end
 
 	local embed = {
-		author = { name = self.client._i18n:get(self.handler.language, 'command.info', 'ce_name') },
-		color = discordia.Color.fromHex(self.client._config.bot.EMBED_COLOR).value,
+		author = { name = self.client.i18n:get(self.handler.language, 'command.info', 'ce_name') },
+		color = discordia.Color.fromHex(self.client.config.bot.EMBED_COLOR).value,
 		thumbnail = { url = self.client.user:getAvatarURL() or self.client.user:defaultAvatarURL() },
 		fields = field_embed,
 		footer = {
-			text = self.client._i18n:get(self.handler.language, 'command.info', 'ce_total') .. tostring(
-				self.client._total_commands
+			text = self.client.i18n:get(self.handler.language, 'command.info', 'ce_total') .. tostring(
+				self.client.total_commands
 			),
 			url = self.client.user:getDefaultAvatarURL(),
 		},
@@ -153,30 +153,30 @@ end
 
 function command:translated_finder()
 	return {
-		name = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_name'),
-		des = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_des'),
-		usage = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_usage'),
-		access = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_access'),
-		aliases = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_aliases'),
-		slash = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_slash'),
-		desNone = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_des_no'),
-		usageNone = self.client._i18n:get(self.handler.language, 'command.info', 'ce_finder_usage_no'),
-		aliasesPrefix = self.client._i18n:get(
+		name = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_name'),
+		des = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_des'),
+		usage = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_usage'),
+		access = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_access'),
+		aliases = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_aliases'),
+		slash = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_slash'),
+		desNone = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_des_no'),
+		usageNone = self.client.i18n:get(self.handler.language, 'command.info', 'ce_finder_usage_no'),
+		aliasesPrefix = self.client.i18n:get(
 			self.handler.language,
 			'command.info',
 			'ce_finder_aliases_prefix'
 		),
-		aliasesNone = self.client._i18n:get(
+		aliasesNone = self.client.i18n:get(
 			self.handler.language,
 			'command.info',
 			'ce_finder_aliases_no'
 		),
-		slashEnable = self.client._i18n:get(
+		slashEnable = self.client.i18n:get(
 			self.handler.language,
 			'command.info',
 			'ce_finder_slash_enable'
 		),
-		slashDisable = self.client._i18n:get(
+		slashDisable = self.client.i18n:get(
 			self.handler.language,
 			'command.info',
 			'ce_finder_slash_disable'
