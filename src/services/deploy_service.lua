@@ -7,31 +7,31 @@ function deploy_service:init(client)
 end
 
 function deploy_service:register()
-	self.client._logd:info('DeployService', 'Finding interaction commands...')
+	self.client.logd:info('DeployService', 'Finding interaction commands...')
 
-	local store = table.filter(self.client._commands, function(command)
+	local store = table.filter(self.client.commands, function(command)
 		if command.usingInteraction then
 			return true
 		end
 	end)
 
 	if #store == 0 then
-		return self.client._logd:info('DeployService', 'No interactions found. Exiting auto deploy...')
+		return self.client.logd:info('DeployService', 'No interactions found. Exiting auto deploy...')
 	end
 
-	self.client._logd:info(
+	self.client.logd:info(
 		'DeployService',
 		'Finding interaction commands completed, converting ' .. #store .. ' commands...'
 	)
 	local commands = self:parseEngine(store)
 
-	self.client._logd:info(
+	self.client.logd:info(
 		'DeployService',
 		'Convert commands to body completed, now register all commands to discord'
 	)
 	self.client._api:registerApplicationCommands(self.client.user.id, commands)
 
-	self.client._logd:info('DeployService', 'Interactions deployed! Exiting auto deploy...')
+	self.client.logd:info('DeployService', 'Interactions deployed! Exiting auto deploy...')
 end
 
 function deploy_service:parseEngine(store)

@@ -30,8 +30,8 @@ function command:run(client, handler)
 
 	if data and getData and getData.type ~= 1 then
 		local embed = {
-			description = client._i18n:get(handler.language, 'error', 'arg_error', { '**@mention**!' }),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(handler.language, 'error', 'arg_error', { '**@mention**!' }),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
@@ -43,7 +43,7 @@ function command:run(client, handler)
 
 	if value and value ~= 'error' then
 		local embed = {
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			timestamp = discordia.Date():toISO('T', 'Z'),
 			title = value.username,
 			image = { url = string.format(template, value.id, value.avatar) },
@@ -53,7 +53,7 @@ function command:run(client, handler)
 		})
 	else
 		local embed = {
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			timestamp = discordia.Date():toISO('T', 'Z'),
 			title = value.username,
 			image = { url = string.format(template, handler.user.id, handler.user.avatar) },

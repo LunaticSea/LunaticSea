@@ -69,8 +69,8 @@ function command:run(client, handler)
 
   if #valid_input == 0 then
     local embed = {
-      description = client._i18n:get(handler.language, 'command.admin', 'bl_invalid_mode'),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'command.admin', 'bl_invalid_mode'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },
@@ -83,8 +83,8 @@ function command:run(client, handler)
 
   if #valid_type == 0 then
     local embed = {
-      description = client._i18n:get(handler.language, 'command.admin', 'bl_invalid_type'),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'command.admin', 'bl_invalid_type'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({
       embeds = { embed },
@@ -94,10 +94,10 @@ function command:run(client, handler)
   local key_data = string.format('%s_%s', type, id)
   if mode == 'remove' then return self:remove_data(client, handler, key_data, id) end
 
-  client._db.blacklist:set(key_data, true)
+  client.db.blacklist:set(key_data, true)
   local embed = {
-		description = client._i18n:get(handler.language, 'command.admin', 'bl_add', { id }),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(handler.language, 'command.admin', 'bl_add', { id }),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	}
 	handler:edit_reply({
 		embeds = { embed },
@@ -105,11 +105,11 @@ function command:run(client, handler)
 end
 
 function command:remove_data(client, handler, key_data, id)
-  client._db.blacklist:delete(key_data)
+  client.db.blacklist:delete(key_data)
 
   local embed = {
-		description = client._i18n:get(handler.language, 'command.admin', 'bl_remove', { id }),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(handler.language, 'command.admin', 'bl_remove', { id }),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	}
 	handler:edit_reply({
 		embeds = { embed },

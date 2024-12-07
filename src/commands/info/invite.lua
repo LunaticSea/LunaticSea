@@ -35,8 +35,8 @@ function command:run(client, handler)
 
 	local embed_data = {
 		title = string.format('✉️ %s', client.user.username),
-		description = client._i18n:get(handler.language, 'command.info', 'invite_desc'),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(handler.language, 'command.info', 'invite_desc'),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	}
 
 	handler:edit_reply({

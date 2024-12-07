@@ -21,13 +21,11 @@ function command:run(client, handler)
 	handler:defer_reply()
 
 	local embed = {
-		description = client._i18n:get(handler.language, 'command.admin', 'restart_msg'),
-		color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+		description = client.i18n:get(handler.language, 'command.admin', 'restart_msg'),
+		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	}
-	local msg = handler:edit_reply({
-		embeds = { embed },
-		components = testActionRow,
-	})
+
+	handler:edit_reply({ embeds = { embed } })
 
 	os.exit()
 end

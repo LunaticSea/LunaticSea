@@ -31,30 +31,30 @@ function command:run(client, handler)
 
   if not id then
     local embed = {
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-      description = client._i18n:get(handler.language, 'command.premium', 'guild_remove_no_params'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'command.premium', 'guild_remove_no_params'),
     }
     return handler:edit_reply({
       embeds = { embed },
     })
   end
 
-  local db = client._db.preGuild:get(id)
+  local db = client.db.preGuild:get(id)
 
   if not db then
     local embed = {
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-      description = client._i18n:get(handler.language, 'command.premium', 'guild_remove_404', { id }),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(handler.language, 'command.premium', 'guild_remove_404', { id }),
     }
     return handler:edit_reply({
       embeds = { embed },
     })
   end
 
-  client._db.premium:delete(id)
+  client.db.premium:delete(id)
   local embed = {
-    color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
-    description = client._i18n:get(handler.language, 'command.premium', 'guild_remove_desc', {
+    color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+    description = client.i18n:get(handler.language, 'command.premium', 'guild_remove_desc', {
       db.redeemedBy.name
     }),
   }

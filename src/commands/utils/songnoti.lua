@@ -36,13 +36,13 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 	local input_songnoti = handler.args[1]
-  local original_value = client._db.songNoti:get(handler.guild.id)
+  local original_value = client.db.songNoti:get(handler.guild.id)
   local is_satisfy = input_songnoti == 'enable' or input_songnoti == 'disable'
 
   if not input_songnoti or not is_satisfy then
     local embed = {
-			description = client._i18n:get(handler.language, 'error', 'arg_error', { '**enable** or **disable**!' }),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(handler.language, 'error', 'arg_error', { '**enable** or **disable**!' }),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
@@ -53,8 +53,8 @@ function command:run(client, handler)
     local mode = handler.modeLang.enable
     if original_value == 'disable' then mode = handler.modeLang.disable end
     local embed = {
-			description = client._i18n:get(handler.language, 'command.utils', 'songnoti_already', { mode }),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(handler.language, 'command.utils', 'songnoti_already', { mode }),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return handler:edit_reply({
 			embeds = { embed },
@@ -64,10 +64,10 @@ function command:run(client, handler)
   local mode = handler.modeLang.enable
   if input_songnoti == 'disable' then mode = handler.modeLang.disable end
 
-  client._db.songNoti:set(handler.guild.id, input_songnoti)
+  client.db.songNoti:set(handler.guild.id, input_songnoti)
   local embed = {
-    description = client._i18n:get(handler.language, 'command.utils', 'songnoti_set', { mode }),
-    color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+    description = client.i18n:get(handler.language, 'command.utils', 'songnoti_set', { mode }),
+    color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }
   return handler:edit_reply({
     embeds = { embed },

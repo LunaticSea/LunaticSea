@@ -69,8 +69,8 @@ end
 
 function command_handler:get_mode_lang_data()
 	return {
-		enable = self.client._i18n:get(self.language, 'global', 'enable'),
-		disable = self.client._i18n:get(self.language, 'global', 'disable'),
+		enable = self.client.i18n:get(self.language, 'global', 'enable'),
+		disable = self.client.i18n:get(self.language, 'global', 'disable'),
 	}
 end
 
@@ -106,7 +106,7 @@ end
 
 function command_handler:edit_reply(data)
 	if not self.msg then
-		self.client._logd:error('CommandHandler', 'You have not declared deferReply()')
+		self.client.logd:error('CommandHandler', 'You have not declared deferReply()')
 		return nil
 	end
 	if not data.content then

@@ -26,8 +26,8 @@ return function(client, message)
 	if message.author.bot then return end
 
 	-- Get Command Data From Cache
-	local guild_prefix = client._db.prefix:get(message.guild.id)
-	local prefix = guild_prefix or client._config.utilities.PREFIX
+	local guild_prefix = client.db.prefix:get(message.guild.id)
+	local prefix = guild_prefix or client.config.utilities.PREFIX
 	local special_prefix = special_prefix(prefix)
 	prefix = special_prefix.original
 
@@ -40,15 +40,15 @@ return function(client, message)
 	local command_req = args[1]
 	table.remove(args, 1)
 
-	local command_req_alias = client._c_alias[command_req]
+	local command_req_alias = client.alias[command_req]
 	local command_name = command_req_alias or command_req
 
-	local command = client._commands[command_name]
+	local command = client.commands[command_name]
 	if not command then return end
 
 	-- Get languages
-	local language = client._db.language:get(message.guild.id)
-	if not language then language = client._i18n.default_locate end
+	local language = client.db.language:get(message.guild.id)
+	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
 	if (table.includes(
@@ -57,8 +57,8 @@ return function(client, message)
 	) and not message.member:hasPermission(permission_flags_bits.manageGuild)) then
 		message:reply({
 			embeds = { {
-				description = client._i18n:get(language, 'error', 'owner_only'),
-				color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+				description = client.i18n:get(language, 'error', 'owner_only'),
+				color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			} },
 			reference = {
 				message = message,
@@ -69,10 +69,10 @@ return function(client, message)
 	end
 
 	-- Accessable Checker
-	local is_owner = message.author.id == client._bot_owner
-	local is_admin = table.includes(client._config.bot.ADMIN, message.author.id)
-	local is_premium = client._db.premium:get(message.author.id)
-	local is_guild_premium = client._db.premium:get(message.guild.id)
+	local is_owner = message.author.id == client.owner
+	local is_admin = table.includes(client.config.bot.ADMIN, message.author.id)
+	local is_premium = client.db.premium:get(message.author.id)
+	local is_guild_premium = client.db.premium:get(message.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
@@ -91,33 +91,33 @@ return function(client, message)
 
 	if table.includes(command.accessableby, accessableby.owner) and not user_perm.owner then
 	  local embed = {
-      description = client._i18n:get(language, 'error', 'owner_only'),
-      color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+      description = client.i18n:get(language, 'error', 'owner_only'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 	  }
 		return message:reply({ embeds = { embed }, reference = ref, })
 	end
 
 	if table.includes(command.accessableby, accessableby.admin) and not user_perm.admin then
 		local embed = {
-			description = client._i18n:get(language, 'error', 'user_no_perms', { 'dreamvast@admin' }),
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			description = client.i18n:get(language, 'error', 'user_no_perms', { 'dreamvast@admin' }),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return message:reply({ embeds = { embed }, reference = ref, })
 	end
 
-	function no_pre_embed(is_guild)
-		local no_pre_string = client._i18n:get(language, 'error', 'no_premium_desc')
+	local function no_pre_embed(is_guild)
+		local no_pre_string = client.i18n:get(language, 'error', 'no_premium_desc')
 		if is_guild then
-			no_pre_string = client._i18n:get(language, 'error', 'no_guild_premium_desc')
+			no_pre_string = client.i18n:get(language, 'error', 'no_guild_premium_desc')
 		end
 
 		local res = {
 		  author = {
-				name = client._i18n:get(language, 'error', 'no_premium_author'),
-				iconURL = interaction.usetr:getAvatarURL()
+				name = client.i18n:get(language, 'error', 'no_premium_author'),
+				iconURL = message.author:getAvatarURL()
 			},
 			description = no_pre_string,
-			color = discordia.Color.fromHex(client._config.bot.EMBED_COLOR).value,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			timestamp = discordia.Date():toISO('T', 'Z'),
 		}
 
@@ -125,11 +125,11 @@ return function(client, message)
 	end
 
 	if not is_both_user_and_guild and is_user_premium_access and not user_perm.premium then
-		return interaction:reply({ embeds = { no_pre_embed() } })
+		return message:reply({ embeds = { no_pre_embed() } })
 	end
 
 	if not is_both_user_and_guild and is_guild_premium_access and not user_perm.guild_pre then
-		return interaction:reply({ embeds = { no_pre_embed(true) } })
+		return message:reply({ embeds = { no_pre_embed(true) } })
 	end
 
 	-- Command runner
@@ -144,7 +144,7 @@ return function(client, message)
 	command:run(client, handler)
 
 	-- Log
-	client._logd:info(
+	client.logd:info(
 		'CommandManager | Message',
 		string.format(
 			'%s used by %s from %s (%s)',

@@ -53,13 +53,13 @@ end
 function page:generate_button_array()
   local back_button = discordia.Button({
     id = "back",
-    emoji = self.client._icons.GLOBAL.arrow_previous,
+    emoji = self.client.icons.GLOBAL.arrow_previous,
     style = "secondary"
   })
 
   local next_button = discordia.Button({
     id = "next",
-    emoji = self.client._icons.GLOBAL.arrow_next,
+    emoji = self.client.icons.GLOBAL.arrow_next,
     style = "secondary"
   })
 
