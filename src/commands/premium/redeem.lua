@@ -93,8 +93,8 @@ function command:run(client, handler)
     })
   end
 
-  local pre_data = client._database.premium:get(handler.user.id)
-  if (type == 'guild') then pre_data = client._database.preGuild:get(handler.guild.id) end
+  local pre_data = client.database.premium:get(handler.user.id)
+  if (type == 'guild') then pre_data = client.database.preGuild:get(handler.guild.id) end
 
   if pre_data and pre_data.isPremium then
     local lang_key = 'redeem_already'
@@ -110,7 +110,7 @@ function command:run(client, handler)
     })
   end
 
-  local premium = client._database.code:get(input_code)
+  local premium = client.database.code:get(input_code)
   local is_expired = premium and premium.expiresAt ~= 15052008 and premium.expiresAt < os.time()
 
   if not premium or is_expired then
@@ -138,13 +138,13 @@ function command:run(client, handler)
 		timestamp = discordia.Date():toISO('T', 'Z'),
 	}
 
-	client._database.code:delete(input_code)
+	client.database.code:delete(input_code)
 
 	handler:edit_reply({
 		embeds = { embed },
 	})
 
-	local target_db = client._database.premium
+	local target_db = client.database.premium
 	local target_id = handler.user.id
 	local target_redeemed_by = {
 	  id = handler.user.id,
@@ -156,7 +156,7 @@ function command:run(client, handler)
 	}
 
   if (type == 'guild') then
-    target_db = client._database.preGuild
+    target_db = client.database.preGuild
     target_id = handler.guild.id
     target_redeemed_by = {
       id = handler.guild.id,

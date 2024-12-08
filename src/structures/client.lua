@@ -65,6 +65,10 @@ function get:icons()
 	return self._icons
 end
 
+function get:database()
+	return self._database
+end
+
 function lunatic:login()
 	self:run(self.config.bot.TOKEN)
 end

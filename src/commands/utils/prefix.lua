@@ -67,10 +67,10 @@ function command:run(client, handler)
 		})
 	end
 
-	local new_prefix = client._database.prefix:get(handler.guild.id)
+	local new_prefix = client.database.prefix:get(handler.guild.id)
 
 	if not new_prefix then
-		client._database.prefix:set(handler.guild.id, input_prefix)
+		client.database.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'prefix_set', {
 				input_prefix,
@@ -81,7 +81,7 @@ function command:run(client, handler)
 			embeds = { embed },
 		})
 	else
-		client._database.prefix:set(handler.guild.id, input_prefix)
+		client.database.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'prefix_change', {
 				input_prefix,
