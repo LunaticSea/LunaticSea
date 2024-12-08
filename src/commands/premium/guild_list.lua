@@ -1,22 +1,48 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_guild_list')
+local command, get = require('class')('cm_premium_guild_list')
 local page_framework = require('../../structures/page')
 
-function command:init()
-	self.name = { 'pm', 'guild', 'list' }
-	self.description = 'View all existing premium guild!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.admin }
-	self.usage = ''
-	self.aliases = { 'pmgl' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'pm', 'guild', 'list' }
+end
+
+function get:description()
+	return 'View all existing premium guild!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.admin }
+end
+
+function get:usage()
+	return '<number>'
+end
+
+function get:aliases()
+	return { 'pmgl' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
 	  {
       name = 'page',
       description = 'Page number to show.',
@@ -41,7 +67,7 @@ function command:run(client, handler)
     })
 	end
 
-	local guilds = table.map(client.db.preGuild:all(), function (element)
+	local guilds = table.map(client._database.preGuild:all(), function (element)
 	  return element.data
 	end)
 

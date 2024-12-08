@@ -1,20 +1,46 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command = require('class')('cm_owner_shutdown')
+local command, get = require('class')('cm_owner_shutdown')
 
-function command:init()
-	self.name = { 'shutdown' }
-	self.description = 'Shuts down the client!'
-	self.category = 'owner'
-	self.accessableby = { accessableby.owner }
-	self.usage = ''
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {}
+function get:name()
+	return { 'shutdown' }
+end
+
+function get:description()
+	return 'Shuts down the client!'
+end
+
+function get:category()
+	return 'owner'
+end
+
+function get:accessableby()
+	return { accessableby.owner }
+end
+
+function get:usage()
+	return ''
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {}
 end
 
 function command:run(client, handler)

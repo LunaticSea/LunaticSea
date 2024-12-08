@@ -1,28 +1,46 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_profile')
+local command, get = require('class')('cm_premium_profile')
 
-function command:init()
-	self.name = { 'pm', 'profile' }
-	self.description = 'View your premium profile!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.member }
-	self.usage = ''
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
-	  {
-      name = 'user',
-      description = 'The code you want to redeem',
-      type = applicationCommandOptionType.user,
-      required = true,
-    },
+function get:name()
+	return { 'pm', 'profile' }
+end
+
+function get:description()
+	return 'View your premium profile!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.member }
+end
+
+function get:usage()
+	return ''
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
 	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {}
 end
 
 function command:run(client, handler)
@@ -47,7 +65,7 @@ function command:run(client, handler)
     return handler:edit_reply({ embeds = { embed } })
 	end
 
-	local premium_plan = client.db.premium:get(user.id)
+	local premium_plan = client._database.premium:get(user.id)
 
 	if not premium_plan then
 	  local embed_args = { user.username }

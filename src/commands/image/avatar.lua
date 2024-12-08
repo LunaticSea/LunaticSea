@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_image_avatar')
+local command, get = require('class')('cm_image_avatar')
 
-function command:init()
-	self.name = { 'avatar' }
-	self.description = "Show your or someone else's profile picture"
-	self.category = 'image'
-	self.accessableby = { accessableby.member }
-	self.usage = '<mention>'
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = { {
+function get:name()
+	return { 'avatar' }
+end
+
+function get:description()
+	return "Show your or someone else's profile picture"
+end
+
+function get:category()
+	return 'image'
+end
+
+function get:accessableby()
+	return { accessableby.member }
+end
+
+function get:usage()
+	return '<mention>'
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return { {
 		name = 'user',
 		description = 'Type your user here',
 		type = applicationCommandOptionType.user,

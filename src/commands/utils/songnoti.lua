@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_utils_songnoti')
+local command, get = require('class')('cm_utils_songnoti')
 
-function command:init()
-	self.name = { 'songnoti' }
-	self.description = 'Enable or disable the player control notifications'
-	self.category = 'utils'
-	self.accessableby = { accessableby.manager }
-	self.usage = '<enable> or <disable>'
-	self.aliases = { 'song-noti', 'snt', 'sn' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = { {
+function get:name()
+	return { 'songnoti' }
+end
+
+function get:description()
+	return 'Enable or disable the player control notifications'
+end
+
+function get:category()
+	return 'utils'
+end
+
+function get:accessableby()
+	return { accessableby.manager }
+end
+
+function get:usage()
+	return '<enable> or <disable>'
+end
+
+function get:aliases()
+	return { 'song-noti', 'snt', 'sn' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return { {
 		name = 'type',
 		description = 'Choose enable or disable',
 		type = applicationCommandOptionType.string,
@@ -33,10 +59,11 @@ function command:init()
 	} }
 end
 
+
 function command:run(client, handler)
 	handler:defer_reply()
 	local input_songnoti = handler.args[1]
-  local original_value = client.db.songNoti:get(handler.guild.id)
+  local original_value = client._database.songNoti:get(handler.guild.id)
   local is_satisfy = input_songnoti == 'enable' or input_songnoti == 'disable'
 
   if not input_songnoti or not is_satisfy then
@@ -64,7 +91,7 @@ function command:run(client, handler)
   local mode = handler.modeLang.enable
   if input_songnoti == 'disable' then mode = handler.modeLang.disable end
 
-  client.db.songNoti:set(handler.guild.id, input_songnoti)
+  client._database.songNoti:set(handler.guild.id, input_songnoti)
   local embed = {
     description = client.i18n:get(handler.language, 'command.utils', 'songnoti_set', { mode }),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,

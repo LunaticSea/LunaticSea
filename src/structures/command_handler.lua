@@ -1,5 +1,5 @@
 local dia = require('discordia')
-local command_handler = require('class')('command_handler')
+local command_handler, get = require('class')('command_handler')
 
 local mention_enums = {
 	ERROR = 0,
@@ -10,123 +10,141 @@ local mention_enums = {
 }
 
 function command_handler:init(options)
-	self.msg = nil
-	self.attactments = {}
-	self.client = options.client
-	self.interaction = options.interaction
-	self.message = options.message
-	self.language = options.language
-	self.guild = self:get_guild_data()
-	self.user = self:get_user_data()
-	self.member = self:get_member_data()
-	self.args = options.args or {}
-	self.createdAt = self:get_created_timestamp()
-	self.prefix = options.prefix
-	self.channel = self:get_channel_data()
-	self.modeLang = self:get_mode_lang_data()
-	self.USERS_PATTERN = '@[%d]+'
-	self.ROLES_PATTERN = '@&[%d]+'
-	self.CHANNELS_PATTERN = '#[%d]+'
-	self.EVERYONE_PATTERN = '@everyone'
-	self.HERE_PATTERN = '@here'
-	self.mention_enums = mention_enums
+	self._msg = nil
+	self._attactments = {}
+	self._client = options.client
+	self._interaction = options.interaction
+	self._message = options.message
+	self._language = options.language
+	self._args = options.args or {}
+	self._prefix = options.prefix
+	self._USERS_PATTERN = '@[%d]+'
+	self._ROLES_PATTERN = '@&[%d]+'
+	self._CHANNELS_PATTERN = '#[%d]+'
+	self._EVERYONE_PATTERN = '@everyone'
+	self._HERE_PATTERN = '@here'
+	self._mention_enums = mention_enums
 end
 
-function command_handler:get_guild_data()
-	if self.interaction then
-		return self.interaction.guild
+function get:client()
+	return self._client
+end
+
+function get:attactments()
+	return self._attactments
+end
+
+function get:message()
+	return self._message
+end
+
+function get:language()
+	return self._language
+end
+
+function get:args()
+	return self._args
+end
+
+function get:prefix()
+	return self._prefix
+end
+
+function get:guild()
+	if self._interaction then
+		return self._interaction.guild
 	end
-	return self.message.guild
+	return self._message.guild
 end
 
-function command_handler:get_user_data()
-	if self.interaction then
-		return self.interaction.user
+function get:user()
+	if self._interaction then
+		return self._interaction.user
 	end
-	return self.message.author
+	return self._message.author
 end
 
-function command_handler:get_member_data()
-	if self.interaction then
-		return self.interaction.member
+function get:member_data()
+	if self._interaction then
+		return self._interaction.member
 	end
-	return self.message.member
+	return self._message.member
 end
 
-function command_handler:get_created_timestamp()
-	if self.interaction then
-		return dia.Date.parseSnowflake(self.interaction.id)
+function get:createdAt()
+	if self._interaction then
+		return dia.Date.parseSnowflake(self._interaction.id)
 	end
-	return dia.Date.parseSnowflake(self.message.id)
+	return dia.Date.parseSnowflake(self._message.id)
 end
 
-function command_handler:get_channel_data()
-	if self.interaction then
-		return self.interaction.channel
+function get:channel_data()
+	if self._interaction then
+		return self._interaction.channel
 	end
-	return self.message.channel
+	return self._message.channel
 end
 
-function command_handler:get_mode_lang_data()
+function get:mode_lang_data()
 	return {
-		enable = self.client.i18n:get(self.language, 'global', 'enable'),
-		disable = self.client.i18n:get(self.language, 'global', 'disable'),
+		enable = self._client.i18n:get(self._language, 'global', 'enable'),
+		disable = self._client.i18n:get(self._language, 'global', 'disable'),
 	}
 end
 
 function command_handler:send_message(data)
-	if self.interaction then
-		return self.interaction:reply(data)
+	if self._interaction then
+		return self._interaction:reply(data)
 	end
-	return self.message:reply(data)
+	return self._message:reply(data)
 end
 
 function command_handler:follow_up(data)
-	if self.interaction then
-		return self.interaction:followUp(data)
+	if self._interaction then
+		return self._interaction:followUp(data)
 	end
-	return self.message:reply(data)
+	return self._message:reply(data)
 end
 
 function command_handler:defer_reply()
-	if self.interaction then
-		self.deferred = self.interaction:replyDeferred()
-		self.msg = self.deferred
-		return self.msg
+	if self._interaction then
+		self._deferred = self._interaction:replyDeferred()
+		self._msg = self._deferred
+		return self._msg
 	end
-	self.msg = self.message:reply({
-		content = string.format('**%s** is thinking...', self.client.user.username),
+	self._msg = self._message:reply({
+		content = string.format('**%s** is thinking...', self._client.user.username),
 		reference = {
-			message = self.message,
+			message = self._message,
 			mention = false,
 		},
 	})
-	return self.msg
+	return self._msg
 end
 
 function command_handler:edit_reply(data)
-	if not self.msg then
-		self.client.logd:error('CommandHandler', 'You have not declared deferReply()')
+	if not self._msg then
+		self._client.logd:error('CommandHandler', 'You have not declared deferReply()')
 		return nil
 	end
 	if not data.content then
 		data.content = ''
 	end
-	if self.interaction then
-	  self.interaction:reply(data)
-		return self.interaction
+	if self._interaction then
+	  self._interaction:reply(data)
+		return self._interaction
 	end
-	self.msg:update(data)
-	return self.msg
+	self._msg:update(data)
+	return self._msg
 end
 
 function command_handler:parse_mentions(data)
 	data = data or ''
 	-- Check user
-	local user_match = string.match(data, self.USERS_PATTERN)
+	local user_match = string.match(data, self._USERS_PATTERN)
 	if user_match then
 		local id = user_match:sub(2)
-		local user = self.client:getUser(id)
+		local user = self._client:getUser(id)
 		if not user or (user == nil) then
 			return {
 				type = mention_enums.ERROR,
@@ -140,10 +158,10 @@ function command_handler:parse_mentions(data)
 	end
 
 	-- Check channel
-	local channel_match = string.match(data, self.CHANNELS_PATTERN)
+	local channel_match = string.match(data, self._CHANNELS_PATTERN)
 	if channel_match then
 		local id = channel_match:sub(2)
-		local channel = self.client:getChannel(id)
+		local channel = self._client:getChannel(id)
 		if not channel or (channel == nil) then
 			return {
 				type = mention_enums.ERROR,
@@ -157,10 +175,10 @@ function command_handler:parse_mentions(data)
 	end
 
 	-- Check role
-	local role_match = string.match(data, self.ROLES_PATTERN)
+	local role_match = string.match(data, self._ROLES_PATTERN)
 	if role_match then
 		local id = role_match:sub(3)
-		local role = self.client:getRole(id)
+		local role = self._client:getRole(id)
 		if not role or (role == nil) then
 			return {
 				type = mention_enums.ERROR,
@@ -174,8 +192,8 @@ function command_handler:parse_mentions(data)
 	end
 
 	-- Check everyone / here
-	local everyone_match = string.match(data, self.EVERYONE_PATTERN)
-	local here_match = string.match(data, self.HERE_PATTERN)
+	local everyone_match = string.match(data, self._EVERYONE_PATTERN)
+	local here_match = string.match(data, self._HERE_PATTERN)
 	if everyone_match or here_match then
 		return {
 			type = mention_enums.EVERYONE,

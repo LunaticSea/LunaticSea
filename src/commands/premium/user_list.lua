@@ -1,22 +1,48 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_user_list')
+local command, get = require('class')('cm_premium_user_list')
 local page_framework = require('../../structures/page')
 
-function command:init()
-	self.name = { 'pm', 'list' }
-	self.description = 'View all existing premium user!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.admin }
-	self.usage = ''
-	self.aliases = { 'pml' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'pm', 'list' }
+end
+
+function get:description()
+	return 'View all existing premium user!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.admin }
+end
+
+function get:usage()
+	return '<number>'
+end
+
+function get:aliases()
+	return { 'pmgl' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
 	  {
       name = 'page',
       description = 'Page number to show.',
@@ -41,7 +67,7 @@ function command:run(client, handler)
     })
 	end
 
-	local users = table.map(client.db.premium:all(), function (element)
+	local users = table.map(client._database.premium:all(), function (element)
 	  return element.data
 	end)
 

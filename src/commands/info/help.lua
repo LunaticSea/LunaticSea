@@ -1,27 +1,54 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_info_help')
+local command, get = require('class')('cm_info_help')
 
-function command:init()
-	self.name = { 'help' }
-	self.description = 'Displays all commands that the bot has.'
-	self.category = 'info'
-	self.accessableby = { accessableby.member }
-	self.usage = '<command_name_or_alias>'
-	self.aliases = { 'h' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = { {
+function get:name()
+	return { 'help' }
+end
+
+function get:description()
+	return 'Displays all commands that the bot has.'
+end
+
+function get:category()
+	return 'info'
+end
+
+function get:accessableby()
+	return { accessableby.member }
+end
+
+function get:usage()
+	return '<command_name_or_alias>'
+end
+
+function get:aliases()
+	return { 'h' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return { {
 		name = 'command',
 		description = 'The command name',
 		type = applicationCommandOptionType.string,
 		required = false,
 	} }
 end
+
 
 function command:run(client, handler)
 	self.client = client
@@ -32,7 +59,7 @@ function command:run(client, handler)
 		return self:send_all_commands()
 	end
 	local arg = handler.args[1]
-	local res_command = client.commands[client.alias[arg] or arg]
+	local res_command = client._commands[client._alias[arg] or arg]
 
 	if not res_command then
 		local embed = {
@@ -65,7 +92,7 @@ function command:generate_desc(e_string, res_command)
 	local command_aliaes = e_string.aliasesNone
 	local is_using_interaction = false
 
-	if res_command.usingInteraction then
+	if res_command.config._using_interaction then
 		is_using_interaction = true
 	end
 
@@ -109,8 +136,8 @@ end
 
 function command:send_all_commands()
 	local field_embed = {}
-	for category, _ in pairs(self.client.command_categories) do
-		local same_category_command = command:table_filter(self.client.commands, function(data)
+	for category, _ in pairs(self.client._command_categories) do
+		local same_category_command = command:table_filter(self.client._commands, function(data)
 			return data.category == category
 		end)
 
@@ -140,7 +167,7 @@ function command:send_all_commands()
 		fields = field_embed,
 		footer = {
 			text = self.client.i18n:get(self.handler.language, 'command.info', 'ce_total') .. tostring(
-				self.client.total_commands
+				self.client._total_commands
 			),
 			url = self.client.user:getDefaultAvatarURL(),
 		},

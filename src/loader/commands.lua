@@ -2,13 +2,13 @@ local bundlefs = require('../bundlefs.lua')
 local cmd_loader = require('class')('cmd_loader')
 
 function cmd_loader:init(client)
-	self.client = client
-	self.all_dir = {}
+	self._client = client
+	self._all_dir = {}
 end
 
 function cmd_loader:is_win()
 	local BinaryFormat = package.cpath:match('%p[\\|/]?%p(%a+)')
-	if not self.client.is_test_mode then
+	if not self._client.is_test_mode then
 		return false
 	end
 	if BinaryFormat == 'dll' then
@@ -21,47 +21,47 @@ function cmd_loader:run()
 	self:load_file_dir()
 	self:register()
 
-	if self.client.total_commands > 0 then
-		self.client.logd:info(
+	if self._client._total_commands > 0 then
+		self._client.logd:info(
 			'CommandLoader',
-			string.format('%s command Loaded!', self.client.total_commands)
+			string.format('%s command Loaded!', self._client._total_commands)
 		)
 	else
-		self.client.logd:warn('CommandLoader', 'No command loaded, is everything ok?')
+		self._client.logd:warn('CommandLoader', 'No command loaded, is everything ok?')
 	end
 end
 
 function cmd_loader:register()
-	table.foreach(self.all_dir, function(_, value)
+	table.foreach(self._all_dir, function(_, value)
 		local cmd_data = require(value)()
 		local cmd_name = table.concat(cmd_data.name, '-')
 
-		self.client.commands[cmd_name] = cmd_data
+		self._client._commands[cmd_name] = cmd_data
 
 		table.foreach(cmd_data.aliases, function(_, alias)
-			self.client.alias[alias] = cmd_name
+			self._client._alias[alias] = cmd_name
 		end)
 
-		if not self.client.command_categories[cmd_data.category] then
-			self.client.command_categories[cmd_data.category] = #self.client.command_categories
+		if not self._client._command_categories[cmd_data.category] then
+			self._client._command_categories[cmd_data.category] = #self._client._command_categories
 		end
 
-		-- self.client.logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
+		-- self._client.logd:info('CommandLoader', 'Loaded command: ' .. cmd_data.category .. '/' .. cmd_name)
 
-		self.client.total_commands = self.client.total_commands + 1
+		self._client._total_commands = self._client._total_commands + 1
 	end)
 end
 
 function cmd_loader:load_file_dir()
 	local all_dir = function()
-		local params = { self.client.project_tree, 'src/commands/' }
+		local params = { self._client.project_tree, 'src/commands/' }
 		if self:is_win() then
 			params[2] = 'src\\commands\\'
 		end
 		return bundlefs():filter(table.unpack(params))
 	end
 	table.foreach(all_dir(), function(_, s_value)
-		table.insert(self.all_dir, s_value)
+		table.insert(self._all_dir, s_value)
 	end)
 end
 
