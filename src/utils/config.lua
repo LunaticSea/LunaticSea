@@ -1,6 +1,6 @@
 local fs = require('fs')
 local toml = require('toml')
-local file = fs.readFileSync('./config.toml', 'utf8')
+local file = fs.readFileSync('./config.toml')
 local default = require('../constants/default.lua')
 
 if not file then file = '' end

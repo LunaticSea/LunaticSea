@@ -1,26 +1,52 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command = require('class')('cm_premium_guild_profile')
+local command, get = require('class')('cm_premium_guild_profile')
 
-function command:init()
-	self.name = { 'pm', 'guild', 'profile' }
-	self.description = 'View your guild premium profile!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.guild_premium }
-	self.usage = ''
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {}
+function get:name()
+	return { 'pm', 'guild', 'profile' }
+end
+
+function get:description()
+	return 'View your guild premium profile!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.guild_premium }
+end
+
+function get:usage()
+	return ''
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {}
 end
 
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local premium_plan = client.db.preGuild:get(handler.guild.id)
+	local premium_plan = client._database.preGuild:get(handler.guild.id)
 
 	if not premium_plan then
     local embed = self:embed_gen(client, handler, {}, true)

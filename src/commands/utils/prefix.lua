@@ -1,20 +1,46 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command = require('class')('cm_utils_prefix')
+local command, get = require('class')('cm_utils_prefix')
 
-function command:init()
-	self.name = { 'prefix' }
-	self.description = 'Change the prefix for the bot'
-	self.category = 'utils'
-	self.accessableby = { accessableby.member }
-	self.usage = '<input>'
-	self.aliases = { 'setprefix', 'pf' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = false
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {}
+function get:name()
+	return { 'prefix' }
+end
+
+function get:description()
+	return 'Change the prefix for the bot'
+end
+
+function get:category()
+	return 'utils'
+end
+
+function get:accessableby()
+	return { accessableby.manager }
+end
+
+function get:usage()
+	return '<input>'
+end
+
+function get:aliases()
+	return { 'setprefix', 'pf' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = false,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {}
 end
 
 function command:run(client, handler)
@@ -41,10 +67,10 @@ function command:run(client, handler)
 		})
 	end
 
-	local new_prefix = client.db.prefix:get(handler.guild.id)
+	local new_prefix = client._database.prefix:get(handler.guild.id)
 
 	if not new_prefix then
-		client.db.prefix:set(handler.guild.id, input_prefix)
+		client._database.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'prefix_set', {
 				input_prefix,
@@ -55,7 +81,7 @@ function command:run(client, handler)
 			embeds = { embed },
 		})
 	else
-		client.db.prefix:set(handler.guild.id, input_prefix)
+		client._database.prefix:set(handler.guild.id, input_prefix)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'prefix_change', {
 				input_prefix,

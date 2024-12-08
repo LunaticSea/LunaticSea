@@ -3,35 +3,35 @@ local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
 
 function deploy_service:init(client)
-	self.client = client
+	self._client = client
 end
 
 function deploy_service:register()
-	self.client.logd:info('DeployService', 'Finding interaction commands...')
+	self._client.logd:info('DeployService', 'Finding interaction commands...')
 
-	local store = table.filter(self.client.commands, function(command)
-		if command.usingInteraction then
+	local store = table.filter(self._client._commands, function(command)
+		if command.config.using_interaction then
 			return true
 		end
 	end)
 
 	if #store == 0 then
-		return self.client.logd:info('DeployService', 'No interactions found. Exiting auto deploy...')
+		return self._client.logd:info('DeployService', 'No interactions found. Exiting auto deploy...')
 	end
 
-	self.client.logd:info(
+	self._client.logd:info(
 		'DeployService',
 		'Finding interaction commands completed, converting ' .. #store .. ' commands...'
 	)
 	local commands = self:parseEngine(store)
 
-	self.client.logd:info(
+	self._client.logd:info(
 		'DeployService',
 		'Convert commands to body completed, now register all commands to discord'
 	)
-	self.client._api:registerApplicationCommands(self.client.user.id, commands)
+	self._client._api:registerApplicationCommands(self._client.user.id, commands)
 
-	self.client.logd:info('DeployService', 'Interactions deployed! Exiting auto deploy...')
+	self._client.logd:info('DeployService', 'Interactions deployed! Exiting auto deploy...')
 end
 
 function deploy_service:parseEngine(store)

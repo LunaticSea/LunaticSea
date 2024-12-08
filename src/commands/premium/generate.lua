@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_generate')
+local command, get = require('class')('cm_premium_generate')
 
-function command:init()
-	self.name = { 'pm', 'generate' }
-	self.description = 'Generate a premium code!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.admin }
-	self.usage = '<type> <number>'
-	self.aliases = { 'pmg' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'pm', 'generate' }
+end
+
+function get:description()
+	return 'Generate a premium code!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.admin }
+end
+
+function get:usage()
+	return '<type> <number>'
+end
+
+function get:aliases()
+	return { 'pmg' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
 		{
       name = 'plan',
       description = 'Avalible: daily, weekly, monthly, yearly',
@@ -93,9 +119,9 @@ function command:run(client, handler)
 
   for i = 1, amount, 1 do
     local code_premium = self:code_gen(32, i + time)
-    local find = client.db.code:get(code_premium)
+    local find = client._database.code:get(code_premium)
     if not find then
-      client.db.code:set(code_premium, {
+      client._database.code:set(code_premium, {
         code = code_premium,
         plan = plan,
         expiresAt = time

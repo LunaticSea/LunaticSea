@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_remove')
+local command, get = require('class')('cm_premium_remove')
 
-function command:init()
-	self.name = { 'pm', 'remove' }
-	self.description = 'Remove premium from members!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.admin }
-	self.usage = '<id>'
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'pm', 'remove' }
+end
+
+function get:description()
+	return 'Remove premium from members!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.admin }
+end
+
+function get:usage()
+	return '<id>'
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
     {
       name = 'id',
       description = 'The user id you want to remove!',
@@ -39,7 +65,7 @@ function command:run(client, handler)
     })
   end
 
-  local db = client.db.premium:get(id)
+  local db = client._database.premium:get(id)
 
   if not db then
     local embed = {
@@ -51,7 +77,7 @@ function command:run(client, handler)
     })
   end
 
-  client.db.premium:delete(id)
+  client._database.premium:delete(id)
   local embed = {
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     description = client.i18n:get(handler.language, 'command.premium', 'remove_desc', {

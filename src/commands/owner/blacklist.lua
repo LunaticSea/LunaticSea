@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_owner_blacklist')
+local command, get = require('class')('cm_owner_blacklist')
 
-function command:init()
-	self.name = { 'blacklist' }
-	self.description = 'Add user id to avoid them using bot!'
-	self.category = 'owner'
-	self.accessableby = { accessableby.owner }
-	self.usage = '< id > < add / remmove > < user/ guild >'
-	self.aliases = { 'bl' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'blacklist' }
+end
+
+function get:description()
+	return 'Add user id to avoid them using bot!'
+end
+
+function get:category()
+	return 'owner'
+end
+
+function get:accessableby()
+	return { accessableby.admin }
+end
+
+function get:usage()
+	return '< id > < add / remmove > < user/ guild >'
+end
+
+function get:aliases()
+	return { 'bl' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
     {
       name = 'id',
       description = 'Action for this user or guild',
@@ -94,7 +120,7 @@ function command:run(client, handler)
   local key_data = string.format('%s_%s', type, id)
   if mode == 'remove' then return self:remove_data(client, handler, key_data, id) end
 
-  client.db.blacklist:set(key_data, true)
+  client._database.blacklist:set(key_data, true)
   local embed = {
 		description = client.i18n:get(handler.language, 'command.admin', 'bl_add', { id }),
 		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
@@ -105,7 +131,7 @@ function command:run(client, handler)
 end
 
 function command:remove_data(client, handler, key_data, id)
-  client.db.blacklist:delete(key_data)
+  client._database.blacklist:delete(key_data)
 
   local embed = {
 		description = client.i18n:get(handler.language, 'command.admin', 'bl_remove', { id }),

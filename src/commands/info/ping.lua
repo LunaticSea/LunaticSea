@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command = require('class')('cm_info_ping')
+local command, get = require('class')('cm_info_ping')
 local stopwatch = discordia.Stopwatch()
 
-function command:init()
-	self.name = { 'ping' }
-	self.description = 'Shows the ping of the Bot'
-	self.category = 'info'
-	self.accessableby = { accessableby.member }
-	self.usage = ''
-	self.aliases = {}
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {}
+function get:name()
+	return { 'ping' }
+end
+
+function get:description()
+	return 'Shows the ping of the Bot'
+end
+
+function get:category()
+	return 'info'
+end
+
+function get:accessableby()
+	return { accessableby.member }
+end
+
+function get:usage()
+	return ''
+end
+
+function get:aliases()
+	return {}
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {}
 end
 
 function command:run(client, handler)

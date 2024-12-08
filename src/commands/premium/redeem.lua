@@ -1,21 +1,47 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command = require('class')('cm_premium_redeem')
+local command, get = require('class')('cm_premium_redeem')
 
-function command:init()
-	self.name = { 'pm', 'redeem' }
-	self.description = 'Redeem your premium!'
-	self.category = 'premium'
-	self.accessableby = { accessableby.member }
-	self.usage = '<type> <input>'
-	self.aliases = { 'pmr' }
-	self.lavalink = false
-	self.playerCheck = false
-	self.usingInteraction = true
-	self.sameVoiceCheck = false
-	self.permissions = {}
-	self.options = {
+function get:name()
+	return { 'pm', 'redeem' }
+end
+
+function get:description()
+	return 'Redeem your premium!'
+end
+
+function get:category()
+	return 'premium'
+end
+
+function get:accessableby()
+	return { accessableby.member }
+end
+
+function get:usage()
+	return '<type> <input>'
+end
+
+function get:aliases()
+	return { 'pmr' }
+end
+
+function get:config()
+	return {
+		lavalink = false,
+		player_check = false,
+		using_interaction = true,
+		same_voice_check = false
+	}
+end
+
+function get:permissions()
+	return {}
+end
+
+function get:options()
+	return {
 	  {
       name = 'type',
       description = 'Which type you want to redeem?',
@@ -67,8 +93,8 @@ function command:run(client, handler)
     })
   end
 
-  local pre_data = client.db.premium:get(handler.user.id)
-  if (type == 'guild') then pre_data = client.db.preGuild:get(handler.guild.id) end
+  local pre_data = client._database.premium:get(handler.user.id)
+  if (type == 'guild') then pre_data = client._database.preGuild:get(handler.guild.id) end
 
   if pre_data and pre_data.isPremium then
     local lang_key = 'redeem_already'
@@ -84,7 +110,7 @@ function command:run(client, handler)
     })
   end
 
-  local premium = client.db.code:get(input_code)
+  local premium = client._database.code:get(input_code)
   local is_expired = premium and premium.expiresAt ~= 15052008 and premium.expiresAt < os.time()
 
   if not premium or is_expired then
@@ -112,13 +138,13 @@ function command:run(client, handler)
 		timestamp = discordia.Date():toISO('T', 'Z'),
 	}
 
-	client.db.code:delete(input_code)
+	client._database.code:delete(input_code)
 
 	handler:edit_reply({
 		embeds = { embed },
 	})
 
-	local target_db = client.db.premium
+	local target_db = client._database.premium
 	local target_id = handler.user.id
 	local target_redeemed_by = {
 	  id = handler.user.id,
@@ -130,7 +156,7 @@ function command:run(client, handler)
 	}
 
   if (type == 'guild') then
-    target_db = client.db.preGuild
+    target_db = client._database.preGuild
     target_id = handler.guild.id
     target_redeemed_by = {
       id = handler.guild.id,
