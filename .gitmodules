@@ -10,3 +10,6 @@
 [submodule "libs/discordia"]
 	path = libs/discordia
 	url = https://github.com/LunaticSea/Discordia
+[submodule "libs/plugins-api"]
+	path = libs/plugins-api
+	url = https://github.com/LunaticSea/plugins-api

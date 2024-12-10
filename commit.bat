@@ -20,6 +20,12 @@ git commit
 git push -u origin HEAD:main
 cd ..
 
+cd plugins-api
+git add .
+git commit
+git push -u origin HEAD:main
+cd ..
+
 cd Discordia
 git add .
 git commit

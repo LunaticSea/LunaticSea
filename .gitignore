@@ -54,3 +54,4 @@ config.toml
 lunatic.sea.log
 lunatic.db.csv
 node_modules
+modules
