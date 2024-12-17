@@ -48,7 +48,7 @@ deps/**
 
 # Gateway
 gateway.json
-test.
+test.***********
 build/**
 config.toml
 lunatic.sea.log
