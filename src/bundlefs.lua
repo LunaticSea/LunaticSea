@@ -19,7 +19,7 @@ local exclude =
 
 local bundlefs = require('class')('bundlefs')
 
-function bundlefs:init()
+function bundlefs:__init()
 end
 
 function bundlefs:pattern_series_check(value, patterns, higher_mode)

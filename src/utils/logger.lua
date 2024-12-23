@@ -1,6 +1,6 @@
 local logger = require('class')('logger')
 
-function logger:init(client)
+function logger:__init(client)
 	self._preLog = client._logger
 end
 
