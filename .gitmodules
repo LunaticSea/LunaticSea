@@ -3,7 +3,7 @@
 	url = https://github.com/LunaticSea/translation.git
 [submodule "lunatic_link"]
 	path = libs/lunalink
-	url = https://github.com/LunaticSea/lunalink
+	url = https://github.com/LunaticSea/Lunalink
 [submodule "libs/lunaticdb"]
 	path = libs/lunaticdb
 	url = https://github.com/LunaticSea/lunaticdb
