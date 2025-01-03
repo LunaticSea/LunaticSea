@@ -2,7 +2,7 @@ local deploy_service = require('class')('deploy_service')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
 
-function deploy_service:init(client)
+function deploy_service:__init(client)
 	self._client = client
 end
 

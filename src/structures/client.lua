@@ -7,7 +7,7 @@ local class = require('class')
 
 local lunatic, get = class('LunaticSea', discordia.Client)
 
-function lunatic:init(test_mode)
+function lunatic:__init(test_mode)
 	discordia.Client.__init(self, {
 		logFile = 'lunatic.sea.log',
 		gatewayFile = './/',

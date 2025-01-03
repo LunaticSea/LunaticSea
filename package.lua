@@ -20,5 +20,5 @@ return {
 		'luvit/tap@v0.1.1',
 		'luvit/core@v2.0.4'
 	},
-	files = { '**.lua', '!test*', '!make.lua', '!dev.lua' },
+	files = { '**.lua', '!test*', '!make.lua', '!dev.lua', '!modules*', },
 }

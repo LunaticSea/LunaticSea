@@ -9,7 +9,7 @@ local mention_enums = {
 	CHANNEL = 4,
 }
 
-function command_handler:init(options)
+function command_handler:__init(options)
 	self._msg = nil
 	self._attactments = {}
 	self._client = options.client

@@ -48,9 +48,10 @@ deps/**
 
 # Gateway
 gateway.json
-test.
+test.***********
 build/**
 config.toml
 lunatic.sea.log
 lunatic.db.csv
 node_modules
+modules

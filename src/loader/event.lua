@@ -1,7 +1,7 @@
 local bundlefs = require('../bundlefs.lua')
 local event_loader = require('class')('event_loader')
 
-function event_loader:init(client)
+function event_loader:__init(client)
 	self._client = client
 	self._all_dir = {}
 	self._require = { 'client', 'guild' }

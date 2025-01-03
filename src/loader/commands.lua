@@ -1,7 +1,7 @@
 local bundlefs = require('../bundlefs.lua')
 local cmd_loader = require('class')('cmd_loader')
 
-function cmd_loader:init(client)
+function cmd_loader:__init(client)
 	self._client = client
 	self._all_dir = {}
 end

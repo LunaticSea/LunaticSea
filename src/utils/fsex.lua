@@ -2,7 +2,7 @@ local fs = require('fs')
 local path = require('path')
 local fsex = require('class')('fsex')
 
-function fsex:init()
+function fsex:__init()
 end
 
 function fsex:readdir_recursive(dir)

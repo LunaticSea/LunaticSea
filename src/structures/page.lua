@@ -1,7 +1,7 @@
 local page = require('class')('page')
 local discordia = require('discordia')
 
-function page:init(client, pages, timeout, handler)
+function page:__init(client, pages, timeout, handler)
   self._client = assert(client, 'Client not found')
   self._handler = assert(handler, 'Command handler not found')
   self._pages = assert(pages, 'Pages not found')

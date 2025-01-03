@@ -8,7 +8,7 @@ local objects = setmetatable({}, {__mode = 'k'})
 function meta:__call(...)
 	local obj = setmetatable({}, self)
 	objects[obj] = true
-	if obj.init then obj:init(...) end
+	if obj.__init then obj:__init(...) end
 	return obj
 end
 
