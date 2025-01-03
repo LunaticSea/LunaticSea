@@ -65,7 +65,7 @@ function command:run(client, handler)
     return handler:edit_reply({ embeds = { embed } })
 	end
 
-	local premium_plan = client._database.premium:get(user.id)
+	local premium_plan = client.database.premium:get(user.id)
 
 	if not premium_plan then
 	  local embed_args = { user.username }

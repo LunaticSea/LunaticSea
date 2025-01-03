@@ -37,6 +37,18 @@ function lunatic:__init(test_mode)
 	end
 end
 
+function get:database()
+	return self._database
+end
+
+function get:commands()
+	return self._commands
+end
+
+function get:alias()
+	return self._alias
+end
+
 function get:logd()
 	return self._logd
 end

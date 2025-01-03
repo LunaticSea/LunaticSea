@@ -59,7 +59,7 @@ function command:run(client, handler)
 		return self:send_all_commands()
 	end
 	local arg = handler.args[1]
-	local res_command = client._commands[client._alias[arg] or arg]
+	local res_command = client.commands[client.alias[arg] or arg]
 
 	if not res_command then
 		local embed = {
@@ -137,7 +137,7 @@ end
 function command:send_all_commands()
 	local field_embed = {}
 	for category, _ in pairs(self._client._command_categories) do
-		local same_category_command = command:table_filter(self._client._commands, function(data)
+		local same_category_command = command:table_filter(self._client.commands, function(data)
 			return data.category == category
 		end)
 

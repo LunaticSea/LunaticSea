@@ -38,11 +38,11 @@ return function(client, interaction)
 
 	-- Get command data from cache
 	local command_name = table.concat(get_command_name(interaction.data), '-')
-	local command = client._commands[command_name]
+	local command = client.commands[command_name]
 	if not command then return end
 
 	-- Get languages
-	local language = client._database.language:get(interaction.guild.id)
+	local language = client.database.language:get(interaction.guild.id)
 	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
@@ -62,8 +62,8 @@ return function(client, interaction)
 	-- Accessable Checker
 	local is_owner = interaction.user.id == client.bot_owner
 	local is_admin = table.includes(client.config.bot.ADMIN, interaction.user.id)
-	local is_premium = client._database.premium:get(interaction.user.id)
-	local is_guild_premium = client._database.premium:get(interaction.guild.id)
+	local is_premium = client.database.premium:get(interaction.user.id)
+	local is_guild_premium = client.database.premium:get(interaction.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
