@@ -1,10 +1,10 @@
 local fs = require('fs')
-local toml = require('toml')
-local file = fs.readFileSync('./config.toml')
+local yaml = require('yaml')
+local file = fs.readFileSync('./app.yml')
 local default = require('../constants/default.lua')
 
 if not file then file = '' end
-local decoded, err = toml.parse(file)
+local decoded = yaml.parse(file)
 
 local function merge_default(def, given)
 	if type(given) == 'nil' then
@@ -25,11 +25,13 @@ local function merge_default(def, given)
 			given[dkey] = def[dkey]
 		end
 		if type(given[dkey]) == 'table' then
+			if given[dkey][1] then goto continue end
 			merge_default(def[dkey], given[dkey])
 		end
 		if type(given[dkey]) ~= type(def[dkey]) then
 			given[dkey] = def[dkey]
 		end
+	  ::continue::
 	end
 
 	return given

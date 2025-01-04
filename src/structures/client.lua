@@ -4,6 +4,7 @@ local bot_loader = require('../loader')
 local dir = require('../bundlefs.lua')
 local package = require('../../package.lua')
 local class = require('class')
+local lunalink = require('./lunalink')
 
 local lunatic, get = class('LunaticSea', discordia.Client)
 
@@ -28,6 +29,10 @@ function lunatic:__init(test_mode)
 	self._alias = {}
 	self._database = {}
 	self._icons = self._config.icons
+	self._lunalink = lunalink(self).wrapper
+	self._lunalink:on('debug', function (log)
+		self._logd:info('Lunalink', log)
+	end)
 
 	database(self):load()
 	bot_loader(self)

@@ -31,4 +31,10 @@ return {
   "bundle:/translation/arisu_en_US/command.utils.lua",
   "bundle:/translation/arisu_en_US/error.lua",
   "bundle:/translation/arisu_en_US/global.lua",
+  "bundle:/translation/arisu_th_TH/command.admin.lua",
+  "bundle:/translation/arisu_th_TH/command.info.lua",
+  "bundle:/translation/arisu_th_TH/command.premium.lua",
+  "bundle:/translation/arisu_th_TH/command.utils.lua",
+  "bundle:/translation/arisu_th_TH/error.lua",
+  "bundle:/translation/arisu_th_TH/global.lua",
 }
