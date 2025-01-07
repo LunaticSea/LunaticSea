@@ -32,6 +32,7 @@ return function(main, ...)
 	-- Load Resolver
 	do
 		local dns = require('dns')
+	---@diagnostic disable-next-line: discard-returns
 		dns.loadResolver()
 	end
 
