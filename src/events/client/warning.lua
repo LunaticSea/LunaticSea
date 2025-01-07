@@ -1,3 +1,3 @@
 return function(client, warn)
-  client.logd:info('Client Warning', warn)
+  client.logd:info('Discordia Warning', warn)
 end
