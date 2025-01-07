@@ -4,7 +4,7 @@ local event_loader = require('class')('player_event_loader')
 function event_loader:__init(client)
 	self._client = client
 	self._all_dir = {}
-	self._require = { 'node' }
+	self._require = { 'node', 'player' }
 	self._event_count = 0
 end
 
