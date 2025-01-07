@@ -30,9 +30,6 @@ function lunatic:__init(test_mode)
 	self._database = {}
 	self._icons = self._config.icons
 	self._lunalink = lunalink(self).wrapper
-	self._lunalink:on('debug', function (log)
-		self._logd:info('Lunalink', log)
-	end)
 
 	database(self):load()
 	bot_loader(self)
@@ -80,6 +77,10 @@ end
 
 function get:icons()
 	return self._icons
+end
+
+function get:lunalink()
+	return self._lunalink
 end
 
 function lunatic:login()
