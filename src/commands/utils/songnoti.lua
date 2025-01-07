@@ -63,7 +63,7 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 	local input_songnoti = handler.args[1]
-  local original_value = client.database.songNoti:get(handler.guild.id)
+  local original_value = client.db.songNoti:get(handler.guild.id)
   local is_satisfy = input_songnoti == 'enable' or input_songnoti == 'disable'
 
   if not input_songnoti or not is_satisfy then
@@ -91,7 +91,7 @@ function command:run(client, handler)
   local mode = handler.modeLang.enable
   if input_songnoti == 'disable' then mode = handler.modeLang.disable end
 
-  client.database.songNoti:set(handler.guild.id, input_songnoti)
+  client.db.songNoti:set(handler.guild.id, input_songnoti)
   local embed = {
     description = client.i18n:get(handler.language, 'command.utils', 'songnoti_set', { mode }),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,

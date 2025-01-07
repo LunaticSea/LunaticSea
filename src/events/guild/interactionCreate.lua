@@ -2,7 +2,8 @@ local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
 local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
-local convert_option = require('../../utils/convert_option')
+local convert_option = require('../../utils/convert_option.lua')
+local auto_reconnect_builder = require('../../utils/auto_reconnect_builder.lua')
 
 local function get_command_name(data, subm)
 	local res = {}
@@ -42,7 +43,7 @@ return function(client, interaction)
 	if not command then return end
 
 	-- Get languages
-	local language = client.database.language:get(interaction.guild.id)
+	local language = client.db.language:get(interaction.guild.id)
 	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
@@ -62,8 +63,8 @@ return function(client, interaction)
 	-- Accessable Checker
 	local is_owner = interaction.user.id == client.bot_owner
 	local is_admin = table.includes(client.config.bot.ADMIN, interaction.user.id)
-	local is_premium = client.database.premium:get(interaction.user.id)
-	local is_guild_premium = client.database.premium:get(interaction.guild.id)
+	local is_premium = client.db.premium:get(interaction.user.id)
+	local is_guild_premium = client.db.premium:get(interaction.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
@@ -125,6 +126,35 @@ return function(client, interaction)
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
 		return interaction:reply({ embeds = { embed } })
+	end
+
+	if command.player_check then
+		local player = client.rainlink.players.get(interaction.guild.id)
+		local twentyFourBuilder = auto_reconnect_builder(client)
+		local is247 = twentyFourBuilder:get(interaction.guild.id)
+		if (
+			not player and
+			(is247 and is247.twentyfourseven and player.queue.size == 0 and not player.queue.current)
+		) then
+			local embed = {
+				description = client.i18n:get(language, 'error', 'no_player'),
+				color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+			}
+			return interaction:reply({ embeds = { embed } })
+		end
+	end
+
+	if command.sameVoiceCheck then
+		local channel = interaction.member.voiceChannel
+		local bot_voice_id = interaction.guild.me.voiceChannel.id
+		local user_voice_id = channel.id
+		local embed = {
+			description = client.i18n:get(language, 'error', 'no_voice'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+		}
+		if channel or (bot_voice_id ~= user_voice_id) then
+			return interaction:reply({ embeds = { embed } })
+		end
 	end
 
 	-- Convert args

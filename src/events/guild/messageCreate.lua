@@ -26,7 +26,7 @@ return function(client, message)
 	if message.author.bot then return end
 
 	-- Get Command Data From Cache
-	local guild_prefix = client.database.prefix:get(message.guild.id)
+	local guild_prefix = client.db.prefix:get(message.guild.id)
 	local prefix = guild_prefix or client.config.utilities.PREFIX
 	local special_prefix = special_prefix(prefix)
 	prefix = special_prefix.original
@@ -47,7 +47,7 @@ return function(client, message)
 	if not command then return end
 
 	-- Get languages
-	local language = client.database.language:get(message.guild.id)
+	local language = client.db.language:get(message.guild.id)
 	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
@@ -71,8 +71,8 @@ return function(client, message)
 	-- Accessable Checker
 	local is_owner = message.author.id == client.owner
 	local is_admin = table.includes(client.config.bot.ADMIN, message.author.id)
-	local is_premium = client.database.premium:get(message.author.id)
-	local is_guild_premium = client.database.premium:get(message.guild.id)
+	local is_premium = client.db.premium:get(message.author.id)
+	local is_guild_premium = client.db.premium:get(message.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access

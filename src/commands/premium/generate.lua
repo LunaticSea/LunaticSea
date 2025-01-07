@@ -119,9 +119,9 @@ function command:run(client, handler)
 
   for i = 1, amount, 1 do
     local code_premium = self:code_gen(32, i + time)
-    local find = client.database.code:get(code_premium)
+    local find = client.db.code:get(code_premium)
     if not find then
-      client.database.code:set(code_premium, {
+      client.db.code:set(code_premium, {
         code = code_premium,
         plan = plan,
         expiresAt = time

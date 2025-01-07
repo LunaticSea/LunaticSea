@@ -28,7 +28,7 @@ function lunatic:__init(test_mode)
 	self._total_commands = 0
 	self._command_categories = {}
 	self._alias = {}
-	self._database = {}
+	self._db = {}
 	self._icons = self._config.icons
 	self._lunalink = lunalink(self).wrapper
 	self._lavalink_using = {}
@@ -41,8 +41,8 @@ function lunatic:__init(test_mode)
 	end
 end
 
-function get:database()
-	return self._database
+function get:db()
+	return self._db
 end
 
 function get:commands()

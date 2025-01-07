@@ -44,9 +44,6 @@ function get:options()
 end
 
 function command:run(client, handler)
-  self._client = client
-  self._handler = handler
-
 	handler:defer_reply()
 
   local channel = handler.member.voiceChannel

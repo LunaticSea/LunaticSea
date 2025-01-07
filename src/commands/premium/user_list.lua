@@ -67,7 +67,7 @@ function command:run(client, handler)
     })
 	end
 
-	local users = table.map(client.database.premium:all(), function (element)
+	local users = table.map(client.db.premium:all(), function (element)
 	  return element.data
 	end)
 
