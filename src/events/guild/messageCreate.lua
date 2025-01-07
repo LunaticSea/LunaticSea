@@ -132,6 +132,16 @@ return function(client, message)
 		return message:reply({ embeds = { no_pre_embed(true) } })
 	end
 
+	-- Ability checker
+	if command.lavalink and #client._lavalink_using == 0 then
+		local embed =  {
+			description = client.i18n:get(language, 'error', 'no_node'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+			timestamp = discordia.Date():toISO('T', 'Z'),
+		}
+		return message:reply({ embeds = { embed } })
+	end
+
 	-- Command runner
 	local handler = require('../../structures/command_handler.lua')({
 		message = message,

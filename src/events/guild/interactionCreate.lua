@@ -118,6 +118,15 @@ return function(client, interaction)
 		return interaction:reply({ embeds = { no_pre_embed(true) } })
 	end
 
+	-- Ability checker
+	if command.lavalink and #client._lavalink_using == 0 then
+		local embed =  {
+			description = client.i18n:get(language, 'error', 'no_node'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+		}
+		return interaction:reply({ embeds = { embed } })
+	end
+
 	-- Convert args
 	local args = {}
 	local function arg_convert(data, bypass)

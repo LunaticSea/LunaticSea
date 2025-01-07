@@ -1,3 +1,4 @@
 return function(client, warn)
-  client.logd:info('Discordia Warning', warn)
+  if warn == "Voice connection not initialized before VOICE_SERVER_UPDATE" then return end
+  client.logd:warn('Discordia Warning', warn)
 end

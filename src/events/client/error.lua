@@ -1,3 +1,3 @@
 return function(client, error)
-  client.logd:info('Discordia Error', error)
+  client.logd:error('Discordia Error', error)
 end
