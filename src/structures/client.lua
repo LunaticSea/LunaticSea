@@ -10,13 +10,14 @@ local lunatic, get = class('LunaticSea', discordia.Client)
 
 function lunatic:__init(test_mode)
 	discordia.Client.__init(self, {
-		logFile = 'lunatic.sea.log',
+		logFile = './//lunatic.sea.log',
 		gatewayFile = './/',
 		gatewayIntents = 53608447,
-		logEntryPad = 28,
+		logEntryPad = 0,
+		logLevel = 0,
 	})
 
-	self._logd = require('../utils/logger.lua')(self)
+	self._logd = require('../utils/logger.lua')(3, '%F %T', 'lunatic.sea.log', 28)
 	self._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
 	self._is_test_mode = test_mode
 	self._project_tree = dir():get_all(test_mode)
