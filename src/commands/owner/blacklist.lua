@@ -120,7 +120,7 @@ function command:run(client, handler)
   local key_data = string.format('%s_%s', type, id)
   if mode == 'remove' then return self:remove_data(client, handler, key_data, id) end
 
-  client._database.blacklist:set(key_data, true)
+  client.db.blacklist:set(key_data, true)
   local embed = {
 		description = client.i18n:get(handler.language, 'command.admin', 'bl_add', { id }),
 		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
@@ -131,7 +131,7 @@ function command:run(client, handler)
 end
 
 function command:remove_data(client, handler, key_data, id)
-  client._database.blacklist:delete(key_data)
+  client.db.blacklist:delete(key_data)
 
   local embed = {
 		description = client.i18n:get(handler.language, 'command.admin', 'bl_remove', { id }),

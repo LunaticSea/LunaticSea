@@ -65,7 +65,7 @@ function command:run(client, handler)
     })
   end
 
-  local db = client._database.preGuild:get(id)
+  local db = client.db.preGuild:get(id)
 
   if not db then
     local embed = {
@@ -77,7 +77,7 @@ function command:run(client, handler)
     })
   end
 
-  client._database.premium:delete(id)
+  client.db.premium:delete(id)
   local embed = {
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     description = client.i18n:get(handler.language, 'command.premium', 'guild_remove_desc', {

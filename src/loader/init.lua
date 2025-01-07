@@ -1,4 +1,5 @@
 return function(client)
-	require('./event.lua')(client):run()
+	require('./player_events.lua')(client):run()
+	require('./client_events.lua')(client):run()
 	require('./commands.lua')(client):run()
 end

@@ -9,7 +9,7 @@ end
 function deploy_service:register()
 	self._client.logd:info('DeployService', 'Finding interaction commands...')
 
-	local store = table.filter(self._client._commands, function(command)
+	local store = table.filter(self._client.commands, function(command)
 		if command.config.using_interaction then
 			return true
 		end

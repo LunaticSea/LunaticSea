@@ -26,7 +26,7 @@ return function(client, message)
 	if message.author.bot then return end
 
 	-- Get Command Data From Cache
-	local guild_prefix = client._database.prefix:get(message.guild.id)
+	local guild_prefix = client.db.prefix:get(message.guild.id)
 	local prefix = guild_prefix or client.config.utilities.PREFIX
 	local special_prefix = special_prefix(prefix)
 	prefix = special_prefix.original
@@ -40,14 +40,14 @@ return function(client, message)
 	local command_req = args[1]
 	table.remove(args, 1)
 
-	local command_req_alias = client._alias[command_req]
+	local command_req_alias = client.alias[command_req]
 	local command_name = command_req_alias or command_req
 
-	local command = client._commands[command_name]
+	local command = client.commands[command_name]
 	if not command then return end
 
 	-- Get languages
-	local language = client._database.language:get(message.guild.id)
+	local language = client.db.language:get(message.guild.id)
 	if not language then language = client.i18n.default_locate end
 
 	-- Permission Checker
@@ -71,8 +71,8 @@ return function(client, message)
 	-- Accessable Checker
 	local is_owner = message.author.id == client.owner
 	local is_admin = table.includes(client.config.bot.ADMIN, message.author.id)
-	local is_premium = client._database.premium:get(message.author.id)
-	local is_guild_premium = client._database.premium:get(message.guild.id)
+	local is_premium = client.db.premium:get(message.author.id)
+	local is_guild_premium = client.db.premium:get(message.guild.id)
 	local is_user_premium_access = table.includes(command.accessableby, accessableby.premium)
 	local is_guild_premium_access = table.includes(command.accessableby, accessableby.guild_premium)
 	local is_both_user_and_guild = is_user_premium_access and is_guild_premium_access
@@ -130,6 +130,16 @@ return function(client, message)
 
 	if not is_both_user_and_guild and is_guild_premium_access and not user_perm.guild_pre then
 		return message:reply({ embeds = { no_pre_embed(true) } })
+	end
+
+	-- Ability checker
+	if command.lavalink and #client._lavalink_using == 0 then
+		local embed =  {
+			description = client.i18n:get(language, 'error', 'no_node'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+			timestamp = discordia.Date():toISO('T', 'Z'),
+		}
+		return message:reply({ embeds = { embed } })
 	end
 
 	-- Command runner

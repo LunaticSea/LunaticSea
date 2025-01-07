@@ -4,18 +4,20 @@ local bot_loader = require('../loader')
 local dir = require('../bundlefs.lua')
 local package = require('../../package.lua')
 local class = require('class')
+local lunalink = require('./lunalink')
 
 local lunatic, get = class('LunaticSea', discordia.Client)
 
 function lunatic:__init(test_mode)
 	discordia.Client.__init(self, {
-		logFile = 'lunatic.sea.log',
+		logFile = './//lunatic.sea.log',
 		gatewayFile = './/',
 		gatewayIntents = 53608447,
-		logEntryPad = 28,
+		logEntryPad = 0,
+		logLevel = 0,
 	})
 
-	self._logd = require('../utils/logger.lua')(self)
+	self._logd = require('../utils/logger.lua')(4, '%F %T', 'lunatic.sea.log', 28)
 	self._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
 	self._is_test_mode = test_mode
 	self._project_tree = dir():get_all(test_mode)
@@ -26,8 +28,10 @@ function lunatic:__init(test_mode)
 	self._total_commands = 0
 	self._command_categories = {}
 	self._alias = {}
-	self._database = {}
+	self._db = {}
 	self._icons = self._config.icons
+	self._lunalink = lunalink(self).wrapper
+	self._lavalink_using = {}
 
 	database(self):load()
 	bot_loader(self)
@@ -35,6 +39,18 @@ function lunatic:__init(test_mode)
 	if #self._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
+end
+
+function get:db()
+	return self._db
+end
+
+function get:commands()
+	return self._commands
+end
+
+function get:alias()
+	return self._alias
 end
 
 function get:logd()
@@ -63,6 +79,10 @@ end
 
 function get:icons()
 	return self._icons
+end
+
+function get:lunalink()
+	return self._lunalink
 end
 
 function lunatic:login()

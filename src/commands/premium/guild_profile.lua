@@ -46,7 +46,7 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local premium_plan = client._database.preGuild:get(handler.guild.id)
+	local premium_plan = client.db.preGuild:get(handler.guild.id)
 
 	if not premium_plan then
     local embed = self:embed_gen(client, handler, {}, true)

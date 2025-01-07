@@ -28,7 +28,7 @@ end
 
 function database:small_db_load(driver, config)
 	for _, value in pairs(self._req_db) do
-		self._client._database[value] = lunaticdb.core({ db_name = value }):load(driver, config)
+		self._client._db[value] = lunaticdb.core({ db_name = value }):load(driver, config)
 	end
 end
 

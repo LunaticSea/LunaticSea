@@ -67,7 +67,7 @@ function command:run(client, handler)
     })
 	end
 
-	local guilds = table.map(client._database.preGuild:all(), function (element)
+	local guilds = table.map(client.db.preGuild:all(), function (element)
 	  return element.data
 	end)
 

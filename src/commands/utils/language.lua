@@ -72,10 +72,10 @@ function command:run(client, handler)
 		})
 	end
 
-	local new_lang = client._database.language:get(handler.guild.id)
+	local new_lang = client.db.language:get(handler.guild.id)
 
 	if not new_lang then
-		client._database.language:set(handler.guild.id, match_lang)
+		client.db.language:set(handler.guild.id, match_lang)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'lang_set', { match_lang }),
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
@@ -84,7 +84,7 @@ function command:run(client, handler)
 			embeds = { embed },
 		})
 	else
-		client._database.language:set(handler.guild.id, match_lang)
+		client.db.language:set(handler.guild.id, match_lang)
 		local embed = {
 			description = client.i18n:get(handler.language, 'command.utils', 'lang_change', {
 				match_lang,

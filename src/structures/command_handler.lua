@@ -64,7 +64,7 @@ function get:user()
 	return self._message.author
 end
 
-function get:member_data()
+function get:member()
 	if self._interaction then
 		return self._interaction.member
 	end
@@ -78,14 +78,14 @@ function get:createdAt()
 	return dia.Date.parseSnowflake(self._message.id)
 end
 
-function get:channel_data()
+function get:channel()
 	if self._interaction then
 		return self._interaction.channel
 	end
 	return self._message.channel
 end
 
-function get:mode_lang_data()
+function get:mode_lang()
 	return {
 		enable = self._client.i18n:get(self._language, 'global', 'enable'),
 		disable = self._client.i18n:get(self._language, 'global', 'disable'),

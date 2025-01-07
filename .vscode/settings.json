@@ -3,5 +3,6 @@
     "${addons}/luvit/module/library"
   ],
   "Lua.workspace.checkThirdParty": false,
-  "stylua.targetReleaseVersion": "latest"
+  "stylua.targetReleaseVersion": "latest",
+  "editor.formatOnSave": true
 }

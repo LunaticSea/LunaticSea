@@ -38,9 +38,28 @@ A versatile and powerful music bot for Discord that brings rhythm and melody to 
   - For Windows, click in the binary file and enjoy
   - For linux, run `./your-bin-name.bin` and enjoy 
  
-# How to clone
+# Development
+
+## How to setup
 ```
 git clone --recurse-submodules https://github.com/LunaticSea/LunaticSea
+cd LunaticSea
+lit install
+```
+
+## How to run development enviroment
+```
+luvit dev
+```
+
+## How to build binary
+```
+luvit make
+```
+
+## How to build project tree
+```
+luvit make dir
 ```
 
 # License
