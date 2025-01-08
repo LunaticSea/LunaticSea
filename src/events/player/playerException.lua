@@ -4,7 +4,7 @@ local cms = require('../../services/clear_message_service.lua')
 
 return function(client, player, data)
   client.logd:error('PlayerException',
-    string.format("Player get exception: ", require('json').encode(data))
+    string.format("Player get exception: %s", require('json').encode(data))
   )
   local guild = client:getGuild(player.guildId)
 

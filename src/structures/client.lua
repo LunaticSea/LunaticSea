@@ -35,6 +35,8 @@ function lunatic:__init(test_mode)
 	self._lavalink_using = {}
 	self._nplayingMsg = ll.Cache()
 	self._leaveDelay = ll.Cache()
+	self._sentQueue = ll.Cache()
+	self._selectMenuOptions = {}
 
 	process:on('error', function (err)
 		self._logd:error(err)
@@ -44,12 +46,31 @@ function lunatic:__init(test_mode)
 		self._logd:error(err)
 	end)
 
+	for key, _ in pairs(ll.constants.FilterData) do
+		local firstUpperCase = key:gsub("^%l", string.upper)
+		table.insert(self._selectMenuOptions, {
+			label = firstUpperCase,
+			value = key,
+			description = key == "clear"
+				and 'Reset all current filter'
+				or string.format("%s filter for better audio experience!", firstUpperCase),
+		})
+	end
+
 	database(self):load()
 	bot_loader(self)
 
 	if #self._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
+end
+
+function get:selectMenuOptions()
+	return self._selectMenuOptions
+end
+
+function get:sentQueue()
+	return self._sentQueue
 end
 
 function get:nplayingMsg()

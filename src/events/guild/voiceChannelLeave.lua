@@ -5,7 +5,7 @@ local discordia = require('discordia')
 local setTimeout = timer.setTimeout
 
 return function (client, member, channel)
-  client.logd:info('Voice Leave', string.format('%s leave %s (%s)', member.name, channel.name, channel.id))
+  client.logd:info('VoiceLeave', string.format('%s leave %s (%s)', member.name, channel.name, channel.id))
 
   -- Check player avaliable
   local player = client.lunalink.players:get(member.guild.id)

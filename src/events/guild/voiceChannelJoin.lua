@@ -5,7 +5,7 @@ local setTimeout = timer.setTimeout
 local clearTimeout = timer.clearTimeout
 
 return function (client, member, channel)
-  client.logd:info('Voice Join', string.format('%s join %s (%s)', member.name, channel.name, channel.id))
+  client.logd:info('VoiceJoin', string.format('%s join %s (%s)', member.name, channel.name, channel.id))
 
   -- Check player avaliable
   local player = client.lunalink.players:get(member.guild.id)
