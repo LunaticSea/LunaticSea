@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('cm_music_stop')
+local command, get = require('class')('Music:Stop')
 
 function get:name()
 	return { 'stop' }

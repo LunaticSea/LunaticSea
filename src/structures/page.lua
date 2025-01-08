@@ -1,4 +1,4 @@
-local page = require('class')('page')
+local page = require('class')('Page')
 local discordia = require('discordia')
 
 function page:__init(client, pages, timeout, handler)
@@ -16,10 +16,10 @@ function page:run()
 
 	local row = self:generate_button_array()
 
-	local page = 1
-	local init_page = self._pages[page]
+	local currpage = 1
+	local init_page = self._pages[currpage]
 	init_page.footer = {
-	  text = string.format('%s/%s', page, #self._pages)
+	  text = string.format('%s/%s', currpage, #self._pages)
 	}
 
 	local curPage = self._handler:edit_reply({
@@ -33,14 +33,14 @@ function page:run()
 	  if not interaction._deferred then interaction:updateDeferred() end
 
 	  if interaction.data.custom_id == 'back' then
-	    if page > 1 then page = page - 1 else  page = #self._pages end
+	    if currpage > 1 then currpage = currpage - 1 else currpage = #self._pages end
 	  elseif interaction.data.custom_id == 'next' then
-      if page < #self._pages then page = page + 1 else page = 1 end
+      if currpage < #self._pages then currpage = currpage + 1 else page = 1 end
 	  end
 
-	  local selected_page = self._pages[page]
+	  local selected_page = self._pages[currpage]
     selected_page.footer = {
-      text = string.format('%s/%s', page, #self._pages)
+      text = string.format('%s/%s', currpage, #self._pages)
     }
 
 	  local data, err = interaction.message:update({

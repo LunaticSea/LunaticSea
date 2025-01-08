@@ -2,6 +2,7 @@ local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
 local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
+local arb = require('../../utils/arb.lua')
 
 local function special_prefix(prefix)
   local special = { '()', ')', '.', '%', '+', '-', '*', '?', '[', '^', '$' }
@@ -28,10 +29,10 @@ return function(client, message)
 	-- Get Command Data From Cache
 	local guild_prefix = client.db.prefix:get(message.guild.id)
 	local prefix = guild_prefix or client.config.utilities.PREFIX
-	local special_prefix = special_prefix(prefix)
-	prefix = special_prefix.original
+	local sp = special_prefix(prefix)
+	prefix = sp.original
 
-	local is_match_prefix = string.match(message.content, special_prefix.pattern .. '[^.]+')
+	local is_match_prefix = string.match(message.content, sp.pattern .. '[^.]+')
 	if not is_match_prefix then return end
 
 	local content_without_prefix = string.sub(message.content, #prefix + 1)
@@ -142,8 +143,37 @@ return function(client, message)
 		return message:reply({ embeds = { embed } })
 	end
 
+	if command.player_check then
+		local player = client.rainlink.players.get(message.guild.id)
+		local twentyFourBuilder = arb(client)
+		local is247 = twentyFourBuilder:get(message.guild.id)
+		if (
+			not player and
+			(is247 and is247.twentyfourseven and player.queue.size == 0 and not player.queue.current)
+		) then
+			local embed = {
+				description = client.i18n:get(language, 'error', 'no_player'),
+				color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+			}
+			return message:reply({ embeds = { embed } })
+		end
+	end
+
+	if command.sameVoiceCheck then
+		local channel = message.member.voiceChannel
+		local bot_voice_id = message.guild.me.voiceChannel.id
+		local user_voice_id = channel.id
+		local embed = {
+			description = client.i18n:get(language, 'error', 'no_voice'),
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+		}
+		if channel or (bot_voice_id ~= user_voice_id) then
+			return message:reply({ embeds = { embed } })
+		end
+	end
+
 	-- Command runner
-	local handler = require('../../structures/command_handler.lua')({
+	local handler = command_handler({
 		message = message,
 		language = language,
 		client = client,
@@ -157,8 +187,8 @@ return function(client, message)
 	client.logd:info(
 		'CommandManager | Message',
 		string.format(
-			'%s used by %s from %s (%s)',
-			command_name,
+			'{ %s } used by %s from %s (%s)',
+			command.__name,
 			message.author.username,
 			message.guild.name or nil,
 			message.guild.id or nil

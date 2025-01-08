@@ -15,7 +15,7 @@ return {
 		},
 		AUTOCOMPLETE_SEARCH = { 'yorushika', 'yoasobi', 'tuyu', 'hinkik' },
 		NP_REALTIME = false,
-		LEAVE_TIMEOUT = 30000,
+		LEAVE_TIMEOUT = 5000,
 		NODES = {},
 		DEFAULT_VOLUME = 100,
 		AVOID_SUSPEND = false,

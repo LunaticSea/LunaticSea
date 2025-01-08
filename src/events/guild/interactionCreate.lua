@@ -2,8 +2,7 @@ local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
 local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
-local convert_option = require('../../utils/convert_option.lua')
-local auto_reconnect_builder = require('../../utils/auto_reconnect_builder.lua')
+local arb = require('../../utils/arb.lua')
 
 local function get_command_name(data, subm)
 	local res = {}
@@ -31,6 +30,20 @@ local function get_command_name(data, subm)
 
 	return res
 end
+
+local function convert_option(data)
+	if data.type == 6 then
+		return string.format('<@%s>', data.value)
+	end
+	if data.type == 8 then
+		return string.format('<@&%s>', data.value)
+	end
+	if data.type == 7 then
+		return string.format('<#%s>', data.value)
+	end
+	return data.value
+end
+
 
 return function(client, interaction)
 	-- Check valid interaction class
@@ -130,7 +143,7 @@ return function(client, interaction)
 
 	if command.player_check then
 		local player = client.rainlink.players.get(interaction.guild.id)
-		local twentyFourBuilder = auto_reconnect_builder(client)
+		local twentyFourBuilder = arb(client)
 		local is247 = twentyFourBuilder:get(interaction.guild.id)
 		if (
 			not player and
@@ -191,8 +204,8 @@ return function(client, interaction)
 	client.logd:info(
 		'CommandManager | Interaction',
 		string.format(
-			'%s used by %s from %s (%s)',
-			command_name,
+			'{ %s } used by %s from %s (%s)',
+			command.__name,
 			interaction.user.username,
 			interaction.guild.name or nil,
 			interaction.guild.id or nil

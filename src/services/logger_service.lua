@@ -49,7 +49,7 @@ do
 	end
 end
 
-local Logger = require('class')('Logger')
+local Logger = require('class')('LoggerService')
 
 function Logger:__init(level, dateTime, file, typePad)
 	self._level = level

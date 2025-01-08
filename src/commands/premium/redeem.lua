@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_premium_redeem')
+local command, get = require('class')('Premium:Redeem')
 
 function get:name()
 	return { 'pm', 'redeem' }

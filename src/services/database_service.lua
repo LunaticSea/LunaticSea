@@ -1,5 +1,5 @@
 local lunaticdb = require('lunaticdb')
-local database = require('class')('database')
+local database = require('class')('DatabaseService')
 
 function database:__init(client)
 	self._client = client

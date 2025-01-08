@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_owner_blacklist')
+local command, get = require('class')('Owner:Blacklist')
 
 function get:name()
 	return { 'blacklist' }

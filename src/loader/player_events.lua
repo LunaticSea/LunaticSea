@@ -1,5 +1,5 @@
 local bundlefs = require('../bundlefs.lua')
-local event_loader = require('class')('player_event_loader')
+local event_loader = require('class')('PlayerEventLoader')
 
 function event_loader:__init(client)
 	self._client = client

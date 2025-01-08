@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('cm_info_ping')
+local command, get = require('class')('Info:Ping')
 local stopwatch = discordia.Stopwatch()
 
 function get:name()
