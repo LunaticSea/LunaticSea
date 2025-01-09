@@ -6,7 +6,7 @@ local setTimeout = require('timer').setTimeout
 return function(client, player)
   local guild = client:getGuild(player.guildId)
 
-  client.logd:error('PlayerStop', string.format("Player Stop in %s @ %s", guild.name, player.guildId))
+  client.logd:info('PlayerStop', string.format("Player Stop in %s @ %s", guild.name, player.guildId))
 
   -- client:update_music(player)
 
