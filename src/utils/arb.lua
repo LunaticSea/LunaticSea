@@ -1,7 +1,7 @@
 -- import { Manager } from '../manager.js'
 -- import { RainlinkPlayer } from 'rainlink'
 
-local arb, get = require('class')('auto_reconnect_builder')
+local arb, get = require('class')('AutoReconnectBuilder')
 
 function arb:__init(client, player)
   self._client = client
@@ -45,8 +45,8 @@ function arb:player_nuild(guildId, two47mode)
     config = {
       loop = self._player.loop,
     },
-    queue = self._player.queue.length ~= 0 and self:queue_uri() or {},
-    previous = self._player.queue.previous.length ~= 0 and self:previousUri() or {},
+    queue = self._player.queue.size ~= 0 and self:queue_uri() or {},
+    previous = self._player.queue.previous.size ~= 0 and self:previousUri() or {},
     twentyfourseven = two47mode,
   })
 end

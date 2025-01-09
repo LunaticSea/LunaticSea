@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_premium_user_list')
+local command, get = require('class')('Premium:UserList')
 local page_framework = require('../../structures/page')
 
 function get:name()

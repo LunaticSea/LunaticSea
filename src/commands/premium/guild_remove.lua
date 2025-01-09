@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_premium_guild_remove')
+local command, get = require('class')('Premium:GuildRemove')
 
 function get:name()
 	return { 'pm', 'guild', 'remove' }

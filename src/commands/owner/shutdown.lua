@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('cm_owner_shutdown')
+local command, get = require('class')('Owner:Shutdown')
 
 function get:name()
 	return { 'shutdown' }

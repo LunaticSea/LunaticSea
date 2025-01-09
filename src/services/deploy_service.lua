@@ -1,4 +1,4 @@
-local deploy_service = require('class')('deploy_service')
+local deploy_service = require('class')('DeployService')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
 

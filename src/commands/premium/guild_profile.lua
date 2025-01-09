@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('cm_premium_guild_profile')
+local command, get = require('class')('Premium:GuildProfile')
 
 function get:name()
 	return { 'pm', 'guild', 'profile' }

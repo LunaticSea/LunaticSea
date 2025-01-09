@@ -17,7 +17,7 @@ local exclude =
 		'example.config.toml',
 	}
 
-local bundlefs = require('class')('bundlefs')
+local bundlefs = require('class')('BundleFS')
 
 function bundlefs:__init()
 end

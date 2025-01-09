@@ -1,5 +1,5 @@
 local bundlefs = require('../bundlefs.lua')
-local event_loader = require('class')('player_event_loader')
+local event_loader = require('class')('PlayerEventLoader')
 
 function event_loader:__init(client)
 	self._client = client
@@ -30,7 +30,10 @@ function event_loader:run()
 		local splited_dir = string.split(table.unpack(splited_dir_params))
 		local e_name = string.split(splited_dir[1], '[^.]+')[1]
 		self._client.lunalink:on(e_name, function(...)
-			func(self._client, ...)
+			local _, internal_err = pcall(func, self._client, ...)
+			if internal_err then
+				self._client.logd:error(string.format('PlayerEvent:%s', e_name), internal_err)
+			end
 		end)
 		-- self._client.logd:info('EventLoader', 'Loaded event: '.. e_name)
 		self._event_count = self._event_count + 1

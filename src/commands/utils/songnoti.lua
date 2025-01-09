@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_utils_songnoti')
+local command, get = require('class')('Utils:SongNoti')
 
 function get:name()
 	return { 'songnoti' }

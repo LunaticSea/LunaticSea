@@ -1,5 +1,5 @@
 local dia = require('discordia')
-local command_handler, get = require('class')('command_handler')
+local command_handler, get = require('class')('CommandHandler')
 
 local mention_enums = {
 	ERROR = 0,

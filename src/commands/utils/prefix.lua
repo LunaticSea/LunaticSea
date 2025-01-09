@@ -1,6 +1,6 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('cm_utils_prefix')
+local command, get = require('class')('Utils:Prefix')
 
 function get:name()
 	return { 'prefix' }

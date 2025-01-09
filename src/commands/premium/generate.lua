@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('cm_premium_generate')
+local command, get = require('class')('Premium:Generate')
 
 function get:name()
 	return { 'pm', 'generate' }
