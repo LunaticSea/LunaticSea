@@ -1,54 +1,47 @@
+local discordia = require('discordia')
 local arb = require('../../utils/arb.lua')
 local cms = require('../../services/clear_message_service.lua')
-local PlayerState = require('lunalink').enums.PlayerState
+local setTimeout = require('timer').setTimeout
 
 return function(client, player)
-  -- client:update_music(player)
-
   local guild = client:getGuild(player.guildId)
 
-  if player.data:get('autoplay') == true then
-    local author = player.data:get('author')
-    local title = player.data:get('title')
-    local requester = player.data:get('requester')
-    local identifier = player.data:get('identifier')
-    local source = player.data:get('source')
+  client.logd:error('PlayerStop', string.format("Player Stop in %s @ %s", guild.name, player.guildId))
 
-    if string.gsub(source, "%f[%a]%u+%f[%A]", string.lower) ~= 'youtube' then
-      local internalQuery = table.filter({ author, title }, function (x) return x end)
-      local findQuery = 'directSearch=ytsearch:' +  table.concat(internalQuery, ' - ')
-      local preRes = player:search(findQuery, { requester = requester })
-      if preRes.tracks.length ~= 0 and preRes.tracks[0].identifier then
-        identifier = preRes.tracks[0].identifier
-      end
-    end
-  
-    local search = string.format("https://www.youtube.com/watch?v=%s&list=RD%s", identifier, identifier)
-    local res = player:search(search, { requester = requester })
-    local finalRes = table.filter(res.tracks, function(track)
-      local req1 = table.some(player.queue.list, function (s)
-        return s.encoded == track.encoded
-      end)
-      local req2 = table.some(player.queue.previous, function (s)
-        return s.encoded == track.encoded
-      end)
-      return req1 and req2
-    end)
+  -- client:update_music(player)
 
-    if (#finalRes.length ~= 0) then
-      player:play(finalRes.length <= 1 and finalRes[0] or finalRes[1])
-      local channel = guild:getChannel(player.textId)
-      if channel then return cms(client, channel, player) end
-      return
-    end
+  local text_channel = guild:getChannel(player.textId)
+  client.sentQueue:set(player.guildId, false)
+  local arbs = arb(client, player)
+  local data = arbs:get(player.guildId)
+
+  if not text_channel then return end
+
+  if data and data.twentyfourseven then
+    arb:build247(player.guildId, true, data.voice)
   end
 
-  client.logger.info('QueueEmpty',  string.format("Queue Empty in @ %s / %s", guild.name, player.guildId))
+  -- Get languages
+	local language = client.db.language:get(player.guildId)
+	if not language then language = client.i18n.default_locate end
 
-  local data = arb(client, player):get(player.guildId)
-  local channel = guild:getChannel(player.textId)
-  if channel then return cms(client, channel, player) end
-  if data and data.twentyfourseven and channel then return cms(client, channel, player) end
+  local isSudoDestroy = player.data:get('sudo-destroy')
 
-  if player.state ~= PlayerState.DESTROYED then player:destroy() end
+  local embed = {
+    description = client.i18n:get(language, 'event.player', 'queue_end_desc'),
+    color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+  }
+
+  local setup = client.db.setup:get(player.guildId)
+
+  if not isSudoDestroy then
+    local msg = text_channel:send({ embeds = { embed } })
+    setTimeout(client.config.utilities.DELETE_MSG_TIMEOUT, coroutine.wrap(function ()
+      if not setup and setup.channel ~= text_channel.id then msg:delete() end
+    end))
+  end
+
+  if setup and setup.channel == player.textId then return end
+  cms(client, text_channel, player)
+  player.data:clear()
 end

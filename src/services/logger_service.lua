@@ -23,12 +23,17 @@ local RED = 31
 local GREEN = 32
 local YELLOW = 33
 -- local BLUE    = 34
--- local MAGENTA = 35
+local MAGENTA = 35
 local CYAN = 36
 -- local WHITE   = 37
 
-local config =
-	{ { '[ERROR]  ', RED }, { '[WARNING]', YELLOW }, { '[INFO]   ', GREEN }, { '[DEBUG]  ', CYAN } }
+local config = {
+	{ '[ERROR]  ', RED },
+	{ '[WARNING]', YELLOW },
+	{ '[INFO]   ', GREEN },
+	{ '[DEBUG]  ', CYAN },
+	{ '[VERBOSE]', MAGENTA },
+}
 
 local function table_args(is_file, d, tag, entry, msg)
 	local res = { d, tag[1], entry, msg }
@@ -115,6 +120,10 @@ end
 
 function Logger:debug(class, msg)
 	self:log(4, class, msg)
+end
+
+function Logger:verbose(class, msg)
+	self:log(5, class, msg)
 end
 
 return Logger
