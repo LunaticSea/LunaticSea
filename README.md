@@ -30,11 +30,11 @@ A versatile and powerful music bot for Discord that brings rhythm and melody to 
 
 # How to use
   - Download file from [release](https://github.com/LunaticSea/LunaticSea/releases/latest) or [nightly release](https://github.com/LunaticSea/nightly/releases/latest)
-  - Create `config.toml` In the same folder with your binaries
-  - Config your `config.toml`:
-    - Copy and paste example config from [this file](https://github.com/LunaticSea/LunaticSea/blob/master/example.config.toml)
+  - Create `app.yml` In the same folder with your binaries
+  - Config your `app.yml`:
+    - Copy and paste example config from [this file](https://github.com/LunaticSea/LunaticSea/blob/master/example.app.yml)
     - Note: All type of config must fill `TOKEN`, `OWNER_ID` and `NODES`
-    - If you want to use default config and have minimal config, read the footer of config.toml
+    - If you want to use default config and have minimal config, read the footer of app.yml
   - For Windows, click in the binary file and enjoy
   - For linux, run `./your-bin-name.bin` and enjoy 
  
