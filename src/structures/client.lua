@@ -19,10 +19,10 @@ function lunatic:__init(test_mode)
 	})
 
 	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 30)
-	self._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
+	self._logd:info('Client Bootloader', 'Booting up: ' .. package.name .. '@' .. package.version)
 	self._is_test_mode = test_mode
 	self._project_tree = dir():get_all(test_mode)
-	self._config = require('../utils/config.lua')
+	self._config = require('../utils/config')
 	self._i18n = require('../services/localization_service.lua')(self)
 	self._bot_owner = self._config.bot.OWNER_ID
 	self._commands = {}

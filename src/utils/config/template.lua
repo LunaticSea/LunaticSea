@@ -1,3 +1,4 @@
+return [[
 bot:
   # ---------------------   TOKEN is important!!!!   ---------------------
   TOKEN: 'Bot Token 1'
@@ -142,3 +143,4 @@ emojis:
 #       auth: 'Password'
 #       secure: false
 #       driver: 'lavalink@4'
+]]
