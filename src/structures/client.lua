@@ -57,7 +57,9 @@ function lunatic:__init(test_mode)
 		})
 	end
 
-	local _, db_err = pcall(database(self).load)
+	local db_class = database(self)
+
+	local _, db_err = pcall(db_class.load, db_class)
 	if db_err then self._logd:error('Client', db_err) end
 
 	local _, loader_err = pcall(bot_loader, self)
