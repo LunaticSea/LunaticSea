@@ -5,7 +5,7 @@ local setTimeout = require('timer').setTimeout
 
 return function(client, player)
   local guild = client:getGuild(player.guildId)
-  client.logd:error('TrackResolveError', "Track Error in %s @ %s", guild.name, player.guildId)
+  client.logd:error('TrackStuck', "Track Error in %s @ %s", guild.name, player.guildId)
 
   -- client:update_music(player)
 
