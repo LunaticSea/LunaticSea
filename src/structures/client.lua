@@ -18,7 +18,7 @@ function lunatic:__init(test_mode)
 		logLevel = 0,
 	})
 
-	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 28)
+	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 30)
 	self._logd:info('Client', 'Booting up: ' .. package.name .. '@' .. package.version)
 	self._is_test_mode = test_mode
 	self._project_tree = dir():get_all(test_mode)
