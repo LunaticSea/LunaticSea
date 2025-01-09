@@ -198,7 +198,17 @@ return function(client, interaction)
 		prefix = '/',
 	})
 
-	command:run(client, handler)
+	local _, err = pcall(command.run, command, client, handler)
+
+	if err then
+		local embed = {
+			title = string.format('Error on running %s command', command.__name),
+			description = err,
+			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+		}
+		interaction:reply({ embeds = { embed } })
+		return client.logd:error('CommandManager | Interaction', err)
+	end
 
 	-- Log
 	client.logd:info(

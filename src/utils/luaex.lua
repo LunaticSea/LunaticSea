@@ -48,6 +48,15 @@ table.slice = function(t, first, last)
   return sliced
 end
 
+table.some = function (tbl, condition)
+  for _, value in ipairs(tbl) do
+    if condition(value) then
+      return true
+    end
+  end
+  return false
+end
+
 -- Patch string library
 string.split = function(string, pattern)
 	local t = {}

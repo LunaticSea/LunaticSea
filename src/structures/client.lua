@@ -57,8 +57,11 @@ function lunatic:__init(test_mode)
 		})
 	end
 
-	database(self):load()
-	bot_loader(self)
+	local _, db_err = pcall(database(self).load)
+	if db_err then self._logd:error('Client', db_err) end
+
+	local _, loader_err = pcall(bot_loader, self)
+	if loader_err then self._logd:error('Client', loader_err) end
 
 	if #self._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')

@@ -51,7 +51,7 @@ return function(client, player)
     end))
   end
 
-  if setup.channel == player.textId then return end
+  if setup and setup.channel == player.textId then return end
   cms(client, text_channel, player)
   player.data:clear()
 end
