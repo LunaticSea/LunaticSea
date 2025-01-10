@@ -1,9 +1,22 @@
 local fs = require('fs')
 local yaml = require('yaml')
 local file = fs.readFileSync('./app.yml')
-local default = require('../constants/default.lua')
+local default = require('../../constants/default.lua')
 
-if not file then file = '' end
+if not file then
+	local file_template = require('./template.lua')
+  fs.writeFileSync('app.yml', file_template)
+  print("")
+  print("")
+  print("app.yml is missing, looks like you're using this bot first time")
+  print("So I generated app.yml for you, please go to your current folder and config")
+  print("")
+  print("")
+  io.write("Press enter to close this program...")
+  local answer = io.read()
+  if answer or not answer then os.exit() end
+end
+
 local decoded = yaml.parse(file)
 
 local function merge_default(def, given)

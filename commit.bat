@@ -32,6 +32,12 @@ git commit
 git push -u origin HEAD:master
 cd ..
 
+cd internal
+git add .
+git commit
+git push -u origin HEAD:main
+cd ..
+
 cd ..
 git add .
 git commit

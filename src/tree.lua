@@ -50,6 +50,7 @@ return {
   "bundle:/src/events/shard/shardResumed.lua",
   "bundle:/src/events/track/trackEnd.lua",
   "bundle:/src/events/track/trackResolveError.lua",
+  "bundle:/src/events/track/trackStart.lua",
   "bundle:/src/events/track/trackStuck.lua",
   "bundle:/translation/arisu_en_US/command.admin.lua",
   "bundle:/translation/arisu_en_US/command.info.lua",

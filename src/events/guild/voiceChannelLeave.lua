@@ -1,5 +1,5 @@
 local PlayerState = require('lunalink').enums.PlayerState
-local arb = require('../../utils/arb.lua')
+local arb = require('internal').auto_reconnect_builder
 local timer = require('timer')
 local discordia = require('discordia')
 local setTimeout = timer.setTimeout
