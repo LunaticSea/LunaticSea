@@ -13,3 +13,6 @@
 [submodule "libs/plugins-api"]
 	path = libs/plugins-api
 	url = https://github.com/LunaticSea/plugins-api
+[submodule "libs/internal"]
+	path = libs/internal
+	url = https://github.com/LunaticSea/internal

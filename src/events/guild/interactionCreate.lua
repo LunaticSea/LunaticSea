@@ -2,7 +2,7 @@ local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
 local command_handler = require('../../structures/command_handler.lua')
 local accessableby = require('../../constants/accessableby.lua')
-local arb = require('../../utils/arb.lua')
+local arb = require('internal').auto_reconnect_builder
 
 local function get_command_name(data, subm)
 	local res = {}

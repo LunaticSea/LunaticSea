@@ -20,9 +20,14 @@ function lunatic:__init(test_mode)
 
 	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 30)
 	self._logd:info('Client Bootloader', 'Booting up: ' .. package.name .. '@' .. package.version)
+
+	self._logd:info('Client Bootloader', 'Loading all client properties...')
 	self._is_test_mode = test_mode
 	self._project_tree = dir():get_all(test_mode)
 	self._config = require('../utils/config')
+	if #self._config.bot.TOKEN == 0 then
+		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
+	end
 	self._i18n = require('../services/localization_service.lua')(self)
 	self._bot_owner = self._config.bot.OWNER_ID
 	self._commands = {}
@@ -38,14 +43,6 @@ function lunatic:__init(test_mode)
 	self._sentQueue = ll.Cache()
 	self._selectMenuOptions = {}
 
-	process:on('error', function (err)
-		self._logd:error(err)
-	end)
-
-	process:on('uncaughtException', function (err)
-		self._logd:error(err)
-	end)
-
 	for key, _ in pairs(ll.constants.FilterData) do
 		local firstUpperCase = key:gsub("^%l", string.upper)
 		table.insert(self._selectMenuOptions, {
@@ -57,12 +54,20 @@ function lunatic:__init(test_mode)
 		})
 	end
 
-	database(self):load()
-	bot_loader(self)
+	self._logd:info('Client Bootloader', 'Loading anti crash feature...')
+	process:on('error', function (err)
+		self._logd:error(err)
+	end)
 
-	if #self._config.bot.TOKEN == 0 then
-		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
-	end
+	process:on('uncaughtException', function (err)
+		self._logd:error(err)
+	end)
+
+	self._logd:info('Client Bootloader', 'Loading database...')
+	database(self):load()
+
+	self._logd:info('Client Bootloader', 'Loading all events and commands...')
+	bot_loader(self)
 end
 
 function get:selectMenuOptions()

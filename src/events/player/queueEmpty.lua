@@ -1,5 +1,5 @@
-local arb = require('../../utils/arb.lua')
-local cms = require('../../services/clear_message_service.lua')
+local arb = require('internal').auto_reconnect_builder
+local cms = require('internal').clear_message
 local PlayerState = require('lunalink').enums.PlayerState
 
 return function(client, player)
