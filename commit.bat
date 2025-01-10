@@ -35,7 +35,7 @@ cd ..
 cd internal
 git add .
 git commit
-git push -u origin HEAD:master
+git push -u origin HEAD:main
 cd ..
 
 cd ..
