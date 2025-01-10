@@ -140,7 +140,7 @@ return function (client, player, track)
     local id = button.data.customId
     local target_button = client.plButton:get(id)
 
-    local _, err = pcall(
+    local success, res = pcall(
       target_button.run,
       target_button,
       client, button,
@@ -148,14 +148,14 @@ return function (client, player, track)
       nplaying, collector
     )
 
-    if err then
+    if not success then
       local embed = {
         title = string.format('Error on running { %s } player button', target_button.__name),
-        description = err,
+        description = res,
         color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
       }
       button:reply({ embeds = { embed } })
-      return client.logd:error('ButtonError', err)
+      return client.logd:error('ButtonError', res)
     end
   end)
 end

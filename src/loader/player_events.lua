@@ -30,8 +30,8 @@ function event_loader:run()
 		local splited_dir = string.split(table.unpack(splited_dir_params))
 		local e_name = string.split(splited_dir[1], '[^.]+')[1]
 		self._client.lunalink:on(e_name, function(...)
-			local _, internal_err = pcall(func, self._client, ...)
-			if internal_err then
+			local success, internal_err = pcall(func, self._client, ...)
+			if not success then
 				self._client.logd:error(string.format('PlayerEvent:%s', e_name), internal_err)
 			end
 		end)
