@@ -1,4 +1,4 @@
-local bc, get = require('class')('Button@Queue')
+local bc, get = require('class')('Button@Shuffle')
 local format_duration = require('internal').format_duration
 local get_title = require('internal').get_title
 local page = require('internal').page
