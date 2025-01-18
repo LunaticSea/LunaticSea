@@ -1,5 +1,5 @@
 local fsex = require('./utils/fsex.lua')
-local include = { 'commands', 'events', 'translation' }
+local include = { 'commands', 'events', 'translation', 'buttons' }
 local exclude =
 	{
 	  'loader',

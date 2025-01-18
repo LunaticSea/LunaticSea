@@ -22,27 +22,40 @@ function lunatic:__init(test_mode)
 	self._logd:info('Client Bootloader', 'Booting up: ' .. package.name .. '@' .. package.version)
 
 	self._logd:info('Client Bootloader', 'Loading all client properties...')
+	-- Boolean and counter
+	self._total_commands = 0
 	self._is_test_mode = test_mode
-	self._project_tree = dir():get_all(test_mode)
+
+	-- Config file
 	self._config = require('../utils/config')
 	if #self._config.bot.TOKEN == 0 then
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
-	self._i18n = require('../services/localization_service.lua')(self)
-	self._bot_owner = self._config.bot.OWNER_ID
-	self._commands = {}
-	self._total_commands = 0
-	self._command_categories = {}
-	self._alias = {}
-	self._db = {}
-	self._icons = self._config.icons
-	self._lunalink = lunalink(self).wrapper
-	self._lavalink_using = {}
-	self._nplayingMsg = ll.Cache()
-	self._leaveDelay = ll.Cache()
-	self._sentQueue = ll.Cache()
-	self._selectMenuOptions = {}
 
+	-- Fast access
+	self._bot_owner = self._config.bot.OWNER_ID
+	self._icons = self._config.icons
+
+	-- Tables
+	self._db = {}
+	self._alias = {}
+	self._commands = {}
+	self._plButton = {}
+	self._lavalink_using = {}
+	self._selectMenuOptions = {}
+	self._command_categories = {}
+
+	-- Cache
+	self._sentQueue = ll.Cache()
+	self._leaveDelay = ll.Cache()
+	self._nplayingMsg = ll.Cache()
+
+	-- Foregin package
+	self._lunalink = lunalink(self).wrapper
+	self._project_tree = dir():get_all(test_mode)
+	self._i18n = require('../services/localization_service.lua')(self)
+
+	-- Filter data
 	for key, _ in pairs(ll.constants.FilterData) do
 		local firstUpperCase = key:gsub("^%l", string.upper)
 		table.insert(self._selectMenuOptions, {
@@ -68,6 +81,10 @@ function lunatic:__init(test_mode)
 
 	self._logd:info('Client Bootloader', 'Loading all events and commands...')
 	bot_loader(self)
+end
+
+function get:plButton()
+	return self._plButton
 end
 
 function get:selectMenuOptions()

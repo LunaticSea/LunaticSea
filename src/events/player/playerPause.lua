@@ -1,4 +1,4 @@
-local playerButton = require('../../utils/player_button.lua')
+local playerButton = require('internal').player_button
 
 return function(client, player)
   if player.voiceId == nil then return end

@@ -4,6 +4,16 @@
 -- You will be responsible for this when changing any content in the file.
 
 return {
+  "bundle:/src/buttons/clear.lua",
+  "bundle:/src/buttons/loop.lua",
+  "bundle:/src/buttons/pause.lua",
+  "bundle:/src/buttons/previous.lua",
+  "bundle:/src/buttons/queue.lua",
+  "bundle:/src/buttons/shuffle.lua",
+  "bundle:/src/buttons/skip.lua",
+  "bundle:/src/buttons/stop.lua",
+  "bundle:/src/buttons/voldown.lua",
+  "bundle:/src/buttons/volup.lua",
   "bundle:/src/commands/image/avatar.lua",
   "bundle:/src/commands/info/developer.lua",
   "bundle:/src/commands/info/help.lua",
@@ -52,6 +62,7 @@ return {
   "bundle:/src/events/track/trackResolveError.lua",
   "bundle:/src/events/track/trackStart.lua",
   "bundle:/src/events/track/trackStuck.lua",
+  "bundle:/translation/arisu_en_US/button.music.lua",
   "bundle:/translation/arisu_en_US/command.admin.lua",
   "bundle:/translation/arisu_en_US/command.info.lua",
   "bundle:/translation/arisu_en_US/command.music.lua",

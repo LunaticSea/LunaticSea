@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  macos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dev tools
+        run: brew install coreutils
+
+      - name: Install luvit
+        run: sh ./scripts/get-lit.sh
+        env:
+          TIMEOUT_MODE: disable
+
+      - name: Install dependencies
+        run: gtimeout 9s ./lit install
+
+      - name: Build binaries
+        run: ./luvit make
+        env:
+          DOT_ENABLE: true
+
+      - name: Fetch System Name
+        run: |
+          OS=$(uname -s)
+          ARCH=$(uname -m)
+          echo "ARTIFACT=LunaticSea-$OS-$ARCH" >> $GITHUB_ENV
+
+      - name: Rename binaries
+        run: mv ./build/LunaticSea ./build/${{ env.ARTIFACT }}
+  
+      - name: Push LunaticSea binaries to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: build/
+
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64, i686, aarch64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dev tools
+        run: sudo apt-get install -y curl
+
+      - name: Install luvit
+        run: sh ./scripts/get-lit.sh
+        env:
+          TIMEOUT_MODE: enable
+
+      - name: Install dependencies
+        run: ./lit install
+
+      - name: Build binaries
+        run: ./luvit make
+        env:
+          DOT_ENABLE: true
+          TIMEOUT_MODE: true
+
+      - name: Fetch System Name
+        run: |
+          OS=$(uname -s)
+          ARCH=${{ matrix.arch }}
+          echo "ARTIFACT=LunaticSea-$OS-$ARCH" >> $GITHUB_ENV
+
+      - name: Rename binaries
+        run: mv ./build/LunaticSea ./build/${{ env.ARTIFACT }}
+
+      - name: Push LunaticSea binaries to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: build/
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, x86]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install luvit
+        shell: pwsh
+        run: PowerShell -NoProfile -ExecutionPolicy unrestricted -Command "./scripts/get-lit.ps1"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: ./lit install
+
+      - name: Build binaries
+        shell: pwsh
+        run: ./luvit make
+
+      - name: Fetch System Name
+        run: |
+          $ARCH="${{ matrix.arch }}"
+          echo "ARTIFACT=LunaticSea-Windows-$ARCH" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Rename binaries
+        shell: pwsh
+        run: Rename-Item -Path "./build/LunaticSea.exe" -NewName "${{ env.ARTIFACT }}.exe"
+
+      - name: Push LunaticSea binaries to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: build/
+
+  publish:
+    needs: [macos, linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: download
+          merge-multiple: true
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-dump
+          path: download
