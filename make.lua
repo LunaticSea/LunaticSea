@@ -27,22 +27,20 @@ local make = {
 }
 
 function make.run()
-	local cli_data, cli_arg = make.get_cli_data()
-	local is_github_action, curr_cmd = make.is_github()
+	local cli_data = make.get_cli_data()
 	make.l('INFO', 'LunaticSea make')
 	make.l('INFO', 'Version: ' .. make.version)
-
-	if is_github_action then
-		make.l('INFO', 'Current mode: Github action ' .. cli_arg)
-	else
-		make.l('INFO', 'Current mode: Internal ' .. cli_arg)
-	end
 
 	if cli_data and cli_data.type == 3 then
 		return make.install()
 	end
 
-	make.tree_file(cli_data, curr_cmd)
+	local base_command = process.env["DOT_ENABLE"] and './lit make' or 'lit make'
+	if process.env["TIMEOUT_MODE"] then
+		base_command = 'timeout 7s ' .. base_command
+	end
+
+	make.tree_file(cli_data, base_command)
 end
 
 function make.tree_file(cli_data, curr_cmd)
@@ -105,16 +103,6 @@ function make.doc()
 	print('')
 	print('')
 	os.exit()
-end
-
-function make.is_github()
-	if binary_format == 'dll' then
-		return false, 'lit make'
-	end
-	if process.env['GITHUB_BUILD'] then
-		return true, './lit make'
-	end
-	return false, 'lit make'
 end
 
 function make.get_cli_data()
