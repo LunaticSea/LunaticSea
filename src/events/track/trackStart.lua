@@ -39,8 +39,8 @@ return function (client, player, track)
 
   local embedded = {
     author = {
-      name = client.i18n.get(language, 'event.player', 'track_title'),
-      iconURL = client.i18n.get(language, 'event.player', 'track_icon'),
+      name = client.i18n:get(language, 'event.player', 'track_title'),
+      icon_url = client.i18n:get(language, 'event.player', 'track_icon'),
     },
     description = string.format("**%s**", get_title(client, track)),
     fields = {
@@ -56,12 +56,14 @@ return function (client, player, track)
       },
       {
         name = client.i18n:get(language, 'event.player', 'request_title'),
-        value = song.requester,
+        value = string.format('<@%s>', song.requester.id),
         inline = true
       },
     },
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-    thumbnail = track.artworkUrl or string.format("https://img.youtube.com/vi/%s/hqdefault.jpg", track.identifier)
+    thumbnail = {
+      url = track.artworkUrl or string.format("https://img.youtube.com/vi/%s/hqdefault.jpg", track.identifier)
+    }
   }
 
   local nplaying = channel:send({
@@ -79,7 +81,7 @@ return function (client, player, track)
       interaction.guild.me.voiceChannel.id == interaction.member.voiceChannel.id
     ) then return true end
     interaction:reply({
-      content = client.i18n.get(language, 'event.player', 'join_voice'),
+      content = client.i18n:get(language, 'event.player', 'join_voice'),
       ephemeral = true,
     })
     return false
@@ -91,7 +93,7 @@ return function (client, player, track)
       interaction.guild.me.voiceChannel.id == interaction.member.voiceChannel.id
     ) then return true end
     interaction:reply({
-      content = client.i18n.get(language, 'event.player', 'join_voice'),
+      content = client.i18n:get(language, 'event.player', 'join_voice'),
       ephemeral = true,
     })
     return false
@@ -137,8 +139,8 @@ return function (client, player, track)
   end)
 
   collector:on('collect', function (button)
-    local id = button.data.customId
-    local target_button = client.plButton:get(id)
+    local id = button.data.custom_id
+    local target_button = client.plButton[id]
 
     local success, res = pcall(
       target_button.run,

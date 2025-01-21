@@ -129,7 +129,7 @@ function command:run(client, handler)
 	local embed = {
 	  author = {
 	    name = client.i18n:get(handler.language, 'command.premium', 'redeem_title'),
-	    iconURL = client.user:getAvatarURL()
+	    icon_url = client.user:getAvatarURL()
 	  },
 		description = client.i18n:get(handler.language, 'command.premium', 'redeem_desc', {
 		  premium.plan, formated_time

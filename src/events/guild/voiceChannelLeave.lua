@@ -19,7 +19,7 @@ return function (client, member, channel)
   if isNoOneInChannel == 0 and isNotDestroy then player:destroy() end
 
   -- Check if member is a bot
-  if member.bot then return end
+  if member.bot and  member.id ~= client.user.id then return end
 
   -- Check if auto reconnect 247 still avaliable
   local auto_reconnect = arb(client):get(member.guild.id)
@@ -70,6 +70,10 @@ return function (client, member, channel)
   -- Delay leave timeout
   local leave_delay_timeout = setTimeout(client.config.player.LEAVE_TIMEOUT, coroutine.wrap(function ()
     local is247 = client.db.autoreconnect:get(member.guild.id)
+
+    local newPlayer = client.lunalink.players:get(member.guild.id)
+
+    if not newPlayer or newPlayer.data:get('sudo-destroy') then return end
 
     if #inVoiceUserList <= 1 then
       player.data:set('sudo-destroy', true)

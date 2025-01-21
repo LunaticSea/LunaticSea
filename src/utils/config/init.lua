@@ -1,10 +1,9 @@
 local fs = require('fs')
 local yaml = require('yaml')
 local file = fs.readFileSync('./app.yml')
-local default = require('../../constants/default.lua')
+local file_template = require('./template.lua')
 
 if not file then
-	local file_template = require('./template.lua')
   fs.writeFileSync('app.yml', file_template)
   print("")
   print("")
@@ -18,6 +17,7 @@ if not file then
 end
 
 local decoded = yaml.parse(file)
+local default = yaml.parse(file_template)
 
 local function merge_default(def, given)
 	if type(given) == 'nil' then

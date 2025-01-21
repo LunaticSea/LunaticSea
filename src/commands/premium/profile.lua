@@ -91,7 +91,7 @@ function command:embed_gen(client, handler, desc_args, is_err)
   return {
     author = {
       name = client.i18n:get(handler.language, 'command.premium', 'profile_author'),
-      iconURL = client.user:getAvatarURL()
+      icon_url = client.user:getAvatarURL()
     },
 		description = client.i18n:get(table.unpack(default_str)),
 		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,

@@ -11,7 +11,7 @@ function bc:run(client, button, language, player, nplaying, collector)
 
   player.queue:clear()
 
-  return reply_interaction(client, button, client.i18n.get(language, 'button.music', 'clear_msg'))
+  return reply_interaction(client, button, client.i18n:get(language, 'button.music', 'clear_msg'))
 end
 
 return bc

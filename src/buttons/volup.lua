@@ -17,7 +17,7 @@ function bc:run(client, button, language, player, nplaying, collector)
     return reply_interaction(
       client,
       button,
-      client.i18n.get(language, 'button.music', 'volume_max')
+      client.i18n:get(language, 'button.music', 'volume_max')
     )
   end
 

@@ -114,7 +114,7 @@ return function(client, interaction)
 		local res = {
 		  author = {
 				name = client.i18n:get(language, 'error', 'no_premium_author'),
-				iconURL = interaction.usetr:getAvatarURL()
+				icon_url = interaction.usetr:getAvatarURL()
 			},
 			description = no_pre_string,
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,

@@ -28,7 +28,7 @@ return function(client, message)
 
 	-- Get Command Data From Cache
 	local guild_prefix = client.db.prefix:get(message.guild.id)
-	local prefix = guild_prefix or client.config.utilities.PREFIX
+	local prefix = guild_prefix or client.config.utilities.MESSAGE_CONTENT.commands.prefix
 	local sp = special_prefix(prefix)
 	prefix = sp.original
 
@@ -115,7 +115,7 @@ return function(client, message)
 		local res = {
 		  author = {
 				name = client.i18n:get(language, 'error', 'no_premium_author'),
-				iconURL = message.author:getAvatarURL()
+				icon_url = message.author:getAvatarURL()
 			},
 			description = no_pre_string,
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,

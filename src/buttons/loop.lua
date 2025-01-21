@@ -31,7 +31,7 @@ function bc:run(client, button, language, player, nplaying, collector)
   player:setLoop(mode)
   if client.config.utilities.AUTO_RESUME then setLoop247(mode) end
 
-  return reply_interaction(client, button, client.i18n.get(language, 'button.music', res_str))
+  return reply_interaction(client, button, client.i18n:get(language, 'button.music', res_str))
 end
 
 return bc

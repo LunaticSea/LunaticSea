@@ -20,7 +20,7 @@ end
 
 table.reduce = function(tbl, func, initial)
 	local accumulator = initial
-	for _, value in ipairs(tbl) do
+	for _, value in pairs(tbl) do
 		accumulator = func(accumulator, value)
 	end
 	return accumulator
@@ -33,11 +33,11 @@ table.length = function (T)
 end
 
 table.map = function (tbl, func)
-    local result = {}
-    for i, v in ipairs(tbl) do
-        result[i] = func(v, i, tbl)  -- Apply the function to each element
-    end
-    return result
+  local result = {}
+  for i, v in pairs(tbl) do
+      result[i] = func(v, i, tbl)  -- Apply the function to each element
+  end
+  return result
 end
 
 table.slice = function(t, first, last)
@@ -49,7 +49,7 @@ table.slice = function(t, first, last)
 end
 
 table.some = function (tbl, condition)
-  for _, value in ipairs(tbl) do
+  for _, value in pairs(tbl) do
     if condition(value) then
       return true
     end

@@ -17,10 +17,12 @@ return function (client, member, channel)
   end)
   local isNotDestroy = not player.data:get('sudo-destroy') and player.state ~= PlayerState.DESTROYED
 
-  if isNoOneInChannel and isNotDestroy then player:destroy() end
+  if isNoOneInChannel == 0 and isNotDestroy then
+    player:destroy()
+  end
 
   -- Check if member is a bot
-  if member.bot then return end
+  if member.bot and  member.id ~= client.user.id then return end
 
   -- Get language
   local language = client.db.language:get(member.guild.id)
@@ -41,7 +43,8 @@ return function (client, member, channel)
   -- Resume audio on join feature
   local inVoiceUserList = table.filter(channel.connectedMembers, function (user)
     if user.id == client.user.id then return true end
-    if user.bot then return false end
+    if user.bot then return false
+    else return true end
   end)
 
   if player.track and player.paused and #inVoiceUserList >= 2 then

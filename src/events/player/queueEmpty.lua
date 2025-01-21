@@ -43,7 +43,7 @@ return function(client, player)
     end
   end
 
-  client.logger.info('QueueEmpty',  string.format("Queue Empty in @ %s / %s", guild.name, player.guildId))
+  client.logd:info('QueueEmpty',  string.format("Queue Empty in @ %s / %s", guild.name, player.guildId))
 
   local data = arb(client, player):get(player.guildId)
   local channel = guild:getChannel(player.textId)

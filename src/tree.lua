@@ -20,6 +20,7 @@ return {
   "bundle:/src/commands/info/invite.lua",
   "bundle:/src/commands/info/ping.lua",
   "bundle:/src/commands/music/join.lua",
+  "bundle:/src/commands/music/play.lua",
   "bundle:/src/commands/music/stop.lua",
   "bundle:/src/commands/owner/blacklist.lua",
   "bundle:/src/commands/owner/shutdown.lua",

@@ -1,0 +1,106 @@
+{
+  "components": [
+    {
+      "type": 1,
+      "components": [
+        {
+          "disabled": false,
+          "emoji": { "name": "\226\143\185\239\184\143" },
+          "custom_id": "stop",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\226\143\170" },
+          "custom_id": "replay",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\226\143\184\239\184\143" },
+          "custom_id": "pause",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\226\143\169" },
+          "custom_id": "skip",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\240\159\148\129" },
+          "custom_id": "loop",
+          "style": 2,
+          "type": 2
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "components": [
+        {
+          "disabled": false,
+          "emoji": { "name": "\240\159\148\128" },
+          "custom_id": "shuffle",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\240\159\148\137" },
+          "custom_id": "voldown",
+          "style": 2,
+          "type": 2
+        },
+        { "type": 2, "disabled": false, "custom_id": "clear", "style": 2 },
+        {
+          "disabled": false,
+          "emoji": { "name": "\240\159\148\138" },
+          "custom_id": "volup",
+          "style": 2,
+          "type": 2
+        },
+        {
+          "disabled": false,
+          "emoji": { "name": "\240\159\147\139" },
+          "custom_id": "queue",
+          "style": 2,
+          "type": 2
+        }
+      ]
+    }
+  ],
+  "embeds": [
+    {
+      "color": 2829617,
+      "fields": [
+        {
+          "inline": true,
+          "value": "Dazegxd",
+          "name": "`\226\156\146\239\184\143` | Author:"
+        },
+        {
+          "inline": true,
+          "value": "04:48",
+          "name": "`\240\159\149\146` | Song Duration:"
+        },
+        {
+          "inline": true,
+          "value": "<@898728768791789628>",
+          "name": "`\240\159\145\164` | Requester:"
+        }
+      ],
+      "description": "**can't let u go**",
+      "author": {
+        "icon_url": "https://cdn.discordapp.com/emojis/741605543046807626.gif",
+        "name": "Started Playing"
+      },
+      "thumbnail": { "url": "https://i.ytimg.com/vi/2NWhuhhO0qM/mqdefault.jpg" }
+    }
+  ]
+}

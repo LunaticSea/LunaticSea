@@ -144,7 +144,7 @@ function command:run(client, handler)
     timestamp = discordia.Date():toISO('T', 'Z'),
     footer = {
       text = client.i18n:get(handler.language, 'command.premium', 'gen_footer', { '/' }),
-      iconURL = client.user:getAvatarURL()
+      icon_url = client.user:getAvatarURL()
     }
 	}
 	handler:edit_reply({

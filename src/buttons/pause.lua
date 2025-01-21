@@ -24,7 +24,7 @@ function bc:run(client, button, language, player, nplaying, collector)
   reply_interaction(
     client,
     button,
-    client.i18n.get(language, 'button.music', newPlayer.paused and 'pause_msg' or 'resume_msg')
+    client.i18n:get(language, 'button.music', newPlayer.paused and 'pause_msg' or 'resume_msg')
   )
 end
 
