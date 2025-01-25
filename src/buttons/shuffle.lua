@@ -36,7 +36,9 @@ function bc:run(client, button, language, player, nplaying, collector)
     local str = table.concat(table.slice(songStrings, i * 10, i * 10 + 10), "\n")
 
     local embed = {
-      thumbnail = thumbnail,
+      thumbnail = {
+        url = thumbnail
+      },
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
       author = {
         name = client.i18n:get(language, 'button.music', 'shuffle_msg')
@@ -44,7 +46,7 @@ function bc:run(client, button, language, player, nplaying, collector)
       description = client.i18n:get(language, 'button.music', 'queue_description', {
         get_title(client, song),
         format_duration(song.duration),
-        song.requester,
+        song.requester.mentionString,
         (str == '') and '  Nothing' or '\n' + str,
       }),
       footer = {

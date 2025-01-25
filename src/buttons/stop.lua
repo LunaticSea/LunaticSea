@@ -10,7 +10,7 @@ function bc:run(client, button, language, player, nplaying, collector)
 
   player.data:set('sudo-destroy', true)
   local is247 = client.db.autoreconnect:get(button.guild.id)
-  player.stop(not (is247 and is247.twentyfourseven))
+  player:stop(not (is247 and is247.twentyfourseven))
 
   reply_interaction(
     client,

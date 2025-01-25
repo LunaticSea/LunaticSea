@@ -56,7 +56,7 @@ return function (client, player, track)
       },
       {
         name = client.i18n:get(language, 'event.player', 'request_title'),
-        value = string.format('<@%s>', song.requester.id),
+        value = song.requester.mentionString,
         inline = true
       },
     },
@@ -115,7 +115,7 @@ return function (client, player, track)
       }
       local msg = stringMenu:reply({ embeds = { embed } })
       local timeout = client.config.utilities.DELETE_MSG_TIMEOUT
-      setTimeout(timeout, coroutine.wrap(function () if msg then msg:delete() end end))
+      setTimeout(timeout, coroutine.wrap(function () if msg then stringMenu:deleteReply() end end))
     end
 
     if filterMode == 'clear' then
@@ -135,7 +135,7 @@ return function (client, player, track)
     }
     local msg = stringMenu:reply({ embeds = { embed } })
     local timeout = client.config.utilities.DELETE_MSG_TIMEOUT
-    setTimeout(timeout, coroutine.wrap(function () if msg then msg:delete() end end))
+    setTimeout(timeout, coroutine.wrap(function () if msg then stringMenu:deleteReply() end end))
   end)
 
   collector:on('collect', function (button)

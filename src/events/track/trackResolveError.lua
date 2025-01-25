@@ -24,7 +24,7 @@ return function(client, player)
     local setup = client.db.setup:get(player.guildId)
     local msg = text_channel:send({ embeds = { embed } })
     setTimeout(client.config.utilities.DELETE_MSG_TIMEOUT, coroutine.wrap(function ()
-      if not setup and setup.channel ~= text_channel.id then msg:delete() end
+      if not setup or setup.channel ~= text_channel.id then msg:delete() end
     end))
   end
 

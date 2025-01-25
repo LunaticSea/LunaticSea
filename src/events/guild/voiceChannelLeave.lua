@@ -19,7 +19,7 @@ return function (client, member, channel)
   if isNoOneInChannel == 0 and isNotDestroy then player:destroy() end
 
   -- Check if member is a bot
-  if member.bot and  member.id ~= client.user.id then return end
+  if member.bot and member.id ~= client.user.id then return end
 
   -- Check if auto reconnect 247 still avaliable
   local auto_reconnect = arb(client):get(member.guild.id)
@@ -32,6 +32,8 @@ return function (client, member, channel)
   -- Check if bot not in voice but player not destroyed
   local botMemberStatus = member.guild:getMember(client.user.id)
   local isNotInChannel = not botMemberStatus or not botMemberStatus.voiceChannel
+
+  p(isNotInChannel, isNotDestroy)
 
   if isNotInChannel and isNotDestroy then
     player.data:set('sudo-destroy', true)

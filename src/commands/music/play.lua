@@ -121,7 +121,7 @@ function command:run(client, handler)
       description = client.i18n:get(handler.language, 'command.music', 'play_track', {
         self:getTitle(client, result.type, tracks),
         convert_time(tracks[1].duration),
-        string.format('<@%s>', tracks[1].requester.id)
+        tracks[1].requester.mentionString
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -131,7 +131,7 @@ function command:run(client, handler)
       description = client.i18n:get(handler.language, 'command.music', 'play_playlist', {
         self:getTitle(client, result.type, tracks, value),
         convert_time(player.queue.duration), #tracks,
-        string.format('<@%s>', tracks[1].requester.id)
+        tracks[1].requester.mentionString
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -141,7 +141,7 @@ function command:run(client, handler)
       description = client.i18n:get(handler.language, 'command.music', 'play_result', {
         self:getTitle(client, result.type, tracks),
         convert_time(tracks[1].duration),
-        string.format('<@%s>', tracks[1].requester.id)
+        tracks[1].requester.mentionString
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

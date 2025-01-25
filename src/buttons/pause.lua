@@ -9,7 +9,7 @@ end
 function bc:run(client, button, language, player, nplaying, collector)
   if not player and collector then collector:stop() end
 
-  player.data.set('pause-from-button', true)
+  player.data:set('pause-from-button', true)
 
   local newPlayer = player:setPause(not player.paused)
 

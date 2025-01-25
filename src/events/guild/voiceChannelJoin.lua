@@ -33,7 +33,7 @@ return function (client, member, channel)
   local isNotInChannel = not botMemberStatus or not botMemberStatus.voiceChannel
 
   if isNotInChannel and isNotDestroy then
-    player.data.set('sudo-destroy', true)
+    player.data:set('sudo-destroy', true)
     player:destroy()
   elseif isNotInChannel then return end
 
