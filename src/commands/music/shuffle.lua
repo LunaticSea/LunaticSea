@@ -1,18 +1,17 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('Music:Queue')
+local command, get = require('class')('Music:Shuffle')
 local internal = require('internal')
 local page_framework = internal.page
 local format_duration = internal.format_duration
 local get_title = internal.get_title
 
 function get:name()
-	return { 'queue' }
+	return { 'shuffle' }
 end
 
 function get:description()
-	return 'Show the queue of songs.'
+	return 'Shuffle song in queue!'
 end
 
 function get:category()
@@ -24,7 +23,7 @@ function get:accessableby()
 end
 
 function get:usage()
-	return '<page_number>'
+	return ''
 end
 
 function get:aliases()
@@ -45,14 +44,7 @@ function get:permissions()
 end
 
 function get:options()
-	return {
-		{
-      name = 'page',
-      description = 'Page number to show.',
-      type = applicationCommandOptionType.number,
-      required = false,
-    },
-	}
+	return {}
 end
 
 function command:run(client, handler)
@@ -60,26 +52,26 @@ function command:run(client, handler)
 
   local player = client.lunalink.players:get(handler.guild.id)
 
-  local value = tonumber(handler.args[1])
+	local old_queue = {}
 
-  if not value and handler.args[1] then
-    local embed =  {
-      description = client.i18n:get(handler.language, 'error', 'number_invalid'),
-      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-    }
-    return handler:edit_reply({ content = ' ', embeds = { embed } })
-  end
+	for _, track in pairs(player.queue.list) do
+		table.insert(old_queue, track)
+	end
 
-  local song = player.queue.current
+	player.data:set('old_queue', old_queue)
+
+	local newQueue = player.queue:shuffle()
+
+  local song = newQueue.current
   local thumbnail =
     song.artworkUrl or string.format('https://img.youtube.com/vi/%s/hqdefault.jpg', song.identifier)
 
-	local page_num = math.ceil(#player.queue.list / 10)
+	local page_num = math.ceil(#newQueue.list / 10)
 	if page_num == 0 then page_num = 1 end
 
 	local song_strings = {}
-	for i = 1, #player.queue.list, 1 do
-		local song_e = player.queue[i]
+	for i = 1, #newQueue.list, 1 do
+		local song_e = newQueue[i]
 		local string_ele = string.format(
 			'**%s.** %s `%s`', i, get_title(client, song_e), format_duration(song_e.duration)
 		)
@@ -102,7 +94,7 @@ function command:run(client, handler)
 			description = client.i18n:get(handler.language, 'command.music', 'queue_description', {
 				get_title(client, song),
 				song.requester.username,
-				format_duration(player.queue.duration),
+				format_duration(newQueue.duration),
 				str == "" and "  Nothing" or "\n" + str
 			}),
 			footer = {
@@ -113,24 +105,8 @@ function command:run(client, handler)
 		table.insert(pages, embed)
 	end
 
-	if not value then
-		if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
-		else page_framework(client, pages, 120000, handler):run() end
-	else self:send_specific_page(client, handler, pages, page_num, value) end
-end
-
-function command:send_specific_page(client, handler, pages, page_num, value)
-  if value > page_num then
-    local embed = {
-      description = client.i18n:get(handler.language, 'command.premium', 'queue_page_notfound', page_num),
-      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-    }
-    return handler:edit_reply({
-      embeds = { embed },
-    })
-  end
-
-  return handler.editReply({ embeds = { pages[page_num] } })
+	if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
+	else page_framework(client, pages, 120000, handler):run() end
 end
 
 return command

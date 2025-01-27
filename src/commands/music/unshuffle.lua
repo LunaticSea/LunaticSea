@@ -1,18 +1,17 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('Music:Queue')
+local command, get = require('class')('Music:Unshuffle')
 local internal = require('internal')
 local page_framework = internal.page
 local format_duration = internal.format_duration
 local get_title = internal.get_title
 
 function get:name()
-	return { 'queue' }
+	return { 'unshuffle' }
 end
 
 function get:description()
-	return 'Show the queue of songs.'
+	return 'Unshuffle song in queue!'
 end
 
 function get:category()
@@ -24,7 +23,7 @@ function get:accessableby()
 end
 
 function get:usage()
-	return '<page_number>'
+	return ''
 end
 
 function get:aliases()
@@ -45,14 +44,7 @@ function get:permissions()
 end
 
 function get:options()
-	return {
-		{
-      name = 'page',
-      description = 'Page number to show.',
-      type = applicationCommandOptionType.number,
-      required = false,
-    },
-	}
+	return {}
 end
 
 function command:run(client, handler)
@@ -60,14 +52,9 @@ function command:run(client, handler)
 
   local player = client.lunalink.players:get(handler.guild.id)
 
-  local value = tonumber(handler.args[1])
-
-  if not value and handler.args[1] then
-    local embed =  {
-      description = client.i18n:get(handler.language, 'error', 'number_invalid'),
-      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-    }
-    return handler:edit_reply({ content = ' ', embeds = { embed } })
+  local old_queue = player.data:get('old_queue')
+  if old_queue then
+    player.queue.list = { table.unpack(old_queue) }
   end
 
   local song = player.queue.current
@@ -93,9 +80,7 @@ function command:run(client, handler)
 
 		local embed = {
 			author = {
-				name = client.i18n:get(handler.language, 'command.music', 'queue_author', {
-					handler.guild.name
-				})
+				name = client.i18n:get(handler.language, "command.music", "unshuffle_msg")
 			},
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			thumbnail = { url = thumbnail },
@@ -113,24 +98,8 @@ function command:run(client, handler)
 		table.insert(pages, embed)
 	end
 
-	if not value then
-		if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
-		else page_framework(client, pages, 120000, handler):run() end
-	else self:send_specific_page(client, handler, pages, page_num, value) end
-end
-
-function command:send_specific_page(client, handler, pages, page_num, value)
-  if value > page_num then
-    local embed = {
-      description = client.i18n:get(handler.language, 'command.premium', 'queue_page_notfound', page_num),
-      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-    }
-    return handler:edit_reply({
-      embeds = { embed },
-    })
-  end
-
-  return handler.editReply({ embeds = { pages[page_num] } })
+	if #pages == 1 or #pages == 0 then handler:edit_reply({ embeds = { pages[1] } })
+	else page_framework(client, pages, 120000, handler):run() end
 end
 
 return command
