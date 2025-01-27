@@ -48,7 +48,7 @@ end
 return function(client, interaction)
 	-- Check valid interaction class
 	if interaction.user.bot then return end
-	if interaction.data.type ~= 1 then return end
+	if not table.includes({ 2, 4 }, interaction.type) then return end
 
 	-- Get command data from cache
 	local command_name = table.concat(get_command_name(interaction.data), '-')
@@ -59,6 +59,10 @@ return function(client, interaction)
 	local language = client.db.language:get(interaction.guild.id)
 	if not language then language = client.i18n.default_locate end
 
+	if command.autocomplete and interaction.type == 4 then
+		return command:autocomplete(client, interaction, language)
+	elseif not command.autocomplete and interaction.type == 4 then return end
+
 	-- Permission Checker
 	if (table.includes(
 		command.accessableby,
@@ -66,7 +70,7 @@ return function(client, interaction)
 	) and not interaction.member:hasPermission(permission_flags_bits.manageGuild)) then
 		interaction:reply({
 			embeds = { {
-				description = client.i18n:get(language, 'error', 'owner_only'),
+				description = client.i18n:get(language, 'error', 'user_no_perms', { 'ManageGuild' }),
 				color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 			} },
 		})

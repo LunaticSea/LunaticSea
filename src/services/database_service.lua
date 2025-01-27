@@ -15,7 +15,6 @@ function database:__init(client)
 			'songNoti',
 			'preGuild',
 			'blacklist',
-			'maxlength'
 		}
 end
 

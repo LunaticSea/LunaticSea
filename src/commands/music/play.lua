@@ -48,7 +48,7 @@ function get:options()
       description = 'The song link or name',
       type = applicationCommandOptionType.string,
       required = true,
-      -- autocomplete = true,
+      autocomplete = true,
     },
   }
 end
@@ -171,6 +171,50 @@ function command:getTitle(client, type, tracks, value)
     and string.format('[%s](%s)', tracks[1].title, value)
     or string.format('[%s}](%s)', tracks[1].title, tracks[1].uri)
   end
+end
+
+function command:autocomplete(client, interaction, language)
+  local choices = {}
+  local input = interaction.data.options[1].value
+
+  math.randomseed(os.time())
+
+  local RandomNum = math.random(#client.config.player.AUTOCOMPLETE_SEARCH)
+  local Random = client.config.player.AUTOCOMPLETE_SEARCH[RandomNum]
+
+  if string.match(input, 'https?://') then
+    table.insert(choices, { name = input, value = input })
+    return interaction:autocomplete(choices)
+  end
+
+  if #client._lavalink_using == 0 then
+    table.insert(choices, {
+      name = client.i18n:get(language, 'command.music', 'no_node'),
+      value = client.i18n:get(language, 'command.music', 'no_node')
+    })
+    return interaction:autocomplete(choices)
+  end
+
+  local searchRes = client.lunalink:search(input or Random)
+  local tracks = searchRes.tracks
+
+  if #tracks == 0 then
+    table.insert(choices, {
+      name = 'Error song not matches',
+      value = input
+    })
+    return interaction:autocomplete(choices)
+  end
+
+  for i = 1, 10, 1 do
+    local x = tracks[i]
+    table.insert(choices, {
+      name = (x and x.title) and x.title or 'Unknown track name',
+      value = input
+    })
+  end
+
+  return interaction:autocomplete(choices)
 end
 
 return command
