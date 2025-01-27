@@ -17,6 +17,9 @@ function lunatic:__init(test_mode)
 		logEntryPad = 0,
 		logLevel = 0,
 	})
+	-- Bootup and manifest
+	self._manifest = require('../utils/manifest.lua')(test_mode)
+	self:printInitialInfo()
 
 	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 30)
 	self._logd:info('Client Bootloader', 'Booting up: ' .. package.name .. '@' .. package.version)
@@ -145,6 +148,41 @@ end
 
 function get:lunalink()
 	return self._lunalink
+end
+
+function lunatic:printInitialInfo()
+  local table_data = {
+    self._manifest.version,
+    self._manifest.buildTime,
+    os.date('%F %T', self._manifest.buildTime),
+    self._manifest.git.branch,
+    self._manifest.git.commit,
+    os.date('%F %T', tonumber(self._manifest.git.commitTime)),
+    self._manifest.runtime.luvit,
+    self._manifest.runtime.luvi,
+    self._manifest.runtime.libuv,
+  }
+  local template = string.format([[
+_______________________________________________________________
+\  ________________________________________________________\ \ \
+ \ \   | |   _   _ _ __   __ _| |_(_) ___/ ___|  ___  __ _  \ \ \ 
+  \ \  | |  | | | | '_ \ / _` | __| |/ __\___ \ / _ \/ _` |  \ \ \
+   \ \ | |__| |_| | | | | (_| | |_| | (__ ___) |  __/ (_| |  / / /
+    \ \|_____\__,_|_| |_|\__,_|\__|_|\___|____/ \___|\__,_|_/ / / 
+     \_____________________________________________________/_/_/
+
+ 	- Version:          %s
+ 	- Build:            %s
+ 	- Build time:       %s
+ 	- Branch:           %s
+ 	- Commit:           %s
+ 	- Commit time:      %s
+ 	- Luvit:            %s
+ 	- Luvi:             %s
+ 	- Libuv:            %s
+]], table.unpack(table_data))
+
+  print(template)
 end
 
 function lunatic:login()

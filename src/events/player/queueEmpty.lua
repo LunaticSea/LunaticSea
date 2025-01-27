@@ -18,7 +18,7 @@ return function(client, player)
       local internalQuery = table.filter({ author, title }, function (x) return x end)
       local findQuery = 'directSearch=ytsearch:' +  table.concat(internalQuery, ' - ')
       local preRes = player:search(findQuery, { requester = requester })
-      if preRes.tracks.length ~= 0 and preRes.tracks[0].identifier then
+      if #preRes.tracks ~= 0 and preRes.tracks[0].identifier then
         identifier = preRes.tracks[0].identifier
       end
     end
@@ -35,8 +35,8 @@ return function(client, player)
       return req1 and req2
     end)
 
-    if (#finalRes.length ~= 0) then
-      player:play(finalRes.length <= 1 and finalRes[0] or finalRes[1])
+    if (#finalRes ~= 0) then
+      player:play(#finalRes <= 1 and finalRes[0] or finalRes[1])
       local channel = guild:getChannel(player.textId)
       if channel then return cms(client, channel, player) end
       return

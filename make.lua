@@ -3,9 +3,12 @@ local path = require('path')
 local base_project_name = require('./package.lua').name
 local binary_format = package.cpath:match('%p[\\|/]?%p(%a+)')
 local bundlefs = require('./src/bundlefs.lua')
+local package_file = require('./package.lua')
+local json = require('json')
 
 local make = {
 	tree_file_dir = './src/tree.lua',
+	manifest_file_dir = './manifest.json',
 	warnings = [[
 -- THIS IS PROJECT TREE FILE
 -- Do NOT delete this file or it will crash
@@ -22,6 +25,10 @@ local make = {
 			type = 2,
 			desc = 'Build the bot dir tree only',
 		},
+		manifest = {
+			type = 3,
+			desc = 'Build the bot manifest only',
+		},
 	},
 	bundlefs = bundlefs()
 }
@@ -31,15 +38,15 @@ function make.run()
 	make.l('INFO', 'LunaticSea make')
 	make.l('INFO', 'Version: ' .. make.version)
 
-	if cli_data and cli_data.type == 3 then
-		return make.install()
-	end
-
 	local base_command = process.env["DOT_ENABLE"] and './lit make' or 'lit make'
 	if process.env["TIMEOUT_MODE"] then
 		base_command = 'timeout 7s ' .. base_command
 	end
 
+	make.manifest_file()
+	if cli_data.type == 3 then
+		return make.l('INFO', 'Finished 💫')
+	end
 	make.tree_file(cli_data, base_command)
 end
 
@@ -64,6 +71,63 @@ function make.tree_file(cli_data, curr_cmd)
 
 	fs.writeFile(make.tree_file_dir, final_data, function(err)
 		make.build_project(err, cli_data, curr_cmd)
+	end)
+end
+
+function make.manifest_file()
+	make.l('INFO', 'Checking if ' .. make.manifest_file_dir .. ' exist')
+	local is_exist = fs.existsSync(make.manifest_file_dir)
+	if is_exist then
+		make.l('INFO', make.manifest_file_dir .. ' exist, delete...')
+		fs.unlinkSync(make.manifest_file_dir)
+	end
+
+	make.l('INFO', 'Making manifest file...')
+
+  -- Get git data
+  local gitobj = {
+    branch = "git rev-parse --abbrev-ref HEAD",
+    commit = "git rev-parse HEAD",
+    commitTime = "git show -s --format=%ct HEAD",
+  }
+
+  for key, command in pairs(gitobj) do
+    local openPop = assert(io.popen(command))
+    local output = openPop:read('*all')
+    openPop:close()
+    gitobj[key] = output:sub(1, -2)
+  end
+
+  -- Get luvit data
+  local runtimeObj = {}
+  local openLuvit = assert(io.popen(
+		process.env["DOT_ENABLE"] and './luvit --version' or 'luvit --version'
+	))
+	local outputLuvit = openLuvit:read('*all')
+	openLuvit:close()
+  outputLuvit = make.split(outputLuvit, '%a+ %a+: v?%d+.%d+.%d+')
+  for _, data in pairs(outputLuvit) do
+    data = make.split(data, '%S+')
+    runtimeObj[data[1]] = data[3]
+  end
+
+  -- Build object
+  local obj = {
+    name = package_file.name,
+    codename = package_file.codename,
+    author = package_file.author,
+    homepage = package_file.homepage,
+    license = package_file.license,
+    version = package_file.version,
+    runtime = runtimeObj,
+    buildTime = os.time(),
+    git = gitobj
+  }
+
+  make.l('INFO', 'Making manifest file complete')
+
+	fs.writeFile(make.manifest_file_dir, json.encode(obj), function(err)
+		p(err)
 	end)
 end
 
@@ -161,6 +225,14 @@ function make.pname_output()
 		return base_project_name .. '.exe'
 	end
 	return base_project_name
+end
+
+function make.split(string, pattern)
+	local t = {}
+	for i in string.gmatch(string, pattern) do
+		t[#t + 1] = i
+	end
+	return t
 end
 
 make.run()

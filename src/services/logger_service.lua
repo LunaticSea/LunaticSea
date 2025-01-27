@@ -28,11 +28,11 @@ local CYAN = 36
 -- local WHITE   = 37
 
 local config = {
-	{ '[ERROR]  ', RED },
-	{ '[WARNING]', YELLOW },
-	{ '[INFO]   ', GREEN },
-	{ '[DEBUG]  ', CYAN },
-	{ '[VERBOSE]', MAGENTA },
+	{ 'ERROR  ', RED },
+	{ 'WARNING', YELLOW },
+	{ 'INFO   ', GREEN },
+	{ 'DEBUG  ', CYAN },
+	{ 'VERBOSE', MAGENTA },
 }
 
 local function table_args(is_file, d, tag, entry, msg)

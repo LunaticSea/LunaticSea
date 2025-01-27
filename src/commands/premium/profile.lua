@@ -47,7 +47,7 @@ function command:run(client, handler)
 	handler:defer_reply()
 
 	local user = handler.user
-	local data = handler.args[0]
+	local data = handler.args[1]
 	local getData = handler:parseMentions(data)
 	if data and getData.type == 1 then
 	  user = getData.data

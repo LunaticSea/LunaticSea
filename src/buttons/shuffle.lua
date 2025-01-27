@@ -57,7 +57,7 @@ function bc:run(client, button, language, player, nplaying, collector)
     table.insert(pages, embed)
   end
 
-  if pages.length == pagesNum and newQueue.length > 10 then
+  if #pages == pagesNum and #newQueue > 10 then
     page(client, pages, 60000, button, language):run()
   else button:reply({ embeds = { pages[1] }, ephemeral = true }) end
 end

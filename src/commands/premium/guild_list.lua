@@ -55,7 +55,7 @@ end
 function command:run(client, handler)
 	handler:defer_reply()
 
-	local value = tonumber(handler.args[0])
+	local value = tonumber(handler.args[1])
 
 	if value and type(value) ~= 'number' then
 	  local embed = {
@@ -118,7 +118,6 @@ function command:send_specific_page(client, handler, pages, page_num, value)
     })
   end
 
-  local pageNum = value == 0 and 1 or tonumber(value)
   return handler.editReply({ embeds = { pages[page_num] } })
 end
 
