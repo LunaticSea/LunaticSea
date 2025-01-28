@@ -23,6 +23,7 @@ return {
   "bundle:/src/commands/music/clear_queue.lua",
   "bundle:/src/commands/music/forward.lua",
   "bundle:/src/commands/music/join.lua",
+  "bundle:/src/commands/music/nowplaying.lua",
   "bundle:/src/commands/music/pause.lua",
   "bundle:/src/commands/music/play.lua",
   "bundle:/src/commands/music/previous.lua",

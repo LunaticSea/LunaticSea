@@ -25,9 +25,6 @@ player:
   # Default search suggestion for auto complete, leave it empty will use default
   AUTOCOMPLETE_SEARCH: ['yorushika', 'yoasobi', 'tuyu', 'hinkik']
 
-  # Enable this if you want to use realtime duation in nowplaying command
-  NP_REALTIME: false
-
   # The amount of time before the bot leaves the VC in milliseconds
   LEAVE_TIMEOUT: 60000
 
@@ -64,11 +61,6 @@ player:
   # ---------------------  NODES is important!!!  ---------------------
 
 utilities:
-  # Enable debug tools for execute code from bot
-  # use dokdo package, owner only, no prefix changes
-  # You have to enable message_content to use
-  # use: sudo rdc help, for more command
-  DEBUG_TOOLS: true
   # Log register premium activities
   PREMIUM_LOG_CHANNEL: ''
   # Log all the guild that bot joined or leaved
@@ -77,8 +69,6 @@ utilities:
   LOG_CHANNEL: ''
   # The timeout for deleting msg in milliseconds
   DELETE_MSG_TIMEOUT: 3000
-  # Auto resume when bot restarted suddenly
-  AUTO_RESUME: false
 
   # Database services config
   DATABASE:
@@ -95,7 +85,6 @@ utilities:
       database: 'test'
       logLevel: 0
 
-
   # Msg content for bot using prefix command and setup
   MESSAGE_CONTENT:
     enable: true
@@ -103,20 +92,6 @@ utilities:
     commands:
       enable: true
       prefix: 'd!' # The prefix you want
-
-  # Fix the Lavalink server when the current is down
-  AUTOFIX_LAVALINK:
-    enable: false
-    retryCount: 10
-    retryTimeout: 3000
-
-  # WS/REST server for using web player
-  WEB_SERVER:
-    host: '0.0.0.0'
-    enable: false
-    port: 3000
-    whitelist: [] # Example: ["lavalink.dev"]
-    auth: 'youshallnotpass'
 
 # You can custom your emoji here!
 emojis:

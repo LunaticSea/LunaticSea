@@ -33,8 +33,6 @@ return function (client, member, channel)
   local botMemberStatus = member.guild:getMember(client.user.id)
   local isNotInChannel = not botMemberStatus or not botMemberStatus.voiceChannel
 
-  p(isNotInChannel, isNotDestroy)
-
   if isNotInChannel and isNotDestroy then
     player.data:set('sudo-destroy', true)
     player:destroy()
