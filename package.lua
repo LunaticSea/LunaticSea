@@ -14,6 +14,7 @@ return {
 		'creationix/coro-websocket@3.1.0',
 		'luvit/luvit@2.18.1',
 		'luvit/secure-socket@v1.2.3',
+		'truemedian/rethink-luvit@v0.2.0'
 	},
 	files = { '**.lua', '!test*', '!make.lua', '!dev.lua', '!modules*', 'manifest.json' },
 }

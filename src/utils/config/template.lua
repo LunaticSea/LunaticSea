@@ -84,9 +84,16 @@ utilities:
   DATABASE:
     # Note: If you enter an invalid driver, bot will use csv driver as default
     # Config key must same as driver name
-    driver: 'csv' # csv
+    driver: 'csv' # csv, rethink
     csv:
       file_name: 'lunatic.db.csv'
+    rethink:
+      host: '127.0.0.1'
+      port: 28015
+      username: 'admin'
+      password: ''
+      database: 'test'
+      logLevel: 0
 
 
   # Msg content for bot using prefix command and setup
