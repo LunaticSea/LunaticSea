@@ -99,7 +99,7 @@ function command:run(client, handler)
   if pre_data and pre_data.isPremium then
     local lang_key = 'redeem_already'
     if (type == 'guild') then lang_key = 'redeem_already_guild' end
-  
+
     local embed = {
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
       description = client.i18n:get(handler.language, 'command.premium', lang_key),

@@ -22,7 +22,7 @@ function bc:run(client, button, language, player, nplaying, collector)
     elseif player.loop == 'song' then
       return 'queue', 'loop_current'
     elseif player.loop == 'queue' then
-      return 'none', 'loop_all'
+      return 'none', 'unloop_all'
     end
   end
 
