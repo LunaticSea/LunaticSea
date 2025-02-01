@@ -59,7 +59,7 @@ function command:run(client, handler)
   local value = tonumber(handler.args[1])
 
   if not value then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'number_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -67,7 +67,7 @@ function command:run(client, handler)
   end
 
   if value <= 0 or value > 100 then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'volume_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -76,7 +76,7 @@ function command:run(client, handler)
 
   player:setVolume(value)
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'volume_msg', { value }),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }

@@ -50,7 +50,7 @@ function command:run(client, handler)
 
   player:resume()
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'resume_msg'),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }

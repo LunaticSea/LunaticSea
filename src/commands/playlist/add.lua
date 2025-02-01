@@ -2,18 +2,18 @@ local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local convert_time = require('internal').convert_time
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('Music:Play')
+local command, get = require('class')('Playlist:Add')
 
 function get:name()
-	return { 'play' }
+	return { 'pl', 'add' }
 end
 
 function get:description()
-	return 'Play a song from any types'
+	return 'Add song to a playlist'
 end
 
 function get:category()
-	return 'music'
+	return 'playlist'
 end
 
 function get:accessableby()
@@ -21,11 +21,11 @@ function get:accessableby()
 end
 
 function get:usage()
-	return '<name_or_url>'
+	return '<playlist_id> <url_or_name>'
 end
 
 function get:aliases()
-	return { 'p', 'pl', 'pp' }
+	return {}
 end
 
 function get:config()
@@ -54,43 +54,37 @@ function get:options()
 end
 
 function command:run(client, handler)
-	handler:defer_reply()
+  handler:defer_reply()
 
-  local player = client.lunalink.players:get(handler.guild.id)
+  local PlaylistID = handler.args[1]
+  local SongName = table.concat(table.slice(handler.args, 2, #handler.args), ' ')
+  local Playlist = client.db.playlist:get(PlaylistID)
 
-  local value = table.concat(handler.args, ' ')
-
-  if not value then
+  if not Playlist then
     local embed = {
-      description = client.i18n:get(handler.language, 'command.music', 'play_arg'),
+      description = client.i18n:get(handler.language, 'command.playlist', 'invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({ embeds = { embed } })
   end
 
-  local channel = handler.member.voiceChannel
-
-  if not channel then
+  if Playlist.owner ~= handler.user.id then
     local embed = {
-      description = client.i18n:get(handler.language, 'error', 'no_in_voice'),
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_owner'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({ embeds = { embed } })
   end
 
-  if not player then
-    player = client.lunalink:create({
-      guildId = handler.guild.id,
-      textId = handler.channel.id,
-      voiceId = channel.id,
-      shardId = handler.guild.shardId,
-      volume = 100
-    })
-  elseif player and (not self:check_same_voice(client, handler)) then return end
+  if not SongName then
+    local embed = {
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_match'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+    }
+    return handler:edit_reply({ embeds = { embed } })
+  end
 
-  player._textId = handler.channel.id
-
-  local result = player:search(value, { requester = handler.user })
+  local result = client.lunalink:search(SongName, { requester = handler.user })
   local tracks = result.tracks
   if #result.tracks == 0 then
     local embed = {
@@ -100,53 +94,92 @@ function command:run(client, handler)
     return handler:edit_reply({ embeds = { embed } })
   end
 
+  local TrackAdd = {}
+
   if result.type == 'PLAYLIST' then
-    for _, track in pairs(tracks) do
-      player.queue:add(track)
-    end
-  elseif player.playing and result.type == 'SEARCH' then
-    player.queue:add(tracks[1])
-  elseif player.playing and result.type ~= 'SEARCH' then
-    for _, track in pairs(tracks) do
-      player.queue:add(track)
-    end
-  else player.queue:add(tracks[1]) end
+    for _, track in pairs(result.tracks) do table.insert(TrackAdd, track) end
+  else table.insert(TrackAdd, result.tracks[1]) end
 
-  if handler.message then handler.message:delete() end
-
-  if not player.playing then player:play() end
+  local Duration = convert_time(tracks[1].duration)
+  local TotalDuration = table.reduce(tracks, function (acc, cur)
+    return acc + (cur.duration or 0)
+  end, tracks[1].duration or 0)
 
   if result.type == 'TRACK' then
     local embed = {
-      description = client.i18n:get(handler.language, 'command.music', 'play_track', {
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_track', {
         self:getTitle(client, result.type, tracks),
-        convert_time(tracks[1].duration),
-        tracks[1].requester.mentionString
+        Duration, tracks[1].requester.mentionString
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
-    return handler:edit_reply({ embeds = { embed } })
+    handler:edit_reply({ embeds = { embed } })
   elseif result.type == 'PLAYLIST' then
     local embed = {
-      description = client.i18n:get(handler.language, 'command.music', 'play_playlist', {
-        self:getTitle(client, result.type, tracks, value),
-        convert_time(player.queue.duration), #tracks,
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_playlist', {
+        self:getTitle(client, result.type, tracks, SongName),
+        convert_time(TotalDuration), #tracks,
         tracks[1].requester.mentionString
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
-    return handler:edit_reply({ embeds = { embed } })
+    handler:edit_reply({ embeds = { embed } })
   elseif result.type == 'SEARCH' then
     local embed = {
-      description = client.i18n:get(handler.language, 'command.music', 'play_result', {
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_search', {
         self:getTitle(client, result.type, tracks),
-        convert_time(tracks[1].duration),
-        tracks[1].requester.mentionString
+        Duration, tracks[1].requester.mentionString
+      }),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+    }
+    handler:edit_reply({ embeds = { embed } })
+  else
+    local embed = {
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_match'),
+      color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+    }
+    return handler:edit_reply({ embeds = { embed } })
+  end
+
+  local LimitTrack = #Playlist.tracks + #TrackAdd
+
+  if LimitTrack > client.config.player.LIMIT_TRACK then
+    local embed = {
+      description = client.i18n:get(handler.language, 'command.playlist', 'add_limit_track', {
+        client.config.player.LIMIT_TRACK
       }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     return handler:edit_reply({ embeds = { embed } })
   end
+
+  local req_user = {
+    id = TrackAdd[1].requester.id,
+    defaultAvatarURL = TrackAdd[1].requester:defaultAvatarURL(),
+    avatarURL = TrackAdd[1].requester:avatarURL(),
+    mentionString = TrackAdd[1].requester.mentionString,
+    name = TrackAdd[1].requester.name,
+    username = TrackAdd[1].requester.username,
+  }
+
+  for _, track in pairs(TrackAdd) do
+    table.insert(Playlist.tracks, {
+      title = track.title,
+      uri = track.uri,
+      length = track.duration,
+      thumbnail = track.artworkUrl,
+      author = track.author,
+      requester = req_user,
+    })
+  end
+
+  local embed = {
+    description = client.i18n:get(handler.language, 'command.playlist', 'add_added', {
+      #TrackAdd, PlaylistID
+    }),
+    color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
+  }
+  return handler:follow_up({ embeds = { embed } })
 end
 
 function command:check_same_voice(client, handler)

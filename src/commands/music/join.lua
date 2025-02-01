@@ -48,7 +48,7 @@ function command:run(client, handler)
 
   local channel = handler.member.voiceChannel
   if not channel then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'no_in_voice'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -68,7 +68,7 @@ function command:run(client, handler)
 
   player._textId = handler.channel.id
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'join_msg', {
       string.format('<#%s>', channel.id)
     }),
@@ -82,14 +82,14 @@ function command:check_same_voice(client, handler)
   local bot_voice_id = handler.guild.me.voiceChannel.id
   local user_voice_id = handler.member.voiceChannel.id
   if bot_voice_id ~= user_voice_id then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'no_same_voice'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
     handler:edit_reply({ embeds = { embed } })
     return false
   elseif bot_voice_id == user_voice_id then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'join_already'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

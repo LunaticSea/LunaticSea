@@ -63,7 +63,7 @@ function command:run(client, handler)
   local value = tonumber(handler.args[1])
 
   if not value and handler.args[1] then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'number_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

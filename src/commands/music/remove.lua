@@ -62,7 +62,7 @@ function command:run(client, handler)
   local tracks = tonumber(handler.args[1])
 
   if not tracks then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'number_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -70,7 +70,7 @@ function command:run(client, handler)
   end
 
   if tracks == 0 then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'removetrack_already'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -78,7 +78,7 @@ function command:run(client, handler)
   end
 
   if tracks > #player.queue then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'removetrack_notfound'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

@@ -88,7 +88,7 @@ function command:run(client, handler)
   end
 
   if mode == player.loop then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'loop_already', { mode }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

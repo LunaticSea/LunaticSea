@@ -1,6 +1,6 @@
 local discordia = require('discordia')
 local permission_flags_bits = discordia.enums.permission
-local command_handler = require('../../structures/command_handler.lua')
+local context = require('../../structures/context.lua')
 local accessableby = require('../../constants/accessableby.lua')
 local arb = require('internal').auto_reconnect_builder
 
@@ -138,7 +138,7 @@ return function(client, interaction)
 
 	-- Ability checker
 	if command.lavalink and #client._lavalink_using == 0 then
-		local embed =  {
+		local embed = {
 			description = client.i18n:get(language, 'error', 'no_node'),
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		}
@@ -194,7 +194,7 @@ return function(client, interaction)
 	arg_convert(interaction.data)
 
 	-- Command runner
-	local handler = command_handler({
+	local handler = context({
 		interaction = interaction,
 		language = client.i18n.default_locate,
 		client = client,

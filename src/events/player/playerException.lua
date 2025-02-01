@@ -12,7 +12,7 @@ return function(client, player, data)
 
   local text_channel = guild:getChannel(player.textId)
   if text_channel then
-    local embed =  {
+    local embed = {
       description = string.format("Player get exception, please contact with owner to fix this error\n\n", require('json').encode(data)),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

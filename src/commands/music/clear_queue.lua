@@ -50,7 +50,7 @@ function command:run(client, handler)
 
   player.queue:clear()
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'pause_msg'),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }

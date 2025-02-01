@@ -60,14 +60,14 @@ function command:run(client, handler)
       guildId = handler.guild.id,
       playerOptions = { position = current_duration },
     })
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'rewind_msg', { current_duration }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
 
     handler:edit_reply({ content = ' ', embeds = { embed } })
   else
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'rewind_beyond'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

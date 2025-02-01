@@ -55,7 +55,7 @@ function command:run(client, handler)
     player.queue.previous[1].uri == player.queue.current.uri or
     previousIndex < 0
   ) then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'previous_notfound'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -66,7 +66,7 @@ function command:run(client, handler)
 
   player.data:set('endMode', 'previous')
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'previous_msg'),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }

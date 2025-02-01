@@ -69,7 +69,7 @@ function command:run(client, handler)
   local song = table.concat(table.slice(handler.args, 1, #handler.args), ' ')
 
   if not position then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'error', 'number_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -77,7 +77,7 @@ function command:run(client, handler)
   end
 
   if position == 0 then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'insert_already'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -85,7 +85,7 @@ function command:run(client, handler)
   end
 
   if position > #player.queue then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'insert_notfound'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -97,7 +97,7 @@ function command:run(client, handler)
 
   table.insert(player.queue.list, position, track)
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'insert_desc', {
       get_title(client, track), convert_time(player.position), track.requester.mentionString
     }),

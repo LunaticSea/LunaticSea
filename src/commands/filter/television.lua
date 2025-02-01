@@ -49,7 +49,7 @@ function command:run(client, handler)
   local player = client.lunalink.players:get(handler.guild.id)
 
   if player.data:get('filter-mode') == self.name[0] then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.filter', 'filter_already', { self.name[0] }),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

@@ -49,7 +49,7 @@ function command:run(client, handler)
   local player = client.lunalink.players:get(handler.guild.id)
 
   if player.queue.size == 0 and player.data:get('autoplay') ~= true then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'skip_notfound'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -57,7 +57,7 @@ function command:run(client, handler)
   else
     player:skip()
 
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'skip_msg'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }

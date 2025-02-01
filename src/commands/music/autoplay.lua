@@ -54,7 +54,7 @@ function command:run(client, handler)
     player.data:delete('author')
     player.queue:clear()
 
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'autoplay_off', {
         handler.mode_lang.disable
       }),
@@ -67,7 +67,7 @@ function command:run(client, handler)
     player.data:set('requester', handler.user)
     player.data:set('author', player.queue.current.author)
 
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'autoplay_on', {
         handler.mode_lang.enable
       }),

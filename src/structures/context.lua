@@ -1,5 +1,5 @@
 local dia = require('discordia')
-local command_handler, get = require('class')('CommandHandler')
+local context, get = require('class')('Context')
 
 local mention_enums = {
 	ERROR = 0,
@@ -9,7 +9,7 @@ local mention_enums = {
 	CHANNEL = 4,
 }
 
-function command_handler:__init(options)
+function context:__init(options)
 	self._msg = nil
 	self._attactments = {}
 	self._client = options.client
@@ -92,21 +92,21 @@ function get:mode_lang()
 	}
 end
 
-function command_handler:send_message(data)
+function context:send_message(data)
 	if self._interaction then
 		return self._interaction:reply(data)
 	end
 	return self._message:reply(data)
 end
 
-function command_handler:follow_up(data)
+function context:follow_up(data)
 	if self._interaction then
 		return self._interaction:followUp(data)
 	end
 	return self._message:reply(data)
 end
 
-function command_handler:defer_reply()
+function context:defer_reply()
 	if self._interaction then
 		self._deferred = self._interaction:replyDeferred()
 		self._msg = self._deferred
@@ -122,7 +122,7 @@ function command_handler:defer_reply()
 	return self._msg
 end
 
-function command_handler:edit_reply(data)
+function context:edit_reply(data)
 	if not self._msg then
 		self._client.logd:error('CommandHandler', 'You have not declared deferReply()')
 		return nil
@@ -138,7 +138,7 @@ function command_handler:edit_reply(data)
 	return self._msg
 end
 
-function command_handler:parse_mentions(data)
+function context:parse_mentions(data)
 	data = data or ''
 	-- Check user
 	local user_match = string.match(data, self._USERS_PATTERN)
@@ -208,4 +208,4 @@ function command_handler:parse_mentions(data)
 	}
 end
 
-return command_handler
+return context

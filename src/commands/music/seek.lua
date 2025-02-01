@@ -63,7 +63,7 @@ function command:run(client, handler)
   local time = handler.args[1]
 
   if not string.match(time, time_pattern) or player.queue.current.isSeekable then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'seek_invalid'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -74,7 +74,7 @@ function command:run(client, handler)
   end
 
   if value >= player.queue.current.duration or value < 0 then
-    local embed =  {
+    local embed = {
       description = client.i18n:get(handler.language, 'command.music', 'seek_beyond'),
       color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
     }
@@ -93,7 +93,7 @@ function command:run(client, handler)
 
   local Duration = format_duration(final_res)
 
-  local embed =  {
+  local embed = {
     description = client.i18n:get(handler.language, 'command.music', 'seek_msg', { Duration }),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }
