@@ -7,7 +7,7 @@ return {
 	license = 'AGPL-3.0',
 	author = {
 		name = 'RainyXeon',
-		email = 'xeondev@xeondex.onmicrosoft.com',
+		email = 'rainyxeon@gmail.com',
 	},
 	homepage = 'https://github.com/RainyXeon/LunaticSea',
 	dependencies = {
