@@ -22,10 +22,7 @@ function button_loader:run()
 	self:register()
 
 	if self._client._total_commands > 0 then
-		self._client.logd:info(
-			'ButtonLoader',
-			string.format('%s button Loaded!', self._client._total_commands)
-		)
+		self._client.logd:info('ButtonLoader', 'All buttons Loaded!')
 	else
 		self._client.logd:warn('ButtonLoader', 'No button loaded, is everything ok?')
 	end

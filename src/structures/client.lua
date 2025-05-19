@@ -19,6 +19,7 @@ function lunatic:__init(test_mode)
 	})
 	-- Bootup and manifest
 	self._manifest = require('../utils/manifest.lua')(test_mode)
+	self._timeboot = os.time()
 	self:printInitialInfo()
 
 	self._logd = require('../services/logger_service.lua')(5, '%F %T', 'lunatic.sea.log', 30)
@@ -187,6 +188,10 @@ end
 
 function lunatic:login()
 	self:run(self.config.bot.TOKEN)
+end
+
+function get:uptime()
+	return os.time() - self._timeboot
 end
 
 return lunatic

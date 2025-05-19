@@ -1,5 +1,6 @@
 return {
 	name = 'LunaticSea',
+	codename = 'selene',
 	version = '1.0.0-dev',
 	description = 'ByteBlaze in lua version. Include staandalone packages',
 	tags = { 'lavalink', 'discordbot', 'discord' },
@@ -14,7 +15,8 @@ return {
 		'creationix/coro-websocket@3.1.0',
 		'luvit/luvit@2.18.1',
 		'luvit/secure-socket@v1.2.3',
-		'truemedian/rethink-luvit@v0.2.0'
+		'truemedian/rethink-luvit@v0.2.0',
+		'james2doyle/ms@v0.0.2'
 	},
 	files = { '**.lua', '!test*', '!make.lua', '!dev.lua', '!modules*', 'manifest.json' },
 }

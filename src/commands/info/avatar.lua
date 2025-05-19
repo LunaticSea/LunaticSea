@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('Image:Avatar')
+local command, get = require('class')('Info:Avatar')
 
 function get:name()
 	return { 'avatar' }
@@ -12,7 +12,7 @@ function get:description()
 end
 
 function get:category()
-	return 'image'
+	return 'info'
 end
 
 function get:accessableby()
