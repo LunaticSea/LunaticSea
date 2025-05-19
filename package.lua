@@ -2,7 +2,7 @@ return {
 	name = 'LunaticSea',
 	codename = 'selene',
 	version = '1.0.0-dev',
-	description = 'ByteBlaze in lua version. Include staandalone packages',
+	description = 'A versatile and powerful music bot for Discord that brings rhythm and melody to your server! Now in lua',
 	tags = { 'lavalink', 'discordbot', 'discord' },
 	license = 'AGPL-3.0',
 	author = {
