@@ -1,5 +1,3 @@
-luvit make dir
-
 cd translation
 git add .
 git commit
@@ -41,3 +39,6 @@ cd ..
 cd ..
 git add .
 git commit
+luvit make dir
+git add .
+git commit --amend --no-edit

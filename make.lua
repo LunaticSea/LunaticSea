@@ -127,7 +127,7 @@ function make.manifest_file()
   make.l('INFO', 'Making manifest file complete')
 
 	fs.writeFile(make.manifest_file_dir, json.encode(obj), function(err)
-		p(err)
+		if err then p(err) end
 	end)
 end
 
