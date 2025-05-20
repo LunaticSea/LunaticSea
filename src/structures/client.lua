@@ -36,6 +36,11 @@ function lunatic:__init(test_mode)
 		error('TOKEN not found!, please specify it on app.json (Example: example.app.json)')
 	end
 
+	-- Check messages
+	if not self._config.utilities.MESSAGE_CONTENT.enable then
+		self._intents = 3243773
+	end
+
 	-- Fast access
 	self._bot_owner = self._config.bot.OWNER_ID
 	self._icons = self._config.icons

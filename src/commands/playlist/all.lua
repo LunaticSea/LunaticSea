@@ -1,7 +1,7 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
-local command, get = require('class')('Playlist:Add')
+local command, get = require('class')('Playlist:All')
 local internal = require('internal')
 local page_framework = internal.page
 
