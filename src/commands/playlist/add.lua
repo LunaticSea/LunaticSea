@@ -173,6 +173,8 @@ function command:run(client, handler)
     })
   end
 
+  client.db.playlist:set(PlaylistID, Playlist)
+
   local embed = {
     description = client.i18n:get(handler.language, 'command.playlist', 'add_added', {
       #TrackAdd, PlaylistID

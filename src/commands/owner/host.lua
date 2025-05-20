@@ -124,7 +124,7 @@ function command:get_host_info(client)
     uv.os_uname().release,
     uv.os_uname().machine,
     uv.cpu_info()[1].model,
-    ms(client.uptime * 1000),
+    ms(client.uptime),
     used / 1024 / 1024,
     total / 1024 / 1024,
     used_percent,

@@ -1,15 +1,15 @@
 local accessableby = require('../../constants/accessableby.lua')
 local discordia = require('discordia')
-local command, get = require('class')('Info:Ping')
+local command, get = require('class')('Info:Uptime')
 local uv = require('uv')
-local stopwatch = discordia.Stopwatch()
+local ms = require('ms')
 
 function get:name()
-	return { 'ping' }
+	return { 'uptime' }
 end
 
 function get:description()
-	return 'Shows the ping of the Bot'
+	return 'Shows the uptime information of the Bot'
 end
 
 function get:category()
@@ -46,14 +46,13 @@ function get:options()
 end
 
 function command:run(client, handler)
-	local start = uv.hrtime()
 	handler:defer_reply()
 
-	local ping = (uv.hrtime() - start) / 1e6
-
 	local embed_data = {
-		title = '🏓 ' .. client.user.username,
-		description = client.i18n:get(handler.language, 'command.info', 'ping_desc', { ping }),
+		author = {
+      name = client.i18n:get(handler.language, 'command.info', 'uptime_title') .. client.user.username
+    },
+		description = client.i18n:get(handler.language, 'command.info', 'uptime_desc', { ms(client.uptime) }),
 		color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
 		timestamp = discordia.Date():toISO('T', 'Z'),
 	}
