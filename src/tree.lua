@@ -58,6 +58,7 @@ return {
   "bundle:/src/commands/owner/shutdown.lua",
   "bundle:/src/commands/playlist/add.lua",
   "bundle:/src/commands/playlist/all.lua",
+  "bundle:/src/commands/playlist/create.lua",
   "bundle:/src/commands/premium/generate.lua",
   "bundle:/src/commands/premium/guild_list.lua",
   "bundle:/src/commands/premium/guild_profile.lua",

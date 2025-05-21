@@ -44,6 +44,12 @@ end
 function get:options()
 	return {
     {
+      name = 'id',
+      description = 'The id of the playlist',
+      required = true,
+      type = applicationCommandOptionType.string,
+    },
+    {
       name = 'search',
       description = 'The song link or name',
       type = applicationCommandOptionType.string,
@@ -155,8 +161,8 @@ function command:run(client, handler)
 
   local req_user = {
     id = TrackAdd[1].requester.id,
-    defaultAvatarURL = TrackAdd[1].requester:defaultAvatarURL(),
-    avatarURL = TrackAdd[1].requester:avatarURL(),
+    defaultAvatarURL = TrackAdd[1].requester:getDefaultAvatarURL(),
+    avatarURL = TrackAdd[1].requester:getAvatarURL(),
     mentionString = TrackAdd[1].requester.mentionString,
     name = TrackAdd[1].requester.name,
     username = TrackAdd[1].requester.username,
@@ -181,7 +187,7 @@ function command:run(client, handler)
     }),
     color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
   }
-  return handler:follow_up({ embeds = { embed } })
+  return handler:send_message({ embeds = { embed } })
 end
 
 function command:check_same_voice(client, handler)
@@ -210,7 +216,7 @@ end
 
 function command:autocomplete(client, interaction, language)
   local choices = {}
-  local input = interaction.data.options[1].value
+  local input = interaction.data.options[1].options[2].value
 
   math.randomseed(os.time())
 

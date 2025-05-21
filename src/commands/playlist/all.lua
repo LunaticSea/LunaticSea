@@ -3,7 +3,10 @@ local discordia = require('discordia')
 local applicationCommandOptionType = discordia.enums.applicationCommandOptionType
 local command, get = require('class')('Playlist:All')
 local internal = require('internal')
+local json = require('json')
+local uv = require('uv')
 local page_framework = internal.page
+local ms = require('ms')
 
 function get:name()
 	return { 'pl', 'all' }
@@ -57,12 +60,15 @@ function command:run(client, handler)
   handler:defer_reply()
 
   local number = handler.args[1]
+	local fulllist = client.db.playlist:all('playlist')
   local playlists = {}
 
-  table.foreach(client.db.playlist:all('playlist'), function (key, data)
-    if data.value.owner ~= handler.user.id then return end
-    table.insert(playlists, data.value)
-  end)
+	for i = 1, #fulllist, 1 do
+		local value = fulllist[i]
+		value.data = json.decode(value.data)
+    if value.data.owner ~= handler.user.id then return end
+    table.insert(playlists, value.data)
+	end
 
   local page_num = math.ceil(#playlists / 10)
 	if page_num == 0 then page_num = 1 end
@@ -70,7 +76,7 @@ function command:run(client, handler)
 	local playlist_strings = {}
 	for i = 1, #playlists, 1 do
 		local playlist = playlists[i]
-		local created = os.date("%Y-%m-%d %H:%M:%S", tonumber(playlists[i].created))
+		local created = ms((uv.hrtime() - playlists[i].created) / 1e6)
 		local string_ele = client.i18n:get(handler.language, 'command.playlist', 'view_embed_playlist', {
       i, playlist.id, #playlist.tracks, created,
     })
@@ -80,7 +86,7 @@ function command:run(client, handler)
 	local pages = {}
 
 	for i = 1, page_num do
-		local str = table.concat(table.slice(playlist_strings, i * 10, i * 10 + 10), "\n")
+		local str = table.concat(table.slice(playlist_strings, i, i * 10), "\n")
 
 		local embed = {
 			author = {
@@ -89,7 +95,7 @@ function command:run(client, handler)
 				})
 			},
 			color = discordia.Color.fromHex(client.config.bot.EMBED_COLOR).value,
-			description = str == "" and "  Nothing" or "\n" + str,
+			description = str == "" and "  Nothing" or "\n" .. str,
 		}
 
 		table.insert(pages, embed)
