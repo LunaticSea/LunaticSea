@@ -11,7 +11,7 @@ bot:
   ADMIN: ['<your_trusted_admin_discord_id_here>']
   # You can set it to en, vi...
   LANGUAGE: 'en'
-  DEBUG_MODE: false
+  DEBUG_MODE: false 
 
 player:
   SPOTIFY:
