@@ -31,7 +31,7 @@ end
 
 function get:config()
 	return {
-		lavalink = true,
+		lavalink = false,
 		player_check = false,
 		using_interaction = true,
 		same_voice_check = false
@@ -116,7 +116,7 @@ function command:run(client, handler)
     return handler:edit_reply({ embeds = { embed } })
   end
 
-  local idgen = 'playlist-' .. self:code_gen(8, os.time())
+  local idgen = 'playlist_' .. self:code_gen(8, os.time())
 
   client.db.playlist:set(idgen, {
     id = idgen,

@@ -34,7 +34,7 @@ end
 
 function get:config()
 	return {
-		lavalink = true,
+		lavalink = false,
 		player_check = false,
 		using_interaction = true,
 		same_voice_check = false
